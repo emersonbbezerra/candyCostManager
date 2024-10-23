@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Ingredient } from "../entities/Ingredient";
 
 export const capitalize = (str: string) => {
   return str
@@ -29,3 +30,18 @@ export const ingredientSchema = z.object({
   createdAt: z.date().optional().nullable(),
   updatedAt: z.date().optional().nullable(),
 });
+
+export const convertToIngredient = (ingredientDoc: any): Ingredient => {
+  return new Ingredient(
+    {
+      name: ingredientDoc.name!,
+      manufacturer: ingredientDoc.manufacturer!,
+      price: ingredientDoc.price!,
+      unitOfMeasure: ingredientDoc.unitOfMeasure!,
+      category: ingredientDoc.category!,
+      createdAt: ingredientDoc.createdAt?.toISOString(),
+      updatedAt: ingredientDoc.updatedAt?.toISOString(),
+    },
+    ingredientDoc._id.toString()
+  );
+};
