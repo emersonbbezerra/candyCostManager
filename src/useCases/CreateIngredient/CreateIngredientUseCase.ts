@@ -41,7 +41,7 @@ export class CreateIngredientUseCase {
     try {
       const parsedData = ingredientSchema.parse(data);
 
-      const existingIngredient = await this.ingredientsRepository.findbyname(
+      const existingIngredient = await this.ingredientsRepository.findByName(
         parsedData.name
       );
 
