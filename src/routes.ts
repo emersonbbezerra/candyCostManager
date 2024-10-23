@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { createIngredientControler } from "./useCases/CreateIngredient";
+import { createIngredientController } from "./useCases/CreateIngredient";
 
 const router = Router();
 
 router.post("/ingredients", (req, res) => {
-  createIngredientControler.handle(req, res);
+  createIngredientController.handle(req, res);
 });
 
 export { router };

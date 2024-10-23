@@ -8,8 +8,8 @@ const createIngredientUseCase = new CreateIngredientUseCase(
   mongoIngredientsRepository
 );
 
-const createIngredientControler = new CreateIngredientController(
+const createIngredientController = new CreateIngredientController(
   createIngredientUseCase
 );
 
-export { createIngredientUseCase, createIngredientControler };
+export { createIngredientController };
