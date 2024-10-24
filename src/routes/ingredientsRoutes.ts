@@ -2,7 +2,7 @@ import { Router } from "express";
 import { createIngredientController } from "../useCases/ingredientsUseCases/CreateIngredient";
 import { updateIngredientController } from "../useCases/ingredientsUseCases/UpdateIngredient";
 import { deleteIngredientController } from "../useCases/ingredientsUseCases/DeleteIngredient";
-import { findMethodsController } from "../useCases/ingredientsUseCases/FindMethodsIngredient";
+import { findIngredientMethodsController } from "../useCases/ingredientsUseCases/FindIngredientMethods";
 
 const ingredientsRoutes = Router();
 
@@ -11,11 +11,11 @@ ingredientsRoutes.post("/ingredients", (req, res) => {
 });
 
 ingredientsRoutes.get("/ingredients/:id", (req, res) => {
-  findMethodsController.findById(req, res);
+  findIngredientMethodsController.findById(req, res);
 });
 
 ingredientsRoutes.get("/ingredients", (req, res) => {
-  findMethodsController.findAll(req, res);
+  findIngredientMethodsController.findAll(req, res);
 });
 
 ingredientsRoutes.put("/ingredients/:id", (req, res) => {

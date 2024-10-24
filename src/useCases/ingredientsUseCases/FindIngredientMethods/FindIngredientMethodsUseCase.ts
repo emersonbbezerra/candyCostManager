@@ -2,7 +2,7 @@ import { IIngredientsRepository } from "../../../repositories/IIngredientsReposi
 import { Ingredient } from "../../../entities/Ingredient";
 import { HttpException } from "../../../types/HttpException";
 
-export class FindMethodsUseCase {
+export class FindIngredientMethodsUseCase {
   constructor(private ingredientsRepository: IIngredientsRepository) {}
 
   async findAll(): Promise<Ingredient[]> {

@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
-import { FindMethodsUseCase } from "./FindMethodsUseCase";
+import { FindIngredientMethodsUseCase } from "./FindIngredientMethodsUseCase";
 import { HttpException } from "../../../types/HttpException";
 
-export class FindMethodsController {
-  constructor(private findMethodsUseCase: FindMethodsUseCase) {}
+export class FindIngredientMethodsController {
+  constructor(
+    private findIngredientMethodsUseCase: FindIngredientMethodsUseCase
+  ) {}
 
   async findAll(request: Request, response: Response): Promise<Response> {
     try {
-      const ingredients = await this.findMethodsUseCase.findAll();
+      const ingredients = await this.findIngredientMethodsUseCase.findAll();
       return response.status(200).json(ingredients);
     } catch (error: any) {
       if (error instanceof HttpException) {
@@ -25,7 +27,7 @@ export class FindMethodsController {
   ): Promise<Response | null> {
     const { id } = request.params;
     try {
-      const ingredient = await this.findMethodsUseCase.findById(id);
+      const ingredient = await this.findIngredientMethodsUseCase.findById(id);
       return response.status(200).json(ingredient);
     } catch (error: any) {
       if (error instanceof HttpException) {

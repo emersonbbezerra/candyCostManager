@@ -1,19 +1,13 @@
 import mongoose from "mongoose";
 
-const ingredientSchema = new mongoose.Schema({
+export const ingredientSchema = new mongoose.Schema({
   name: String,
   manufacturer: String,
-  price: Number,
+  price: { type: Number, require: true },
   unitOfMeasure: String,
   category: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 export const IngredientMongoose = mongoose.model(
