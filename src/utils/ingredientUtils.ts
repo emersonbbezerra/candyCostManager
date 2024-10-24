@@ -32,7 +32,7 @@ export const ingredientSchema = z.object({
 });
 
 export const convertToIngredient = (ingredientDoc: any): Ingredient => {
-  return new Ingredient(
+  const ingredient = new Ingredient(
     {
       name: ingredientDoc.name!,
       manufacturer: ingredientDoc.manufacturer!,
@@ -44,4 +44,8 @@ export const convertToIngredient = (ingredientDoc: any): Ingredient => {
     },
     ingredientDoc._id.toString()
   );
+  return {
+    ...ingredient,
+    id: ingredientDoc._id.toString(),
+  };
 };

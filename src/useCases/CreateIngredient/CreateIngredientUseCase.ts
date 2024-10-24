@@ -8,29 +8,22 @@ export class CreateIngredientUseCase {
   constructor(private ingredientsRepository: IIngredientsRepository) {}
 
   async execute(data: ICreateIngredientRequestDTO): Promise<void> {
-    try {
-      const parsedData = ingredientSchema.parse(data);
+    const parsedData = ingredientSchema.parse(data);
 
-      const existingIngredient = await this.ingredientsRepository.findByName(
-        parsedData.name
-      );
+    const existingIngredient = await this.ingredientsRepository.findByName(
+      parsedData.name
+    );
 
-      if (existingIngredient) {
-        throw new HttpException(409, "Ingrediente já cadastrado");
-      }
-
-      const ingredient = new Ingredient({
-        ...parsedData,
-        createdAt: parsedData.createdAt?.toISOString(),
-        updatedAt: parsedData.updatedAt?.toISOString(),
-      });
-
-      await this.ingredientsRepository.save(ingredient);
-    } catch (e: any) {
-      if (e.errors) {
-        throw new HttpException(400, e.errors[0].message);
-      }
-      throw e;
+    if (existingIngredient) {
+      throw new HttpException(409, "Ingredient already exists");
     }
+
+    const ingredient = new Ingredient({
+      ...parsedData,
+      createdAt: parsedData.createdAt?.toISOString(),
+      updatedAt: parsedData.updatedAt?.toISOString(),
+    });
+
+    await this.ingredientsRepository.save(ingredient);
   }
 }
