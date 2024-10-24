@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { DeleteIngredientUseCase } from "./DeleteIngredientUseCase";
-import { HttpException } from "../../types/HttpException";
+import { HttpException } from "../../../types/HttpException";
 
 export class DeleteIngredientController {
   constructor(private deleteIngredientUseCase: DeleteIngredientUseCase) {}

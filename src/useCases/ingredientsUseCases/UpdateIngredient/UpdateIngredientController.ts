@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UpdateIngredientUseCase } from "./UpdateIngredientUseCase";
-import { Ingredient } from "../../entities/Ingredient";
-import { HttpException } from "../../types/HttpException";
+import { Ingredient } from "../../../entities/Ingredient";
+import { HttpException } from "../../../types/HttpException";
 
 export class UpdateIngredientController {
   constructor(private updateIngredientUseCase: UpdateIngredientUseCase) {}

@@ -1,8 +1,8 @@
 import { ICreateIngredientRequestDTO } from "./CreateIngredientDTO";
-import { HttpException } from "../../types/HttpException";
-import { IIngredientsRepository } from "../../repositories/IIngredientsRepository";
-import { Ingredient } from "../../entities/Ingredient";
-import { ingredientSchema } from "../../utils/ingredientUtils";
+import { HttpException } from "../../../types/HttpException";
+import { IIngredientsRepository } from "../../../repositories/IIngredientsRepository";
+import { Ingredient } from "../../../entities/Ingredient";
+import { ingredientSchema } from "../../../utils/ingredientUtils";
 
 export class CreateIngredientUseCase {
   constructor(private ingredientsRepository: IIngredientsRepository) {}

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CreateIngredientUseCase } from "./CreateIngredientUseCase";
 import { ICreateIngredientRequestDTO } from "./CreateIngredientDTO";
-import { HttpException } from "../../types/HttpException";
+import { HttpException } from "../../../types/HttpException";
 
 export class CreateIngredientController {
   constructor(private createIngredientUseCase: CreateIngredientUseCase) {}

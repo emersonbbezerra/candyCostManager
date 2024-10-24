@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { FindMethodsUseCase } from "./FindMethodsUseCase";
-import { HttpException } from "../../types/HttpException";
+import { HttpException } from "../../../types/HttpException";
 
 export class FindMethodsController {
   constructor(private findMethodsUseCase: FindMethodsUseCase) {}

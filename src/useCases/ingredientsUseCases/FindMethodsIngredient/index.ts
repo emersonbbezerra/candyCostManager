@@ -1,4 +1,4 @@
-import { MongoIngredientsRepository } from "../../repositories/implementations/MongoIngredientsRepository";
+import { MongoIngredientsRepository } from "../../../repositories/implementations/MongoIngredientsRepository";
 import { FindMethodsUseCase } from "./FindMethodsUseCase";
 import { FindMethodsController } from "./FindMethodsController";
 

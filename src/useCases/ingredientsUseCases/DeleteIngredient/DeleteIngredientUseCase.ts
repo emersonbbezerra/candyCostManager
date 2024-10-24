@@ -1,5 +1,5 @@
-import { IIngredientsRepository } from "../../repositories/IIngredientsRepository";
-import { HttpException } from "../../types/HttpException";
+import { IIngredientsRepository } from "../../../repositories/IIngredientsRepository";
+import { HttpException } from "../../../types/HttpException";
 
 export class DeleteIngredientUseCase {
   constructor(private ingredientsRepository: IIngredientsRepository) {}

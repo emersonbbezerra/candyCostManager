@@ -1,4 +1,4 @@
-import { MongoIngredientsRepository } from "../../repositories/implementations/MongoIngredientsRepository";
+import { MongoIngredientsRepository } from "../../../repositories/implementations/MongoIngredientsRepository";
 import { UpdateIngredientUseCase } from "./UpdateIngredientUseCase";
 import { UpdateIngredientController } from "./UpdateIngredientController";
 
