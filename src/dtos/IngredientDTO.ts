@@ -1,4 +1,4 @@
-export interface ICreateIngredientRequestDTO {
+export interface IIngredientDTO {
   name: string;
   manufacturer: string;
   price: number;

@@ -1,4 +1,4 @@
-import { ICreateIngredientRequestDTO } from "./CreateIngredientDTO";
+import { IIngredientDTO } from "../../../dtos/IngredientDTO";
 import { HttpException } from "../../../types/HttpException";
 import { IIngredientsRepository } from "../../../repositories/IIngredientsRepository";
 import { Ingredient } from "../../../entities/Ingredient";
@@ -7,7 +7,7 @@ import { ingredientSchema } from "../../../utils/ingredientUtils";
 export class CreateIngredientUseCase {
   constructor(private ingredientsRepository: IIngredientsRepository) {}
 
-  async execute(data: ICreateIngredientRequestDTO): Promise<void> {
+  async execute(data: IIngredientDTO): Promise<void> {
     const parsedData = ingredientSchema.parse(data);
 
     const existingIngredient = await this.ingredientsRepository.findByName(

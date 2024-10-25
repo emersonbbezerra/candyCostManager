@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { CreateIngredientUseCase } from "./CreateIngredientUseCase";
-import { ICreateIngredientRequestDTO } from "./CreateIngredientDTO";
+import { IIngredientDTO } from "../../../dtos/IngredientDTO";
 import { HttpException } from "../../../types/HttpException";
 
 export class CreateIngredientController {
   constructor(private createIngredientUseCase: CreateIngredientUseCase) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
-    const data: ICreateIngredientRequestDTO = request.body;
+    const data: IIngredientDTO = request.body;
 
     try {
       await this.createIngredientUseCase.execute(data);
