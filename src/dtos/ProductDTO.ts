@@ -8,4 +8,5 @@ export interface IProductDTO {
   salePrice: number;
   createdAt: string;
   updatedAt: string;
+  productionCost?: number;
 }

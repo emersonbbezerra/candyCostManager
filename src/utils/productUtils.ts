@@ -22,8 +22,8 @@ export const productSchema = z.object({
     .transform(capitalize),
   ingredients: z.array(
     z.object({
-      ingredientId: z.string(), // ID do ingrediente
-      ingredientName: z.string(), // Nome do ingrediente
+      ingredientId: z.string(),
+      ingredientName: z.string(),
       quantity: z.number().nonnegative({
         message: "A quantidade deve ser um número não negativo.",
       }),
@@ -36,6 +36,7 @@ export const productSchema = z.object({
     }),
   createdAt: z.date().optional().nullable(),
   updatedAt: z.date().optional().nullable(),
+  productionCost: z.number().optional(), // Remover nullable aqui
 });
 
 export const convertToProduct = (productDoc: any): Product => {

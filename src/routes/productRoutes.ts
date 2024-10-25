@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { createProductController } from "../useCases/productsUseCases/CreateProduct";
 import { findProductMethodsController } from "../useCases/productsUseCases/FindProductMethods";
-// import { updateProductController } from "../useCases/productsUseCases/UpdateProduct";
+import { updateProductController } from "../useCases/productsUseCases/UpdateProduct";
 // import { deleteProductController } from "../useCases/productsUseCases/DeleteProduct";
 
 const productsRouter = Router();
@@ -18,9 +18,9 @@ productsRouter.get("/products", (req, res) => {
   findProductMethodsController.findAll(req, res);
 });
 
-// productsRouter.put("/products/:id", (req, res) => {
-//   updateProductController.handle(req, res);
-// });
+productsRouter.put("/products/:id", (req, res) => {
+  updateProductController.handle(req, res);
+});
 
 // productsRouter.delete("/products/:id", (req, res) => {
 //   deleteProductController.handle(req, res);
