@@ -6,6 +6,7 @@ export class Ingredient {
   public name!: string;
   public manufacturer!: string;
   public price!: number;
+  public packageQuantity!: number;
   public unitOfMeasure!: string;
   public category!: string;
   public createdAt?: string;

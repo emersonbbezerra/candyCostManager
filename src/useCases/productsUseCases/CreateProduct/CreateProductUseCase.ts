@@ -11,7 +11,6 @@ export class CreateProductUseCase {
 
   async execute(data: IProductDTO): Promise<void> {
     const parsedData = productSchema.parse(data);
-
     const existingProduct = await this.productsRepository.findByName(
       parsedData.name
     );
@@ -33,8 +32,11 @@ export class CreateProductUseCase {
         .exec();
 
       if (ingredient) {
-        const price = ingredient.price ?? 0;
-        productionCost += price * item.quantity;
+        if (ingredient.price == null || ingredient.packageQuantity == null) {
+          throw new Error(`Ingrediente inválido: ${item.ingredientId}`);
+        }
+        const pricePerUnit = ingredient.price / ingredient.packageQuantity; // Calcular o custo por unidade baseado na quantidade da embalagem
+        productionCost += pricePerUnit * item.quantity; // Usar o custo por unidade para calcular o custo de produção
         ingredientIdsWithQuantities.push({
           ingredient: ingredient._id.toString(),
           ingredientName: ingredient.name,
@@ -60,7 +62,7 @@ export class CreateProductUseCase {
       salePrice: parsedData.salePrice,
       productionCost,
       ingredients: ingredientIdsWithQuantities,
-      isIngredient: parsedData.isIngredient, // Verifique se `isIngredient` está correto aqui
+      isIngredient: parsedData.isIngredient,
     });
 
     await this.productsRepository.save(product);

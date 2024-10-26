@@ -5,9 +5,9 @@ export interface IProductDTO {
   description: string;
   category: string;
   ingredients: IIngredientInProductDTO[];
+  productionCost?: number;
   salePrice: number;
+  isIngredient?: boolean;
   createdAt: string;
   updatedAt: string;
-  productionCost?: number;
-  isIngredient?: boolean;
 }

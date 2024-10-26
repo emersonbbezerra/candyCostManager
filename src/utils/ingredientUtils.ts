@@ -19,6 +19,11 @@ export const ingredientSchema = z.object({
   price: z
     .number()
     .nonnegative({ message: "O preço deve ser um número não negativo." }),
+  packageQuantity: z
+    .number()
+    .nonnegative({
+      message: "A quantidade da embalagem deve ser um número não negativo.",
+    }), // Novo campo
   unitOfMeasure: z
     .string()
     .min(1, { message: "A unidade de medida é obrigatória." })
@@ -37,6 +42,7 @@ export const convertToIngredient = (ingredientDoc: any): Ingredient => {
       name: ingredientDoc.name!,
       manufacturer: ingredientDoc.manufacturer!,
       price: ingredientDoc.price!,
+      packageQuantity: ingredientDoc.packageQuantity!, // Novo campo
       unitOfMeasure: ingredientDoc.unitOfMeasure!,
       category: ingredientDoc.category!,
       createdAt: ingredientDoc.createdAt?.toISOString(),

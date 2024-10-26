@@ -13,7 +13,6 @@ export class CreateIngredientUseCase {
     const existingIngredient = await this.ingredientsRepository.findByName(
       parsedData.name
     );
-
     if (existingIngredient) {
       throw new HttpException(409, "Ingredient already exists");
     }
@@ -22,6 +21,7 @@ export class CreateIngredientUseCase {
       ...parsedData,
       createdAt: parsedData.createdAt?.toISOString(),
       updatedAt: parsedData.updatedAt?.toISOString(),
+      packageQuantity: parsedData.packageQuantity, // Incluir o campo `packageQuantity`
     });
 
     await this.ingredientsRepository.save(ingredient);
