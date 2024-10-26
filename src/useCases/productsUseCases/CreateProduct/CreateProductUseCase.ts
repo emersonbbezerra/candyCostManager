@@ -2,6 +2,7 @@ import { IProductsRepository } from "../../../repositories/IProductsRepository";
 import { IProductDTO } from "../../../dtos/ProductDTO";
 import { Product } from "../../../entities/Product";
 import { IngredientMongoose as Ingredient } from "../../../infra/database/schemas/ingredientSchema";
+import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
 import { HttpException } from "../../../types/HttpException";
 import { productSchema } from "../../../utils/productUtils";
 
@@ -9,10 +10,8 @@ export class CreateProductUseCase {
   constructor(private productsRepository: IProductsRepository) {}
 
   async execute(data: IProductDTO): Promise<void> {
-    // Validar os dados do produto com Zod antes de prosseguir
     const parsedData = productSchema.parse(data);
 
-    // Verifica se o produto já existe pelo nome
     const existingProduct = await this.productsRepository.findByName(
       parsedData.name
     );
@@ -27,11 +26,26 @@ export class CreateProductUseCase {
       const ingredient = await Ingredient.findById(item.ingredientId)
         .lean()
         .exec();
+      const productIngredient = await ProductMongoose.findById(
+        item.ingredientId
+      )
+        .lean()
+        .exec();
+
       if (ingredient) {
         const price = ingredient.price ?? 0;
         productionCost += price * item.quantity;
         ingredientIdsWithQuantities.push({
           ingredient: ingredient._id.toString(),
+          ingredientName: ingredient.name,
+          quantity: item.quantity,
+        });
+      } else if (productIngredient && productIngredient.isIngredient) {
+        const price = productIngredient.productionCost ?? 0;
+        productionCost += price * item.quantity;
+        ingredientIdsWithQuantities.push({
+          ingredient: productIngredient._id.toString(),
+          ingredientName: productIngredient.name,
           quantity: item.quantity,
         });
       } else {
@@ -46,6 +60,7 @@ export class CreateProductUseCase {
       salePrice: parsedData.salePrice,
       productionCost,
       ingredients: ingredientIdsWithQuantities,
+      isIngredient: parsedData.isIngredient, // Verifique se `isIngredient` está correto aqui
     });
 
     await this.productsRepository.save(product);

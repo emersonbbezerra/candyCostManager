@@ -9,4 +9,5 @@ export interface IProductDTO {
   createdAt: string;
   updatedAt: string;
   productionCost?: number;
+  isIngredient?: boolean;
 }

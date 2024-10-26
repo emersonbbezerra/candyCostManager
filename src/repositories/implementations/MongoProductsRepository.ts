@@ -15,54 +15,6 @@ export class MongoProductsRepository implements IProductsRepository {
     await mongooseProduct.save();
   }
 
-  async findAll(): Promise<Product[]> {
-    const productDocs = await ProductMongoose.aggregate([
-      {
-        $lookup: {
-          from: "ingredients",
-          localField: "ingredients.ingredient",
-          foreignField: "_id",
-          as: "ingredientDetails",
-        },
-      },
-      {
-        $project: {
-          id: { $toString: "$_id" },
-          name: 1,
-          description: 1,
-          category: 1,
-          ingredients: {
-            $map: {
-              input: "$ingredients",
-              as: "i",
-              in: {
-                ingredientId: "$$i.ingredient",
-                ingredientName: {
-                  $arrayElemAt: [
-                    "$ingredientDetails.name",
-                    {
-                      $indexOfArray: [
-                        "$ingredientDetails._id",
-                        "$$i.ingredient",
-                      ],
-                    },
-                  ],
-                },
-                quantity: "$$i.quantity",
-              },
-            },
-          },
-          productionCost: 1,
-          salePrice: 1,
-          createdAt: 1,
-          updatedAt: 1,
-        },
-      },
-    ]).exec();
-
-    return productDocs.map((doc) => convertToProduct(doc));
-  }
-
   async findById(id: string): Promise<Product | null> {
     const productDocs = await ProductMongoose.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
@@ -75,6 +27,14 @@ export class MongoProductsRepository implements IProductsRepository {
         },
       },
       {
+        $lookup: {
+          from: "products",
+          localField: "ingredients.ingredient",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
         $project: {
           id: { $toString: "$_id" },
           name: 1,
@@ -85,17 +45,33 @@ export class MongoProductsRepository implements IProductsRepository {
               input: "$ingredients",
               as: "i",
               in: {
-                ingredientId: "$$i.ingredient",
+                ingredient: "$$i.ingredient",
                 ingredientName: {
-                  $arrayElemAt: [
-                    "$ingredientDetails.name",
-                    {
-                      $indexOfArray: [
-                        "$ingredientDetails._id",
-                        "$$i.ingredient",
+                  $cond: {
+                    if: { $in: ["$$i.ingredient", "$ingredientDetails._id"] },
+                    then: {
+                      $arrayElemAt: [
+                        "$ingredientDetails.name",
+                        {
+                          $indexOfArray: [
+                            "$ingredientDetails._id",
+                            "$$i.ingredient",
+                          ],
+                        },
                       ],
                     },
-                  ],
+                    else: {
+                      $arrayElemAt: [
+                        "$productDetails.name",
+                        {
+                          $indexOfArray: [
+                            "$productDetails._id",
+                            "$$i.ingredient",
+                          ],
+                        },
+                      ],
+                    },
+                  },
                 },
                 quantity: "$$i.quantity",
               },
@@ -105,11 +81,85 @@ export class MongoProductsRepository implements IProductsRepository {
           salePrice: 1,
           createdAt: 1,
           updatedAt: 1,
+          isIngredient: 1,
         },
       },
     ]).exec();
 
     return productDocs.length ? convertToProduct(productDocs[0]) : null;
+  }
+
+  async findAll(): Promise<Product[]> {
+    const productDocs = await ProductMongoose.aggregate([
+      {
+        $lookup: {
+          from: "ingredients",
+          localField: "ingredients.ingredient",
+          foreignField: "_id",
+          as: "ingredientDetails",
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "ingredients.ingredient",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $project: {
+          id: { $toString: "$_id" },
+          name: 1,
+          description: 1,
+          category: 1,
+          ingredients: {
+            $map: {
+              input: "$ingredients",
+              as: "i",
+              in: {
+                ingredient: "$$i.ingredient",
+                ingredientName: {
+                  $cond: {
+                    if: { $in: ["$$i.ingredient", "$ingredientDetails._id"] },
+                    then: {
+                      $arrayElemAt: [
+                        "$ingredientDetails.name",
+                        {
+                          $indexOfArray: [
+                            "$ingredientDetails._id",
+                            "$$i.ingredient",
+                          ],
+                        },
+                      ],
+                    },
+                    else: {
+                      $arrayElemAt: [
+                        "$productDetails.name",
+                        {
+                          $indexOfArray: [
+                            "$productDetails._id",
+                            "$$i.ingredient",
+                          ],
+                        },
+                      ],
+                    },
+                  },
+                },
+                quantity: "$$i.quantity",
+              },
+            },
+          },
+          productionCost: 1,
+          salePrice: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          isIngredient: 1,
+        },
+      },
+    ]).exec();
+
+    return productDocs.map((doc) => convertToProduct(doc));
   }
 
   async update(id: string, product: Partial<Product>): Promise<Product | null> {

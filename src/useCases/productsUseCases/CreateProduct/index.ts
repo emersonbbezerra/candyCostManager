@@ -1,11 +1,9 @@
 import { MongoProductsRepository } from "../../../repositories/implementations/MongoProductsRepository";
-import { CreateProductController } from "./CreateProductController";
 import { CreateProductUseCase } from "./CreateProductUseCase";
+import { CreateProductController } from "./CreateProductController";
 
-const mongoProductsRepository = new MongoProductsRepository();
-
-const createProductUseCase = new CreateProductUseCase(mongoProductsRepository);
-
+const productsRepository = new MongoProductsRepository();
+const createProductUseCase = new CreateProductUseCase(productsRepository);
 const createProductController = new CreateProductController(
   createProductUseCase
 );
