@@ -7,7 +7,10 @@ export class Product {
   public category!: string;
   public ingredients!: { ingredient: string; quantity: number }[];
   public productionCost?: number;
-  public salePrice!: number;
+  public yield?: number;
+  public unitOfMeasure?: string;
+  public productionCostRatio?: number;
+  public salePrice?: number;
   public createdAt?: Date;
   public updatedAt?: Date;
   public isIngredient?: boolean;

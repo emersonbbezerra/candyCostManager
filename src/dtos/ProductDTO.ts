@@ -6,6 +6,9 @@ export interface IProductDTO {
   category: string;
   ingredients: IIngredientInProductDTO[];
   productionCost?: number;
+  yield?: number;
+  unitOfMeasure?: string;
+  productionCostRatio?: number;
   salePrice: number;
   isIngredient?: boolean;
   createdAt: string;

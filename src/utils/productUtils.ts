@@ -29,12 +29,18 @@ export const productSchema = z.object({
       }),
     })
   ),
-  salePrice: z.number().nonnegative({
-    message: "O preço de venda deve ser um número não negativo.",
-  }),
+  productionCost: z.number().optional(),
+  yield: z.number().optional(),
+  unitOfMeasure: z.string().optional(),
+  productionCostRatio: z.number().optional(),
+  salePrice: z
+    .number()
+    .nonnegative({
+      message: "O preço de venda deve ser um número não negativo.",
+    })
+    .optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  productionCost: z.number().optional(),
   isIngredient: z.boolean().optional(),
 });
 
@@ -46,7 +52,10 @@ export const convertToProduct = (productDoc: any): Product => {
       category: productDoc.category!,
       ingredients: productDoc.ingredients!,
       productionCost: productDoc.productionCost!,
-      salePrice: productDoc.salePrice!,
+      yield: productDoc.yield,
+      unitOfMeasure: productDoc.unitOfMeasure,
+      productionCostRatio: productDoc.productionCostRatio,
+      salePrice: productDoc.salePrice,
       createdAt: productDoc.createdAt?.toISOString(),
       updatedAt: productDoc.updatedAt?.toISOString(),
       isIngredient: productDoc.isIngredient || false,

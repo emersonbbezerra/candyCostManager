@@ -10,9 +10,10 @@ export class MongoProductsRepository implements IProductsRepository {
     return productDoc ? convertToProduct(productDoc) : null;
   }
 
-  async save(product: Product): Promise<void> {
+  async save(product: Product): Promise<Product> {
     const mongooseProduct = new ProductMongoose(product);
-    await mongooseProduct.save();
+    const createdProduct = await mongooseProduct.save();
+    return convertToProduct(createdProduct.toObject());
   }
 
   async findById(id: string): Promise<Product | null> {
@@ -78,6 +79,9 @@ export class MongoProductsRepository implements IProductsRepository {
             },
           },
           productionCost: 1,
+          yield: 1, // Adicionado aqui
+          unitOfMeasure: 1, // Adicionado aqui
+          productionCostRatio: 1,
           salePrice: 1,
           createdAt: 1,
           updatedAt: 1,
@@ -85,7 +89,6 @@ export class MongoProductsRepository implements IProductsRepository {
         },
       },
     ]).exec();
-
     return productDocs.length ? convertToProduct(productDocs[0]) : null;
   }
 
@@ -151,6 +154,9 @@ export class MongoProductsRepository implements IProductsRepository {
             },
           },
           productionCost: 1,
+          yield: 1, // Adicionado aqui
+          unitOfMeasure: 1, // Adicionado aqui
+          productionCostRatio: 1,
           salePrice: 1,
           createdAt: 1,
           updatedAt: 1,
@@ -158,7 +164,6 @@ export class MongoProductsRepository implements IProductsRepository {
         },
       },
     ]).exec();
-
     return productDocs.map((doc) => convertToProduct(doc));
   }
 

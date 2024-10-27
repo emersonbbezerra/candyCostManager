@@ -14,6 +14,7 @@ export class CreateProductUseCase {
     const existingProduct = await this.productsRepository.findByName(
       parsedData.name
     );
+
     if (existingProduct) {
       throw new HttpException(409, "Product already exists");
     }
@@ -35,16 +36,16 @@ export class CreateProductUseCase {
         if (ingredient.price == null || ingredient.packageQuantity == null) {
           throw new Error(`Ingrediente inválido: ${item.ingredientId}`);
         }
-        const pricePerUnit = ingredient.price / ingredient.packageQuantity; // Calcular o custo por unidade baseado na quantidade da embalagem
-        productionCost += pricePerUnit * item.quantity; // Usar o custo por unidade para calcular o custo de produção
+        const pricePerUnit = ingredient.price / ingredient.packageQuantity;
+        productionCost += pricePerUnit * item.quantity;
         ingredientIdsWithQuantities.push({
           ingredient: ingredient._id.toString(),
           ingredientName: ingredient.name,
           quantity: item.quantity,
         });
       } else if (productIngredient && productIngredient.isIngredient) {
-        const price = productIngredient.productionCost ?? 0;
-        productionCost += price * item.quantity;
+        const costRatio = productIngredient.productionCostRatio ?? 0;
+        productionCost += costRatio * item.quantity; // Usar productionCostRatio
         ingredientIdsWithQuantities.push({
           ingredient: productIngredient._id.toString(),
           ingredientName: productIngredient.name,
@@ -55,14 +56,24 @@ export class CreateProductUseCase {
       }
     }
 
+    const productionCostRatio =
+      productionCost && parsedData.yield
+        ? productionCost / parsedData.yield
+        : undefined;
+
     const product = new Product({
       name: parsedData.name,
       description: parsedData.description,
       category: parsedData.category,
       salePrice: parsedData.salePrice,
       productionCost,
+      yield: parsedData.yield,
+      unitOfMeasure: parsedData.unitOfMeasure,
+      productionCostRatio,
       ingredients: ingredientIdsWithQuantities,
       isIngredient: parsedData.isIngredient,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     await this.productsRepository.save(product);

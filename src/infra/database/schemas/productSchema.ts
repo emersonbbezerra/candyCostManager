@@ -14,10 +14,13 @@ export const productSchema = new mongoose.Schema({
     },
   ],
   productionCost: Number,
+  yield: Number,
+  unitOfMeasure: String,
+  productionCostRatio: Number,
   salePrice: Number,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  isIngredient: { type: Boolean, default: false }, // Garantir que o campo `isIngredient` está aqui
+  isIngredient: { type: Boolean, default: false },
 });
 
 export const ProductMongoose = mongoose.model("Product", productSchema);
