@@ -99,11 +99,12 @@ export class MongoProductsRepository implements IProductsRepository {
     return productDocs.map(convertToProduct);
   }
 
-  async update(product: Product): Promise<void> {
-    await ProductMongoose.findByIdAndUpdate(product.id, {
+  async update(id: string, product: Product): Promise<Partial<Product> | null> {
+    const updateProduct = await ProductMongoose.findByIdAndUpdate(product.id, {
       ...product,
       updatedAt: new Date(),
     }).exec();
+    return convertToProduct(updateProduct);
   }
 
   async delete(id: string): Promise<boolean> {
