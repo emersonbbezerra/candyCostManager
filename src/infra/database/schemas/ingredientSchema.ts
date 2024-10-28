@@ -4,7 +4,7 @@ export const ingredientSchema = new mongoose.Schema({
   name: String,
   manufacturer: String,
   price: { type: Number, require: true },
-  packageQuantity: Number,
+  packageQuantity: { type: Number, required: true },
   unitOfMeasure: String,
   category: String,
   createdAt: { type: Date, default: Date.now },

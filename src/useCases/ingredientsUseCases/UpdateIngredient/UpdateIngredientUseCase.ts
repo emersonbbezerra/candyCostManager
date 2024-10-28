@@ -2,9 +2,13 @@ import { IIngredientsRepository } from "../../../repositories/IIngredientsReposi
 import { Ingredient } from "../../../entities/Ingredient";
 import { HttpException } from "../../../types/HttpException";
 import { ingredientSchema } from "../../../utils/ingredientUtils";
+import { ProductCostUpdateService } from "../../../services/ProductCostUpdateService";
 
 export class UpdateIngredientUseCase {
-  constructor(private ingredientsRepository: IIngredientsRepository) {}
+  constructor(
+    private ingredientsRepository: IIngredientsRepository,
+    private productCostUpdateService: ProductCostUpdateService
+  ) {}
 
   async execute(
     id: string,
@@ -26,6 +30,15 @@ export class UpdateIngredientUseCase {
     if (!updatedIngredient) {
       throw new HttpException(404, "Ingredient not found");
     }
+
+    // Atualizar os custos dos produtos que usam este ingrediente
+    if (updatedIngredient.price !== undefined) {
+      await this.productCostUpdateService.updateCosts(
+        id,
+        updatedIngredient.price
+      );
+    }
+
     return updatedIngredient;
   }
 }

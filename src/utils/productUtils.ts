@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Product } from "../entities/Product";
+import { IProduct, Product } from "../entities/Product";
 
 export const capitalize = (str: string) => {
   return str
@@ -23,10 +23,8 @@ export const productSchema = z.object({
   ingredients: z.array(
     z.object({
       ingredientId: z.string(),
-      ingredientName: z.string(),
-      quantity: z.number().nonnegative({
-        message: "A quantidade deve ser um número não negativo.",
-      }),
+      quantity: z.number(),
+      ingredientName: z.string().nullable().optional(),
     })
   ),
   productionCost: z.number().optional(),
@@ -44,26 +42,33 @@ export const productSchema = z.object({
   isIngredient: z.boolean().optional(),
 });
 
-export const convertToProduct = (productDoc: any): Product => {
-  const product = new Product(
-    {
-      name: productDoc.name!,
-      description: productDoc.description!,
-      category: productDoc.category!,
-      ingredients: productDoc.ingredients!,
-      productionCost: productDoc.productionCost!,
-      yield: productDoc.yield,
-      unitOfMeasure: productDoc.unitOfMeasure,
-      productionCostRatio: productDoc.productionCostRatio,
-      salePrice: productDoc.salePrice,
-      createdAt: productDoc.createdAt?.toISOString(),
-      updatedAt: productDoc.updatedAt?.toISOString(),
-      isIngredient: productDoc.isIngredient || false,
-    },
-    productDoc._id.toString()
-  );
-  return {
-    ...product,
-    id: productDoc._id.toString(),
+export function convertToProduct(productDoc: any): Product {
+  const productData: IProduct = {
+    id: productDoc.id || productDoc._id.toString(),
+    name: productDoc.name,
+    description: productDoc.description,
+    category: productDoc.category,
+    ingredients: productDoc.ingredients.map((ing: any) => ({
+      ingredient: ing.ingredient.toString(),
+      quantity: ing.quantity,
+      ingredientName: ing.ingredientName,
+    })),
+    productionCost: productDoc.productionCost,
+    yield: productDoc.yield,
+    unitOfMeasure: productDoc.unitOfMeasure,
+    productionCostRatio: productDoc.productionCostRatio,
+    salePrice: productDoc.salePrice,
+    createdAt:
+      productDoc.createdAt instanceof Date
+        ? productDoc.createdAt
+        : new Date(productDoc.createdAt),
+    updatedAt:
+      productDoc.updatedAt instanceof Date
+        ? productDoc.updatedAt
+        : new Date(productDoc.updatedAt),
+    isIngredient: productDoc.isIngredient,
+    usedInProducts: productDoc.usedInProducts,
   };
-};
+
+  return new Product(productData);
+}

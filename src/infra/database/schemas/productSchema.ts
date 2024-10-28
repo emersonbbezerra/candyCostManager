@@ -11,6 +11,7 @@ export const productSchema = new mongoose.Schema({
         ref: "Ingredient",
       },
       quantity: Number,
+      ingredientName: { type: String, required: false, default: null },
     },
   ],
   productionCost: Number,
