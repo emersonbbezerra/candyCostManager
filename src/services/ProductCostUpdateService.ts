@@ -40,8 +40,11 @@ export class ProductCostUpdateService {
     // Função recursiva para atualizar produtos
     const updateProductRecursively = async (product: Product) => {
       const updatedProduct = new Product(product);
+
+      if (!updatedProduct.id) throw new Error("Unexpected error");
+
       updatedProduct.updateProductionCost(ingredientPrices);
-      await this.productsRepository.update(updatedProduct);
+      await this.productsRepository.update(updatedProduct.id, updatedProduct);
 
       // Atualizar o preço no mapa de ingredientes se o produto também for um ingrediente
       if (updatedProduct.isIngredient) {
