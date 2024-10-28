@@ -106,7 +106,8 @@ export class MongoProductsRepository implements IProductsRepository {
     }).exec();
   }
 
-  async delete(id: string): Promise<void> {
-    await ProductMongoose.deleteOne({ _id: id }).exec();
+  async delete(id: string): Promise<boolean> {
+    const result = await ProductMongoose.deleteOne({ _id: id }).exec();
+    return result.deletedCount > 0;
   }
 }
