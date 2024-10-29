@@ -16,6 +16,22 @@ interface IIngredientInput {
 export class UpdateProductUseCase {
   constructor(private productsRepository: IProductsRepository) {}
 
+  private async getIngredientName(
+    ingredientId: string
+  ): Promise<string | null> {
+    // Primeiro verifica se é um produto-ingrediente
+    const productIngredient = await ProductMongoose.findById(ingredientId)
+      .lean()
+      .exec();
+    if (productIngredient) {
+      return productIngredient.name || null;
+    }
+
+    // Se não for, busca como ingrediente normal
+    const ingredient = await Ingredient.findById(ingredientId).lean().exec();
+    return ingredient?.name || null;
+  }
+
   private async calculateIngredientCost(
     ingredientId: string | undefined,
     quantity: number
@@ -103,10 +119,18 @@ export class UpdateProductUseCase {
     const { createdAt, ...updateData } = parsedData;
 
     if (updateData.ingredients) {
-      const ingredientsWithCorrectFormat = updateData.ingredients.map(
-        (item: IIngredientInput) => ({
-          ingredient: item.ingredientId || item.ingredient,
-          quantity: item.quantity,
+      const ingredientsWithCorrectFormat = await Promise.all(
+        updateData.ingredients.map(async (item: IIngredientInput) => {
+          const ingredientId = item.ingredientId || item.ingredient;
+          if (!ingredientId) {
+            throw new Error("Ingredient ID is missing");
+          }
+          const ingredientName = await this.getIngredientName(ingredientId);
+          return {
+            ingredient: ingredientId,
+            quantity: item.quantity,
+            ingredientName,
+          };
         })
       );
       updateData.ingredients = ingredientsWithCorrectFormat as any;
