@@ -40,16 +40,16 @@ export class CreateProductUseCase {
         productionCost += pricePerUnit * item.quantity;
         ingredientIdsWithQuantities.push({
           ingredient: ingredient._id.toString(),
-          ingredientName: ingredient.name,
           quantity: item.quantity,
+          ingredientName: ingredient.name || null,
         });
       } else if (productIngredient && productIngredient.isIngredient) {
         const costRatio = productIngredient.productionCostRatio ?? 0;
-        productionCost += costRatio * item.quantity; // Usar productionCostRatio
+        productionCost += costRatio * item.quantity;
         ingredientIdsWithQuantities.push({
           ingredient: productIngredient._id.toString(),
-          ingredientName: productIngredient.name,
           quantity: item.quantity,
+          ingredientName: productIngredient.name || null,
         });
       } else {
         throw new Error(`Ingrediente não encontrado: ${item.ingredientId}`);

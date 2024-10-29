@@ -4,13 +4,13 @@ import { Product } from "../../../entities/Product";
 import { IngredientMongoose as Ingredient } from "../../../infra/database/schemas/ingredientSchema";
 import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
 import { HttpException } from "../../../types/HttpException";
-import { productSchema } from "../../../utils/productUtils";
+import { convertToProduct, productSchema } from "../../../utils/productUtils";
 
 interface IIngredientInput {
   ingredientId?: string;
   ingredient?: string;
   quantity: number;
-  ingredientName?: string;
+  ingredientName?: string | null;
 }
 
 export class UpdateProductUseCase {
@@ -112,9 +112,14 @@ export class UpdateProductUseCase {
       updateData.ingredients = ingredientsWithCorrectFormat as any;
     }
 
+    const productToUpdate = convertToProduct({
+      ...existingProduct,
+      ...updateData,
+    });
+
     const updatedProduct = await this.productsRepository.update(
       id,
-      updateData as Partial<Product>
+      productToUpdate
     );
 
     if (!updatedProduct) {

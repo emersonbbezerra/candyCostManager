@@ -41,55 +41,21 @@ export class MongoProductsRepository implements IProductsRepository {
           name: 1,
           description: 1,
           category: 1,
-          ingredients: {
-            $map: {
-              input: "$ingredients",
-              as: "i",
-              in: {
-                ingredient: "$$i.ingredient",
-                ingredientName: {
-                  $cond: {
-                    if: { $in: ["$$i.ingredient", "$ingredientDetails._id"] },
-                    then: {
-                      $arrayElemAt: [
-                        "$ingredientDetails.name",
-                        {
-                          $indexOfArray: [
-                            "$ingredientDetails._id",
-                            "$$i.ingredient",
-                          ],
-                        },
-                      ],
-                    },
-                    else: {
-                      $arrayElemAt: [
-                        "$productDetails.name",
-                        {
-                          $indexOfArray: [
-                            "$productDetails._id",
-                            "$$i.ingredient",
-                          ],
-                        },
-                      ],
-                    },
-                  },
-                },
-                quantity: "$$i.quantity",
-              },
-            },
-          },
+          ingredients: 1,
           productionCost: 1,
-          yield: 1, // Adicionado aqui
-          unitOfMeasure: 1, // Adicionado aqui
+          yield: 1,
+          unitOfMeasure: 1,
           productionCostRatio: 1,
           salePrice: 1,
           createdAt: 1,
           updatedAt: 1,
           isIngredient: 1,
+          usedInProducts: 1,
         },
       },
     ]).exec();
-    return productDocs.length ? convertToProduct(productDocs[0]) : null;
+
+    return productDocs.length > 0 ? convertToProduct(productDocs[0]) : null;
   }
 
   async findAll(): Promise<Product[]> {
@@ -116,70 +82,33 @@ export class MongoProductsRepository implements IProductsRepository {
           name: 1,
           description: 1,
           category: 1,
-          ingredients: {
-            $map: {
-              input: "$ingredients",
-              as: "i",
-              in: {
-                ingredient: "$$i.ingredient",
-                ingredientName: {
-                  $cond: {
-                    if: { $in: ["$$i.ingredient", "$ingredientDetails._id"] },
-                    then: {
-                      $arrayElemAt: [
-                        "$ingredientDetails.name",
-                        {
-                          $indexOfArray: [
-                            "$ingredientDetails._id",
-                            "$$i.ingredient",
-                          ],
-                        },
-                      ],
-                    },
-                    else: {
-                      $arrayElemAt: [
-                        "$productDetails.name",
-                        {
-                          $indexOfArray: [
-                            "$productDetails._id",
-                            "$$i.ingredient",
-                          ],
-                        },
-                      ],
-                    },
-                  },
-                },
-                quantity: "$$i.quantity",
-              },
-            },
-          },
+          ingredients: 1,
           productionCost: 1,
-          yield: 1, // Adicionado aqui
-          unitOfMeasure: 1, // Adicionado aqui
+          yield: 1,
+          unitOfMeasure: 1,
           productionCostRatio: 1,
           salePrice: 1,
           createdAt: 1,
           updatedAt: 1,
           isIngredient: 1,
+          usedInProducts: 1,
         },
       },
     ]).exec();
-    return productDocs.map((doc) => convertToProduct(doc));
+
+    return productDocs.map(convertToProduct);
   }
 
-  async update(id: string, product: Partial<Product>): Promise<Product | null> {
-    const updatedProduct = await ProductMongoose.findByIdAndUpdate(
-      id,
-      product,
-      { new: true }
-    )
-      .lean()
-      .exec();
-    return updatedProduct ? convertToProduct(updatedProduct) : null;
+  async update(id: string, product: Product): Promise<Partial<Product> | null> {
+    const updateProduct = await ProductMongoose.findByIdAndUpdate(product.id, {
+      ...product,
+      updatedAt: new Date(),
+    }).exec();
+    return convertToProduct(updateProduct);
   }
 
   async delete(id: string): Promise<boolean> {
-    const result = await ProductMongoose.deleteOne({ _id: id });
+    const result = await ProductMongoose.deleteOne({ _id: id }).exec();
     return result.deletedCount > 0;
   }
 }
