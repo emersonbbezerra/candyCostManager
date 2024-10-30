@@ -16,4 +16,12 @@ export class FindIngredientMethodsUseCase {
     }
     return result;
   }
+
+  async findByPartialName(name: string): Promise<Ingredient[]> {
+    try {
+      return await this.ingredientsRepository.findByPartialName(name);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

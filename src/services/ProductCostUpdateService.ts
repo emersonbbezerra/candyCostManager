@@ -12,44 +12,55 @@ export class ProductCostUpdateService {
     const allProducts = await this.productsRepository.findAll();
     const ingredientPrices = new Map<string, number>();
 
-    // Preencher o mapa de preços dos ingredientes
+    // Buscar todos os ingredientes e seus preços
+    const allIngredients = await IngredientMongoose.find().lean().exec();
+    for (const ingredient of allIngredients) {
+      if (ingredient.price && ingredient.packageQuantity) {
+        const pricePerUnit =
+          ingredient._id.toString() === updatedIngredientId
+            ? newPrice / ingredient.packageQuantity
+            : ingredient.price / ingredient.packageQuantity;
+        ingredientPrices.set(ingredient._id.toString(), pricePerUnit);
+      }
+    }
+
+    // Adicionar produtos que são ingredientes ao mapa de preços
     for (const product of allProducts) {
       if (product.isIngredient) {
         ingredientPrices.set(product.id!, product.productionCostRatio || 0);
       }
     }
 
-    // Adicionar o novo preço do ingrediente atualizado
-    const updatedIngredient = await IngredientMongoose.findById(
-      updatedIngredientId
-    )
-      .lean()
-      .exec();
-    if (updatedIngredient && updatedIngredient.packageQuantity) {
-      const pricePerUnit = newPrice / updatedIngredient.packageQuantity;
-      ingredientPrices.set(updatedIngredientId, pricePerUnit);
-    } else {
-      console.error(
-        `Ingrediente ${updatedIngredientId} não encontrado ou sem quantidade de pacote definida.`
-      );
-      throw new Error(
-        `Ingrediente ${updatedIngredientId} não encontrado ou sem quantidade de pacote definida.`
-      );
-    }
-
     // Função recursiva para atualizar produtos
     const updateProductRecursively = async (product: Product) => {
-      const updatedProduct = new Product(product);
+      let totalCost = 0;
+
+      // Calcular custo total considerando todos os ingredientes
+      for (const ingredient of product.ingredients) {
+        const ingredientPrice = ingredientPrices.get(ingredient.ingredient);
+        if (ingredientPrice !== undefined) {
+          totalCost += ingredientPrice * ingredient.quantity;
+        }
+      }
+
+      // Atualizar o produto com o novo custo
+      const updatedProduct = new Product({
+        ...product,
+        productionCost: totalCost,
+        productionCostRatio: product.yield
+          ? totalCost / product.yield
+          : undefined,
+        updatedAt: new Date(),
+      });
 
       if (!updatedProduct.id) throw new Error("Unexpected error");
 
-      updatedProduct.updateProductionCost(ingredientPrices);
       await this.productsRepository.update(updatedProduct.id, updatedProduct);
 
-      // Atualizar o preço no mapa de ingredientes se o produto também for um ingrediente
+      // Atualizar o preço no mapa se for um ingrediente
       if (updatedProduct.isIngredient) {
         ingredientPrices.set(
-          updatedProduct.id!,
+          updatedProduct.id,
           updatedProduct.productionCostRatio || 0
         );
       }
