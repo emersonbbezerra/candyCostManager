@@ -11,6 +11,15 @@ export class MongoIngredientsRepository implements IIngredientsRepository {
     return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
   }
 
+  async findByPartialName(name: string): Promise<Ingredient[]> {
+    const ingredients = await IngredientMongoose.find({
+      name: { $regex: name, $options: "i" },
+    })
+      .lean()
+      .exec();
+    return ingredients.map(convertToIngredient);
+  }
+
   async save(ingredient: Ingredient): Promise<void> {
     const mongooseIngredient = new IngredientMongoose(ingredient);
     await mongooseIngredient.save();

@@ -10,6 +10,10 @@ ingredientsRoutes.post("/ingredients", (req, res) => {
   createIngredientController.handle(req, res);
 });
 
+ingredientsRoutes.get("/ingredients/search", (req, res) => {
+  findIngredientMethodsController.findByPartialName(req, res);
+});
+
 ingredientsRoutes.get("/ingredients/:id", (req, res) => {
   findIngredientMethodsController.findById(req, res);
 });
