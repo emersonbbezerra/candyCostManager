@@ -92,12 +92,21 @@ export class UpdateProductUseCase {
 
     const parsedData = productSchema.partial().parse(data);
 
-    if (parsedData.name) {
-      const productWithSameName = await this.productsRepository.findByName(
-        parsedData.name
-      );
-      if (productWithSameName && productWithSameName.id !== id) {
-        throw new HttpException(409, "Product with this name already exists");
+    if (parsedData.name || parsedData.category) {
+      const nameToCheck = parsedData.name || existingProduct.name;
+      const categoryToCheck = parsedData.category || existingProduct.category;
+
+      const duplicateProduct =
+        await this.productsRepository.findByNameAndCategory(
+          nameToCheck,
+          categoryToCheck
+        );
+
+      if (duplicateProduct && duplicateProduct.id !== id) {
+        throw new HttpException(
+          409,
+          "A product with this name and category already exists"
+        );
       }
     }
 

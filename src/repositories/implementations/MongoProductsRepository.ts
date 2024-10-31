@@ -5,6 +5,16 @@ import { convertToProduct } from "../../utils/productUtils";
 import mongoose from "mongoose";
 
 export class MongoProductsRepository implements IProductsRepository {
+  async findByNameAndCategory(
+    name: string,
+    category: string
+  ): Promise<Product | null> {
+    const productDoc = await ProductMongoose.findOne({ name, category })
+      .lean()
+      .exec();
+    return productDoc ? convertToProduct(productDoc) : null;
+  }
+
   async findByName(name: string): Promise<Product | null> {
     const productDoc = await ProductMongoose.findOne({ name }).lean().exec();
     return productDoc ? convertToProduct(productDoc) : null;

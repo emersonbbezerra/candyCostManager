@@ -11,12 +11,16 @@ export class CreateProductUseCase {
 
   async execute(data: IProductDTO): Promise<void> {
     const parsedData = productSchema.parse(data);
-    const existingProduct = await this.productsRepository.findByName(
-      parsedData.name
+    const existingProduct = await this.productsRepository.findByNameAndCategory(
+      parsedData.name,
+      parsedData.category
     );
 
     if (existingProduct) {
-      throw new HttpException(409, "Product already exists");
+      throw new HttpException(
+        409,
+        "Product with this name and category already exists"
+      );
     }
 
     let productionCost = 0;
