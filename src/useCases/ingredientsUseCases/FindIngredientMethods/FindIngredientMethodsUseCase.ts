@@ -6,7 +6,7 @@ export class FindIngredientMethodsUseCase {
   constructor(private ingredientsRepository: IIngredientsRepository) {}
 
   async findAll(): Promise<Ingredient[]> {
-    return this.ingredientsRepository.findAll();
+    return await this.ingredientsRepository.findAll();
   }
 
   async findById(id: string): Promise<Ingredient | null> {
