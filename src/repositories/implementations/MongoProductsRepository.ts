@@ -24,10 +24,10 @@ export class MongoProductsRepository implements IProductsRepository {
     return products.map(convertToProduct);
   }
 
-  async findByName(name: string): Promise<Product | null> {
-    const productDoc = await ProductMongoose.findOne({ name }).lean().exec();
-    return productDoc ? convertToProduct(productDoc) : null;
-  }
+  // async findByName(name: string): Promise<Product | null> {
+  //   const productDoc = await ProductMongoose.findOne({ name }).lean().exec();
+  //   return productDoc ? convertToProduct(productDoc) : null;
+  // }
 
   async save(product: Product): Promise<Product> {
     const mongooseProduct = new ProductMongoose(product);

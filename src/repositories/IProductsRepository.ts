@@ -6,7 +6,7 @@ export interface IProductsRepository {
     category: string
   ): Promise<Product | null>;
   findByPartialName(name: string): Promise<Product[]>;
-  findByName(name: string): Promise<Product | null>;
+  // findByName(name: string): Promise<Product | null>;
   save(product: Product): Promise<Product>;
   findById(id: string): Promise<Product | null>;
   findAll(): Promise<Product[]>;
