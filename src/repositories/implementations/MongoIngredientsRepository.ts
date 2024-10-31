@@ -4,8 +4,14 @@ import { IIngredientsRepository } from "../IIngredientsRepository";
 import { convertToIngredient } from "../../utils/ingredientUtils";
 
 export class MongoIngredientsRepository implements IIngredientsRepository {
-  async findByName(name: string): Promise<Ingredient | null> {
-    const ingredientDoc = await IngredientMongoose.findOne({ name })
+  async findByNameAndManufacturer(
+    name: string,
+    manufacturer: string
+  ): Promise<Ingredient | null> {
+    const ingredientDoc = await IngredientMongoose.findOne({
+      name,
+      manufacturer,
+    })
       .lean()
       .exec();
     return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
