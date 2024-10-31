@@ -49,9 +49,9 @@ export function convertToProduct(productDoc: any): Product {
     description: productDoc.description,
     category: productDoc.category,
     ingredients: productDoc.ingredients.map((ing: any) => ({
-      ingredient: ing.ingredient.toString(),
-      quantity: ing.quantity,
+      ingredientId: ing.ingredientId.toString(),
       ingredientName: ing.ingredientName,
+      quantity: ing.quantity,
     })),
     productionCost: productDoc.productionCost,
     yield: productDoc.yield,

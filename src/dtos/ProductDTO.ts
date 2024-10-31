@@ -4,7 +4,11 @@ export interface IProductDTO {
   name: string;
   description: string;
   category: string;
-  ingredients: IIngredientInProductDTO[];
+  ingredients: {
+    ingredientId: string;
+    ingredientName?: string | null;
+    quantity: number;
+  }[];
   productionCost?: number;
   yield?: number;
   unitOfMeasure?: string;

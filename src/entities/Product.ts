@@ -6,9 +6,9 @@ export interface IProduct {
   description: string;
   category: string;
   ingredients: {
-    ingredient: string;
-    quantity: number;
+    ingredientId: string;
     ingredientName?: string | null;
+    quantity: number;
   }[];
   productionCost?: number;
   yield?: number;
@@ -26,7 +26,11 @@ export class Product implements IProduct {
   public name!: string;
   public description!: string;
   public category!: string;
-  public ingredients!: { ingredient: string; quantity: number }[];
+  public ingredients!: {
+    ingredientId: string;
+    ingredientName?: string | null;
+    quantity: number;
+  }[];
   public productionCost?: number;
   public yield?: number;
   public unitOfMeasure?: string;
@@ -48,8 +52,8 @@ export class Product implements IProduct {
     ingredientPrices: Map<string, number>
   ): number {
     let cost = 0;
-    for (const { ingredient, quantity } of this.ingredients) {
-      const price = ingredientPrices.get(ingredient);
+    for (const { ingredientId, quantity } of this.ingredients) {
+      const price = ingredientPrices.get(ingredientId);
       if (price !== undefined) {
         cost += price * quantity;
       }

@@ -1,5 +1,5 @@
 export interface IIngredientInProduct {
-  ingredient: string;
-  ingredientId?: string;
+  ingredientId: string;
+  ingredientName?: string | null;
   quantity: number;
 }

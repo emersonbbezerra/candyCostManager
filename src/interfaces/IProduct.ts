@@ -5,7 +5,11 @@ export interface IProduct {
   name: string;
   description: string;
   category: string;
-  ingredients: IIngredientInProduct[];
+  ingredients: {
+    ingredientId: string;
+    ingredientName?: string | null;
+    quantity: number;
+  }[];
   productionCost?: number;
   yield?: number;
   unitOfMeasure?: string;

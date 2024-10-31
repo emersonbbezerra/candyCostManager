@@ -37,7 +37,7 @@ export class ProductCostUpdateService {
 
       // Calcular custo total considerando todos os ingredientes
       for (const ingredient of product.ingredients) {
-        const ingredientPrice = ingredientPrices.get(ingredient.ingredient);
+        const ingredientPrice = ingredientPrices.get(ingredient.ingredientId);
         if (ingredientPrice !== undefined) {
           totalCost += ingredientPrice * ingredient.quantity;
         }
@@ -67,7 +67,7 @@ export class ProductCostUpdateService {
 
       // Atualizar produtos que usam este como ingrediente
       const productsUsingThis = allProducts.filter((p) =>
-        p.ingredients.some((i) => i.ingredient === updatedProduct.id)
+        p.ingredients.some((i) => i.ingredientId === updatedProduct.id)
       );
 
       for (const productUsingThis of productsUsingThis) {
@@ -77,7 +77,7 @@ export class ProductCostUpdateService {
 
     // Iniciar a atualização em cascata
     const productsUsingUpdatedIngredient = allProducts.filter((p) =>
-      p.ingredients.some((i) => i.ingredient === updatedIngredientId)
+      p.ingredients.some((i) => i.ingredientId === updatedIngredientId)
     );
 
     for (const product of productsUsingUpdatedIngredient) {
