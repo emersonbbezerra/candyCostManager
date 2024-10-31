@@ -10,6 +10,10 @@ productsRouter.post("/products", (req, res) => {
   createProductController.handle(req, res);
 });
 
+productsRouter.get("/products/search", (req, res) => {
+  findProductMethodsController.findByPartialName(req, res);
+});
+
 productsRouter.get("/products/:id", (req, res) => {
   findProductMethodsController.findById(req, res);
 });

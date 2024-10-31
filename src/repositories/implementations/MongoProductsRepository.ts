@@ -15,6 +15,15 @@ export class MongoProductsRepository implements IProductsRepository {
     return productDoc ? convertToProduct(productDoc) : null;
   }
 
+  async findByPartialName(name: string): Promise<Product[]> {
+    const products = await ProductMongoose.find({
+      name: { $regex: name, $options: "i" },
+    })
+      .lean()
+      .exec();
+    return products.map(convertToProduct);
+  }
+
   async findByName(name: string): Promise<Product | null> {
     const productDoc = await ProductMongoose.findOne({ name }).lean().exec();
     return productDoc ? convertToProduct(productDoc) : null;
