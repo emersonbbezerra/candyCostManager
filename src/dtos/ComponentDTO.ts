@@ -1,4 +1,4 @@
-export interface IIngredientDTO {
+export interface IComponentDTO {
   name: string;
   manufacturer: string;
   price: number;

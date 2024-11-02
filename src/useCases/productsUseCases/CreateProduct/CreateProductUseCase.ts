@@ -1,7 +1,7 @@
 import { IProductsRepository } from "../../../repositories/IProductsRepository";
 import { IProductDTO } from "../../../dtos/ProductDTO";
 import { Product } from "../../../entities/Product";
-import { IngredientMongoose as Ingredient } from "../../../infra/database/schemas/componentSchema";
+import { ComponentMongoose as Component } from "../../../infra/database/schemas/componentSchema";
 import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
 import { HttpException } from "../../../types/HttpException";
 import { productSchema } from "../../../utils/productUtils";
@@ -24,39 +24,37 @@ export class CreateProductUseCase {
     }
 
     let productionCost = 0;
-    const ingredientIdsWithQuantities = [];
+    const componentIdsWithQuantities = [];
 
-    for (let item of parsedData.ingredients) {
-      const ingredient = await Ingredient.findById(item.ingredientId)
+    for (let item of parsedData.components) {
+      const component = await Component.findById(item.componentId)
         .lean()
         .exec();
-      const productIngredient = await ProductMongoose.findById(
-        item.ingredientId
-      )
+      const productComponent = await ProductMongoose.findById(item.componentId)
         .lean()
         .exec();
 
-      if (ingredient) {
-        if (ingredient.price == null || ingredient.packageQuantity == null) {
-          throw new Error(`Ingrediente inválido: ${item.ingredientId}`);
+      if (component) {
+        if (component.price == null || component.packageQuantity == null) {
+          throw new Error(`Componente inválido: ${item.componentId}`);
         }
-        const pricePerUnit = ingredient.price / ingredient.packageQuantity;
+        const pricePerUnit = component.price / component.packageQuantity;
         productionCost += pricePerUnit * item.quantity;
-        ingredientIdsWithQuantities.push({
-          ingredientId: ingredient._id.toString(),
-          ingredientName: ingredient.name || null,
+        componentIdsWithQuantities.push({
+          componentId: component._id.toString(),
+          componentName: component.name || null,
           quantity: item.quantity,
         });
-      } else if (productIngredient && productIngredient.isIngredient) {
-        const costRatio = productIngredient.productionCostRatio ?? 0;
+      } else if (productComponent && productComponent.isComponent) {
+        const costRatio = productComponent.productionCostRatio ?? 0;
         productionCost += costRatio * item.quantity;
-        ingredientIdsWithQuantities.push({
-          ingredientId: productIngredient._id.toString(),
-          ingredientName: productIngredient.name || null,
+        componentIdsWithQuantities.push({
+          componentId: productComponent._id.toString(),
+          componentName: productComponent.name || null,
           quantity: item.quantity,
         });
       } else {
-        throw new Error(`Ingrediente não encontrado: ${item.ingredientId}`);
+        throw new Error(`Componente não encontrado: ${item.componentId}`);
       }
     }
 
@@ -74,8 +72,8 @@ export class CreateProductUseCase {
       yield: parsedData.yield,
       unitOfMeasure: parsedData.unitOfMeasure,
       productionCostRatio,
-      ingredients: ingredientIdsWithQuantities,
-      isIngredient: parsedData.isIngredient,
+      components: componentIdsWithQuantities,
+      isComponent: parsedData.isComponent,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

@@ -1,6 +1,6 @@
 import { uuidv7 } from "uuidv7";
 
-export class Ingredient {
+export class Component {
   public readonly id!: string;
 
   public name!: string;
@@ -12,7 +12,7 @@ export class Ingredient {
   public createdAt?: string;
   public updatedAt?: string;
 
-  constructor(props: Omit<Ingredient, "id">, id?: string) {
+  constructor(props: Omit<Component, "id">, id?: string) {
     Object.assign(this, props);
 
     if (!id) {

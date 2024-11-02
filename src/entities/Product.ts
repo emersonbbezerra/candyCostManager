@@ -6,9 +6,9 @@ export class Product implements IProduct {
   public name!: string;
   public description!: string;
   public category!: string;
-  public ingredients!: {
-    ingredientId: string;
-    ingredientName?: string | null;
+  public components!: {
+    componentId: string;
+    componentName?: string | null;
     quantity: number;
   }[];
   public productionCost?: number;
@@ -16,9 +16,9 @@ export class Product implements IProduct {
   public unitOfMeasure?: string;
   public productionCostRatio?: number;
   public salePrice?: number;
+  public isComponent?: boolean;
   public createdAt?: Date;
   public updatedAt?: Date;
-  public isIngredient?: boolean;
 
   constructor(props: IProduct) {
     Object.assign(this, props);

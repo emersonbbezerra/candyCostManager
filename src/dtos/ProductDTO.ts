@@ -2,9 +2,9 @@ export interface IProductDTO {
   name: string;
   description: string;
   category: string;
-  ingredients: {
-    ingredientId: string;
-    ingredientName?: string | null;
+  components: {
+    componentId: string;
+    componentName?: string | null;
     quantity: number;
   }[];
   productionCost?: number;
@@ -12,7 +12,7 @@ export interface IProductDTO {
   unitOfMeasure?: string;
   productionCostRatio?: number;
   salePrice: number;
-  isIngredient?: boolean;
+  isComponent?: boolean;
   createdAt: string;
   updatedAt: string;
 }

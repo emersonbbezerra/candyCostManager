@@ -4,13 +4,13 @@ export const productSchema = new mongoose.Schema({
   name: String,
   description: String,
   category: String,
-  ingredients: [
+  components: [
     {
-      ingredientId: {
+      componentId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Ingredient",
+        ref: "Component",
       },
-      ingredientName: { type: String, required: false, default: null },
+      componentName: { type: String, required: false, default: null },
       quantity: Number,
     },
   ],
@@ -19,9 +19,9 @@ export const productSchema = new mongoose.Schema({
   unitOfMeasure: String,
   productionCostRatio: Number,
   salePrice: Number,
+  isComponent: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  isIngredient: { type: Boolean, default: false },
 });
 
 export const ProductMongoose = mongoose.model("Product", productSchema);

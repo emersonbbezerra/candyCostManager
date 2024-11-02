@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const ingredientSchema = new mongoose.Schema({
+export const componentSchema = new mongoose.Schema({
   name: String,
   manufacturer: String,
   price: { type: Number, require: true },
@@ -11,7 +11,4 @@ export const ingredientSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-export const IngredientMongoose = mongoose.model(
-  "ingredients",
-  ingredientSchema
-);
+export const ComponentMongoose = mongoose.model("components", componentSchema);

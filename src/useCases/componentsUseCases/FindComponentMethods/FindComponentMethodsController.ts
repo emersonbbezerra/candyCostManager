@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
-import { FindIngredientMethodsUseCase } from "./FindComponentMethodsUseCase";
+import { FindComponentMethodsUseCase } from "./FindComponentMethodsUseCase";
 import { HttpException } from "../../../types/HttpException";
 
-export class FindIngredientMethodsController {
+export class FindComponentMethodsController {
   constructor(
-    private findIngredientMethodsUseCase: FindIngredientMethodsUseCase
+    private findComponentMethodsUseCase: FindComponentMethodsUseCase
   ) {}
 
   async findAll(request: Request, response: Response): Promise<Response> {
     try {
-      const ingredients = await this.findIngredientMethodsUseCase.findAll();
-      return response.status(200).json(ingredients);
+      const components = await this.findComponentMethodsUseCase.findAll();
+      return response.status(200).json(components);
     } catch (error: any) {
       if (error instanceof HttpException) {
         return response.status(error.status).send({ message: error.message });
@@ -27,8 +27,8 @@ export class FindIngredientMethodsController {
   ): Promise<Response | null> {
     const { id } = request.params;
     try {
-      const ingredient = await this.findIngredientMethodsUseCase.findById(id);
-      return response.status(200).json(ingredient);
+      const component = await this.findComponentMethodsUseCase.findById(id);
+      return response.status(200).json(component);
     } catch (error: any) {
       if (error instanceof HttpException) {
         return response.status(error.status).send({ message: error.message });
@@ -45,11 +45,11 @@ export class FindIngredientMethodsController {
   ): Promise<Response> {
     const { name } = request.query;
     try {
-      const ingredients =
-        await this.findIngredientMethodsUseCase.findByPartialName(
+      const components =
+        await this.findComponentMethodsUseCase.findByPartialName(
           name as string
         );
-      return response.status(200).json(ingredients);
+      return response.status(200).json(components);
     } catch (error: any) {
       if (error instanceof HttpException) {
         return response.status(error.status).send({ message: error.message });

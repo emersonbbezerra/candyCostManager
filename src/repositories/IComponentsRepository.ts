@@ -1,17 +1,14 @@
-import { Ingredient } from "../entities/Component";
+import { Component } from "../entities/Component";
 
-export interface IIngredientsRepository {
+export interface IComponentsRepository {
   findByNameAndManufacturer(
     name: string,
     manufacturer: string
-  ): Promise<Ingredient | null>;
-  findByPartialName(name: string): Promise<Ingredient[]>;
-  save(ingredient: Ingredient): Promise<void>;
-  findById(id: string): Promise<Ingredient | null>;
-  findAll(): Promise<Ingredient[]>;
-  update(
-    id: string,
-    ingredient: Partial<Ingredient>
-  ): Promise<Ingredient | null>;
+  ): Promise<Component | null>;
+  findByPartialName(name: string): Promise<Component[]>;
+  save(component: Component): Promise<void>;
+  findById(id: string): Promise<Component | null>;
+  findAll(): Promise<Component[]>;
+  update(id: string, component: Partial<Component>): Promise<Component | null>;
   delete(id: string): Promise<boolean>;
 }

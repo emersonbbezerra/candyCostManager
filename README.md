@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <b>This is a personal project that I am developing for my wife, who owns a small bakery and works only to order. It's an API for registering ingredients and products it manufactures. It calculates the cost of a given recipe (cake, dessert, sweet, etc.) based on the ingredients and their respective quantities used in preparation.</b>
+  <b>This is a personal project that I am developing for my wife, who owns a small bakery and works only to order. It's an API for registering components and products it manufactures. It calculates the cost of a given recipe (cake, dessert, sweet, etc.) based on the components and their respective quantities used in preparation.</b>
 </p>
 
 <h2 id="started">🚀 Getting started</h2>
@@ -70,21 +70,21 @@ The api will start on port 3000.
 
 <h2 id="routes">📍 API Endpoints</h2>
 
-This api covers two route branches: `/ingredients` and `/products`
+This api covers two route branches: `/components` and `/products`
 
-<h3 id="ingredients_routes">Ingredients Routes</h3>
+<h3 id="components_routes">Components Routes</h3>
 
 ​
 | route | description  
 |----------------------|-----------------------------------------------------
-| <kbd>POST /ingredients</kbd> | register an ingredient in the database [post details](#post-ingredient)
-| <kbd>GET /ingredients/search</kbd> | find registered ingredients by name [response details](#get-ingredients-search)
-| <kbd>GET /ingredients</kbd> | list registered ingredients [response details](#get-ingredients)
-| <kbd>GET /ingredients/:id</kbd> | returns the ingredient by id [response details](#get-ingredient-id)
-| <kbd>PUT /ingredients/:id</kbd> | update the ingredient by id [put details](#put-ingredient)
-| <kbd>DELETE /ingredients/:id</kbd> | delete the ingredient by id [response details](#delete-ingredient)
+| <kbd>POST /components</kbd> | register an component in the database [post details](#post-component)
+| <kbd>GET /components/search</kbd> | find registered components by name [response details](#get-components-search)
+| <kbd>GET /components</kbd> | list registered components [response details](#get-components)
+| <kbd>GET /components/:id</kbd> | returns the component by id [response details](#get-component-id)
+| <kbd>PUT /components/:id</kbd> | update the component by id [put details](#put-component)
+| <kbd>DELETE /components/:id</kbd> | delete the component by id [response details](#delete-component)
 
-<h3 id="post-ingredient">POST /ingredients</h3>
+<h3 id="post-component">POST /components</h3>
 
 **REQUEST**
 
@@ -106,10 +106,10 @@ This api covers two route branches: `/ingredients` and `/products`
 ```
 
 ```
-Ingredient created
+Component created
 ```
 
-If there is already an ingredient registered with the same name and the same manufacturer in the database, the API will return the error:
+If there is already an component registered with the same name and the same manufacturer in the database, the API will return the error:
 
 ```
 409 Conflict
@@ -117,14 +117,14 @@ If there is already an ingredient registered with the same name and the same man
 
 ```json
 {
-  "message": "Ingredient with this name and manufacturer already exists"
+  "message": "Component with this name and manufacturer already exists"
 }
 ```
 
-<h3 id="get-ingredients-search">GET /ingredients/search</h3>
-The search takes place by sending, via "query", the name of the ingredient or part of it.
+<h3 id="get-components-search">GET /components/search</h3>
+The search takes place by sending, via "query", the name of the component or part of it.
 
-Example: /ingredients/search?name=leite
+Example: /components/search?name=leite
 
 **RESPONSE**
 
@@ -170,7 +170,7 @@ Example: /ingredients/search?name=leite
 ]
 ```
 
-<h3 id="get-ingredients">GET /ingredients</h3>
+<h3 id="get-components">GET /components</h3>
 
 **RESPONSE**
 
@@ -304,7 +304,7 @@ Example: /ingredients/search?name=leite
 ]
 ```
 
-<h3 id="get-ingredient-id">GET /ingredients/672576ea2d219d6c0944c3e8</h3>
+<h3 id="get-component-id">GET /components/672576ea2d219d6c0944c3e8</h3>
 
 **RESPONSE**
 
@@ -326,7 +326,7 @@ Example: /ingredients/search?name=leite
 }
 ```
 
-If the ingredient with the specified ID is not found, the API will return the error:
+If the component with the specified ID is not found, the API will return the error:
 
 ```
 404 Not Found
@@ -334,16 +334,16 @@ If the ingredient with the specified ID is not found, the API will return the er
 
 ```json
 {
-  "message": "Ingredient not found"
+  "message": "Component not found"
 }
 ```
 
-<h3 id="put-ingredient">PUT /ingredients/672576ea2d219d6c0944c3e8</h3>
+<h3 id="put-component">PUT /components/672576ea2d219d6c0944c3e8</h3>
 
 **REQUEST**
 
-You can update the following data in an ingredient: `name`, `manufacturer`, `price`, `packageQuantity`, `unitOfMeasure` and `category`.
-It's possible to update just one piece of data at a time or all of the data for an ingredient.
+You can update the following data in an component: `name`, `manufacturer`, `price`, `packageQuantity`, `unitOfMeasure` and `category`.
+It's possible to update just one piece of data at a time or all of the data for an component.
 
 ```json
 {
@@ -367,8 +367,8 @@ Or
 
 ```json
 {
-  "message": "Ingredient updated",
-  "ingredient": {
+  "message": "Component updated",
+  "component": {
     "id": "672576ea2d219d6c0944c3e8",
     "name": "Leite Condensado",
     "manufacturer": "Nestlé",
@@ -382,7 +382,7 @@ Or
 }
 ```
 
-If the ingredient is not found, the API will return the error:
+If the component is not found, the API will return the error:
 
 ```
 404 Not Found
@@ -390,7 +390,7 @@ If the ingredient is not found, the API will return the error:
 
 ```json
 {
-  "message": "Ingredient not found"
+  "message": "Component not found"
 }
 ```
 
@@ -402,11 +402,11 @@ If the name and manufacturer are updated and there is already a similar one in t
 
 ```json
 {
-  "message": "An ingredient with this name and manufacturer already exists"
+  "message": "An component with this name and manufacturer already exists"
 }
 ```
 
-<h3 id="delete-ingredient">DELETE /ingredients/672576ea2d219d6c0944c3e8</h3>
+<h3 id="delete-component">DELETE /components/672576ea2d219d6c0944c3e8</h3>
 
 **RESPONSE**
 
@@ -416,11 +416,11 @@ If the name and manufacturer are updated and there is already a similar one in t
 
 ```json
 {
-  "message": "Ingredient deleted"
+  "message": "Component deleted"
 }
 ```
 
-If the ingredient with the specified ID is not found, the API will return the error:
+If the component with the specified ID is not found, the API will return the error:
 
 ```
 404 Not Found
@@ -428,7 +428,7 @@ If the ingredient with the specified ID is not found, the API will return the er
 
 ```json
 {
-  "message": "Ingredient not found"
+  "message": "Component not found"
 }
 ```
 
@@ -453,29 +453,29 @@ If the ingredient with the specified ID is not found, the API will return the er
   "name": "Bolo Simples",
   "description": "Bolo caseiro tradicional",
   "category": "Bolos",
-  "ingredients": [
+  "components": [
     {
-      "ingredientId": "672577372d219d6c0944c400",
+      "componentId": "672577372d219d6c0944c400",
       "quantity": 300
     },
     {
-      "ingredientId": "6725771e2d219d6c0944c3f7",
+      "componentId": "6725771e2d219d6c0944c3f7",
       "quantity": 200
     },
     {
-      "ingredientId": "6725772f2d219d6c0944c3fd",
+      "componentId": "6725772f2d219d6c0944c3fd",
       "quantity": 4
     },
     {
-      "ingredientId": "672577272d219d6c0944c3fa",
+      "componentId": "672577272d219d6c0944c3fa",
       "quantity": 240
     },
     {
-      "ingredientId": "6725770e2d219d6c0944c3f1",
+      "componentId": "6725770e2d219d6c0944c3f1",
       "quantity": 120
     },
     {
-      "ingredientId": "6725773f2d219d6c0944c403",
+      "componentId": "6725773f2d219d6c0944c403",
       "quantity": 10
     }
   ],
@@ -528,20 +528,20 @@ Example: /products/search?name=br
     "name": "Brigadeiro",
     "description": "Brigadeiro Cremoso Para Recheio E Cobertura",
     "category": "Bolos",
-    "ingredients": [
+    "components": [
       {
-        "ingredientId": "672576ea2d219d6c0944c3e8",
-        "ingredientName": "Leite Condensado",
+        "componentId": "672576ea2d219d6c0944c3e8",
+        "componentName": "Leite Condensado",
         "quantity": 395
       },
       {
-        "ingredientId": "672577462d219d6c0944c406",
-        "ingredientName": "Chocolate Em Pó",
+        "componentId": "672577462d219d6c0944c406",
+        "componentName": "Chocolate Em Pó",
         "quantity": 100
       },
       {
-        "ingredientId": "6725770e2d219d6c0944c3f1",
-        "ingredientName": "Margarina",
+        "componentId": "6725770e2d219d6c0944c3f1",
+        "componentName": "Margarina",
         "quantity": 50
       }
     ],
@@ -559,45 +559,45 @@ Example: /products/search?name=br
     "name": "Bolo De Chocolate Com Brigadeiro",
     "description": "Bolo De Chocolate Recheado E Coberto Com Brigadeiro",
     "category": "Bolos",
-    "ingredients": [
+    "components": [
       {
-        "ingredientId": "672577372d219d6c0944c400",
-        "ingredientName": "Farinha De Trigo",
+        "componentId": "672577372d219d6c0944c400",
+        "componentName": "Farinha De Trigo",
         "quantity": 300
       },
       {
-        "ingredientId": "6725771e2d219d6c0944c3f7",
-        "ingredientName": "Açúcar",
+        "componentId": "6725771e2d219d6c0944c3f7",
+        "componentName": "Açúcar",
         "quantity": 200
       },
       {
-        "ingredientId": "672577462d219d6c0944c406",
-        "ingredientName": "Chocolate Em Pó",
+        "componentId": "672577462d219d6c0944c406",
+        "componentName": "Chocolate Em Pó",
         "quantity": 100
       },
       {
-        "ingredientId": "6725772f2d219d6c0944c3fd",
-        "ingredientName": "Ovos",
+        "componentId": "6725772f2d219d6c0944c3fd",
+        "componentName": "Ovos",
         "quantity": 4
       },
       {
-        "ingredientId": "672577272d219d6c0944c3fa",
-        "ingredientName": "Leite",
+        "componentId": "672577272d219d6c0944c3fa",
+        "componentName": "Leite",
         "quantity": 240
       },
       {
-        "ingredientId": "6725770e2d219d6c0944c3f1",
-        "ingredientName": "Margarina",
+        "componentId": "6725770e2d219d6c0944c3f1",
+        "componentName": "Margarina",
         "quantity": 120
       },
       {
-        "ingredientId": "6725773f2d219d6c0944c403",
-        "ingredientName": "Fermento Em Pó",
+        "componentId": "6725773f2d219d6c0944c403",
+        "componentName": "Fermento Em Pó",
         "quantity": 10
       },
       {
-        "ingredientId": "672579c804c707ff89461227",
-        "ingredientName": "Brigadeiro",
+        "componentId": "672579c804c707ff89461227",
+        "componentName": "Brigadeiro",
         "quantity": 400
       }
     ],
@@ -628,20 +628,20 @@ Example: /products/search?name=br
     "name": "Brigadeiro",
     "description": "Brigadeiro Cremoso Para Recheio E Cobertura",
     "category": "Bolos",
-    "ingredients": [
+    "components": [
       {
-        "ingredientId": "672576ea2d219d6c0944c3e8",
-        "ingredientName": "Leite Condensado",
+        "componentId": "672576ea2d219d6c0944c3e8",
+        "componentName": "Leite Condensado",
         "quantity": 395
       },
       {
-        "ingredientId": "672577462d219d6c0944c406",
-        "ingredientName": "Chocolate Em Pó",
+        "componentId": "672577462d219d6c0944c406",
+        "componentName": "Chocolate Em Pó",
         "quantity": 100
       },
       {
-        "ingredientId": "6725770e2d219d6c0944c3f1",
-        "ingredientName": "Margarina",
+        "componentId": "6725770e2d219d6c0944c3f1",
+        "componentName": "Margarina",
         "quantity": 50
       }
     ],
@@ -659,35 +659,35 @@ Example: /products/search?name=br
     "name": "Bolo Simples",
     "description": "Bolo Caseiro Tradicional",
     "category": "Bolos",
-    "ingredients": [
+    "components": [
       {
-        "ingredientId": "672577372d219d6c0944c400",
-        "ingredientName": "Farinha De Trigo",
+        "componentId": "672577372d219d6c0944c400",
+        "componentName": "Farinha De Trigo",
         "quantity": 300
       },
       {
-        "ingredientId": "6725771e2d219d6c0944c3f7",
-        "ingredientName": "Açúcar",
+        "componentId": "6725771e2d219d6c0944c3f7",
+        "componentName": "Açúcar",
         "quantity": 200
       },
       {
-        "ingredientId": "6725772f2d219d6c0944c3fd",
-        "ingredientName": "Ovos",
+        "componentId": "6725772f2d219d6c0944c3fd",
+        "componentName": "Ovos",
         "quantity": 4
       },
       {
-        "ingredientId": "672577272d219d6c0944c3fa",
-        "ingredientName": "Leite",
+        "componentId": "672577272d219d6c0944c3fa",
+        "componentName": "Leite",
         "quantity": 240
       },
       {
-        "ingredientId": "6725770e2d219d6c0944c3f1",
-        "ingredientName": "Margarina",
+        "componentId": "6725770e2d219d6c0944c3f1",
+        "componentName": "Margarina",
         "quantity": 120
       },
       {
-        "ingredientId": "6725773f2d219d6c0944c403",
-        "ingredientName": "Fermento Em Pó",
+        "componentId": "6725773f2d219d6c0944c403",
+        "componentName": "Fermento Em Pó",
         "quantity": 10
       }
     ],
@@ -705,45 +705,45 @@ Example: /products/search?name=br
     "name": "Bolo De Chocolate Com Brigadeiro",
     "description": "Bolo De Chocolate Recheado E Coberto Com Brigadeiro",
     "category": "Bolos",
-    "ingredients": [
+    "components": [
       {
-        "ingredientId": "672577372d219d6c0944c400",
-        "ingredientName": "Farinha De Trigo",
+        "componentId": "672577372d219d6c0944c400",
+        "componentName": "Farinha De Trigo",
         "quantity": 300
       },
       {
-        "ingredientId": "6725771e2d219d6c0944c3f7",
-        "ingredientName": "Açúcar",
+        "componentId": "6725771e2d219d6c0944c3f7",
+        "componentName": "Açúcar",
         "quantity": 200
       },
       {
-        "ingredientId": "672577462d219d6c0944c406",
-        "ingredientName": "Chocolate Em Pó",
+        "componentId": "672577462d219d6c0944c406",
+        "componentName": "Chocolate Em Pó",
         "quantity": 100
       },
       {
-        "ingredientId": "6725772f2d219d6c0944c3fd",
-        "ingredientName": "Ovos",
+        "componentId": "6725772f2d219d6c0944c3fd",
+        "componentName": "Ovos",
         "quantity": 4
       },
       {
-        "ingredientId": "672577272d219d6c0944c3fa",
-        "ingredientName": "Leite",
+        "componentId": "672577272d219d6c0944c3fa",
+        "componentName": "Leite",
         "quantity": 240
       },
       {
-        "ingredientId": "6725770e2d219d6c0944c3f1",
-        "ingredientName": "Margarina",
+        "componentId": "6725770e2d219d6c0944c3f1",
+        "componentName": "Margarina",
         "quantity": 120
       },
       {
-        "ingredientId": "6725773f2d219d6c0944c403",
-        "ingredientName": "Fermento Em Pó",
+        "componentId": "6725773f2d219d6c0944c403",
+        "componentName": "Fermento Em Pó",
         "quantity": 10
       },
       {
-        "ingredientId": "672579c804c707ff89461227",
-        "ingredientName": "Brigadeiro",
+        "componentId": "672579c804c707ff89461227",
+        "componentName": "Brigadeiro",
         "quantity": 400
       }
     ],
@@ -773,20 +773,20 @@ Example: /products/search?name=br
   "name": "Brigadeiro",
   "description": "Brigadeiro Cremoso Para Recheio E Cobertura",
   "category": "Bolos",
-  "ingredients": [
+  "components": [
     {
-      "ingredientId": "672576ea2d219d6c0944c3e8",
-      "ingredientName": "Leite Condensado",
+      "componentId": "672576ea2d219d6c0944c3e8",
+      "componentName": "Leite Condensado",
       "quantity": 395
     },
     {
-      "ingredientId": "672577462d219d6c0944c406",
-      "ingredientName": "Chocolate Em Pó",
+      "componentId": "672577462d219d6c0944c406",
+      "componentName": "Chocolate Em Pó",
       "quantity": 100
     },
     {
-      "ingredientId": "6725770e2d219d6c0944c3f1",
-      "ingredientName": "Margarina",
+      "componentId": "6725770e2d219d6c0944c3f1",
+      "componentName": "Margarina",
       "quantity": 50
     }
   ],
@@ -817,7 +817,7 @@ If the product with the specified ID is not found, the API will return the error
 
 **REQUEST**
 
-You can update the following data in an product: `name`, `description`, `category`, `ingredients`, `yield`, `unitOfMeasure`, `salePrice`, and `isIngredient`.
+You can update the following data in an product: `name`, `description`, `category`, `components`, `yield`, `unitOfMeasure`, `salePrice`, and `isIngredient`.
 It's possible to update just one piece of data at a time or all of the data for an product.
 
 ```json
@@ -830,17 +830,17 @@ Or
 
 ```json
 {
-  "ingredients": [
+  "components": [
     {
-      "ingredientId": "672576ea2d219d6c0944c3e8",
+      "componentId": "672576ea2d219d6c0944c3e8",
       "quantity": 790
     },
     {
-      "ingredientId": "672577462d219d6c0944c406",
+      "componentId": "672577462d219d6c0944c406",
       "quantity": 200
     },
     {
-      "ingredientId": "6725770e2d219d6c0944c3f1",
+      "componentId": "6725770e2d219d6c0944c3f1",
       "quantity": 50
     }
   ]
@@ -861,20 +861,20 @@ Or
     "name": "Brigadeiro Gourmet",
     "description": "Brigadeiro Cremoso Para Recheio E Cobertura",
     "category": "Bolos",
-    "ingredients": [
+    "components": [
       {
-        "ingredientId": "672576ea2d219d6c0944c3e8",
-        "ingredientName": "Leite Condensado",
+        "componentId": "672576ea2d219d6c0944c3e8",
+        "componentName": "Leite Condensado",
         "quantity": 790
       },
       {
-        "ingredientId": "672577462d219d6c0944c406",
-        "ingredientName": "Chocolate Em Pó",
+        "componentId": "672577462d219d6c0944c406",
+        "componentName": "Chocolate Em Pó",
         "quantity": 200
       },
       {
-        "ingredientId": "6725770e2d219d6c0944c3f1",
-        "ingredientName": "Margarina",
+        "componentId": "6725770e2d219d6c0944c3f1",
+        "componentName": "Margarina",
         "quantity": 50
       }
     ],

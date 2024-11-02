@@ -33,9 +33,9 @@ export class ProductUpdateManager {
       // Buscar todos os produtos
       const allProducts = await this.productsRepository.findAll();
 
-      // Identificar produtos que usam o produto atualizado como ingrediente
+      // Identificar produtos que usam o produto atualizado como componente
       const dependentProducts = allProducts.filter((product) =>
-        product.ingredients.some((ing) => ing.ingredientId === updatedProductId)
+        product.components.some((ing) => ing.componentId === updatedProductId)
       );
 
       // Atualizar cada produto dependente
@@ -44,21 +44,21 @@ export class ProductUpdateManager {
           // Recalcular custo de produção
           let newProductionCost = 0;
 
-          // Calcular o novo custo de produção baseado em todos os ingredientes
-          for (const ingredient of product.ingredients) {
-            const quantity = ingredient.quantity;
+          // Calcular o novo custo de produção baseado em todos os componentes
+          for (const component of product.components) {
+            const quantity = component.quantity;
 
-            if (ingredient.ingredientId === updatedProductId) {
-              // Usar o novo productionCostRatio para o ingrediente atualizado
+            if (component.componentId === updatedProductId) {
+              // Usar o novo productionCostRatio para o componente atualizado
               newProductionCost += productionCostRatio * quantity;
             } else {
-              // Manter o custo existente para outros ingredientes
-              const ingredientProduct = allProducts.find(
-                (p) => p.id === ingredient.ingredientId
+              // Manter o custo existente para outros componentes
+              const componentProduct = allProducts.find(
+                (p) => p.id === component.componentId
               );
-              if (ingredientProduct?.productionCostRatio) {
+              if (componentProduct?.productionCostRatio) {
                 newProductionCost +=
-                  ingredientProduct.productionCostRatio * quantity;
+                  componentProduct.productionCostRatio * quantity;
               }
             }
           }

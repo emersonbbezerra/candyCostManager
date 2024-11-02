@@ -1,33 +1,33 @@
 import { Router } from "express";
-import { createIngredientController } from "../useCases/ingredientsUseCases/CreateComponent";
-import { updateIngredientController } from "../useCases/ingredientsUseCases/UpdateComponent";
-import { deleteIngredientController } from "../useCases/ingredientsUseCases/DeleteComponent";
-import { findIngredientMethodsController } from "../useCases/ingredientsUseCases/FindComponentMethods";
+import { createComponentController } from "../useCases/componentsUseCases/CreateComponent";
+import { updateComponentController } from "../useCases/componentsUseCases/UpdateComponent";
+import { deleteComponentController } from "../useCases/componentsUseCases/DeleteComponent";
+import { findComponentMethodsController } from "../useCases/componentsUseCases/FindComponentMethods";
 
-const ingredientsRoutes = Router();
+const componentsRoutes = Router();
 
-ingredientsRoutes.post("/ingredients", (req, res) => {
-  createIngredientController.handle(req, res);
+componentsRoutes.post("/components", (req, res) => {
+  createComponentController.handle(req, res);
 });
 
-ingredientsRoutes.get("/ingredients/search", (req, res) => {
-  findIngredientMethodsController.findByPartialName(req, res);
+componentsRoutes.get("/components/search", (req, res) => {
+  findComponentMethodsController.findByPartialName(req, res);
 });
 
-ingredientsRoutes.get("/ingredients/:id", (req, res) => {
-  findIngredientMethodsController.findById(req, res);
+componentsRoutes.get("/components/:id", (req, res) => {
+  findComponentMethodsController.findById(req, res);
 });
 
-ingredientsRoutes.get("/ingredients", (req, res) => {
-  findIngredientMethodsController.findAll(req, res);
+componentsRoutes.get("/components", (req, res) => {
+  findComponentMethodsController.findAll(req, res);
 });
 
-ingredientsRoutes.put("/ingredients/:id", (req, res) => {
-  updateIngredientController.handle(req, res);
+componentsRoutes.put("/components/:id", (req, res) => {
+  updateComponentController.handle(req, res);
 });
 
-ingredientsRoutes.delete("/ingredients/:id", (req, res) => {
-  deleteIngredientController.handle(req, res);
+componentsRoutes.delete("/components/:id", (req, res) => {
+  deleteComponentController.handle(req, res);
 });
 
-export { ingredientsRoutes };
+export { componentsRoutes };
