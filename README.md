@@ -72,7 +72,7 @@ The api will start on port 3000.
 
 This api covers two route branches: `/components` and `/products`
 
-<h3 id="components_routes">Components Routes</h3>
+<h3 id="ingredients_routes">Ingredients Routes</h3>
 
 ​
 | route | description  
