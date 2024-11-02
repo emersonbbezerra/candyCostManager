@@ -1,5 +1,5 @@
-import { IIngredientsRepository } from "../../../repositories/IIngredientsRepository";
-import { Ingredient } from "../../../entities/Ingredient";
+import { IIngredientsRepository } from "../../../repositories/IComponentsRepository";
+import { Ingredient } from "../../../entities/Component";
 import { HttpException } from "../../../types/HttpException";
 import { ingredientSchema } from "../../../utils/ingredientUtils";
 import { ProductCostUpdateService } from "../../../services/ProductCostUpdateService";

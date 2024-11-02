@@ -1,7 +1,7 @@
-import { MongoIngredientsRepository } from "../../../repositories/implementations/MongoIngredientsRepository";
+import { MongoIngredientsRepository } from "../../../repositories/implementations/MongoComponentsRepository";
 import { MongoProductsRepository } from "../../../repositories/implementations/MongoProductsRepository";
-import { UpdateIngredientUseCase } from "./UpdateIngredientUseCase";
-import { UpdateIngredientController } from "./UpdateIngredientController";
+import { UpdateIngredientUseCase } from "./UpdateComponentUseCase";
+import { UpdateIngredientController } from "./UpdateComponentController";
 import { ProductCostUpdateService } from "../../../services/ProductCostUpdateService";
 
 const mongoIngredientsRepository = new MongoIngredientsRepository();

@@ -1,6 +1,6 @@
-import { MongoIngredientsRepository } from "../../../repositories/implementations/MongoIngredientsRepository";
-import { DeleteIngredientUseCase } from "./DeleteIngredientUseCase";
-import { DeleteIngredientController } from "./DeleteIngredientController";
+import { MongoIngredientsRepository } from "../../../repositories/implementations/MongoComponentsRepository";
+import { DeleteIngredientUseCase } from "./DeleteComponentUseCase";
+import { DeleteIngredientController } from "./DeleteComponentController";
 
 const mongoIngredientsRepository = new MongoIngredientsRepository();
 

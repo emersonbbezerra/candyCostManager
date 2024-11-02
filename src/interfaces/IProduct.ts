@@ -1,4 +1,4 @@
-import { IIngredientInProduct } from "./IIngredient";
+import { IIngredientInProduct } from "./IComponent";
 
 export interface IProduct {
   id?: string;

@@ -1,4 +1,4 @@
-import { IIngredientsRepository } from "../../../repositories/IIngredientsRepository";
+import { IIngredientsRepository } from "../../../repositories/IComponentsRepository";
 import { HttpException } from "../../../types/HttpException";
 
 export class DeleteIngredientUseCase {

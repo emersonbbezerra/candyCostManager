@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FindIngredientMethodsUseCase } from "./FindIngredientMethodsUseCase";
+import { FindIngredientMethodsUseCase } from "./FindComponentMethodsUseCase";
 import { HttpException } from "../../../types/HttpException";
 
 export class FindIngredientMethodsController {

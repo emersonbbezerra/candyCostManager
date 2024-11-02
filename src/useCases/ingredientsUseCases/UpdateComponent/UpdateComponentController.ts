@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UpdateIngredientUseCase } from "./UpdateIngredientUseCase";
-import { Ingredient } from "../../../entities/Ingredient";
+import { UpdateIngredientUseCase } from "./UpdateComponentUseCase";
+import { Ingredient } from "../../../entities/Component";
 import { HttpException } from "../../../types/HttpException";
 
 export class UpdateIngredientController {

@@ -1,6 +1,6 @@
-import { MongoIngredientsRepository } from "../../../repositories/implementations/MongoIngredientsRepository";
-import { FindIngredientMethodsUseCase } from "./FindIngredientMethodsUseCase";
-import { FindIngredientMethodsController } from "./FindIngredientMethodsController";
+import { MongoIngredientsRepository } from "../../../repositories/implementations/MongoComponentsRepository";
+import { FindIngredientMethodsUseCase } from "./FindComponentMethodsUseCase";
+import { FindIngredientMethodsController } from "./FindComponentMethodsController";
 
 const mongoIngredientsRepository = new MongoIngredientsRepository();
 

@@ -1,6 +1,6 @@
-import { Ingredient } from "../../entities/Ingredient";
-import { IngredientMongoose } from "../../infra/database/schemas/ingredientSchema";
-import { IIngredientsRepository } from "../IIngredientsRepository";
+import { Ingredient } from "../../entities/Component";
+import { IngredientMongoose } from "../../infra/database/schemas/componentSchema";
+import { IIngredientsRepository } from "../IComponentsRepository";
 import { convertToIngredient } from "../../utils/ingredientUtils";
 
 export class MongoIngredientsRepository implements IIngredientsRepository {

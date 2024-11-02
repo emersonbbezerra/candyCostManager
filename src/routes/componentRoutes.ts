@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { createIngredientController } from "../useCases/ingredientsUseCases/CreateIngredient";
-import { updateIngredientController } from "../useCases/ingredientsUseCases/UpdateIngredient";
-import { deleteIngredientController } from "../useCases/ingredientsUseCases/DeleteIngredient";
-import { findIngredientMethodsController } from "../useCases/ingredientsUseCases/FindIngredientMethods";
+import { createIngredientController } from "../useCases/ingredientsUseCases/CreateComponent";
+import { updateIngredientController } from "../useCases/ingredientsUseCases/UpdateComponent";
+import { deleteIngredientController } from "../useCases/ingredientsUseCases/DeleteComponent";
+import { findIngredientMethodsController } from "../useCases/ingredientsUseCases/FindComponentMethods";
 
 const ingredientsRoutes = Router();
 

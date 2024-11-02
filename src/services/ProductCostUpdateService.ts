@@ -1,6 +1,6 @@
 import { IProductsRepository } from "../repositories/IProductsRepository";
 import { Product } from "../entities/Product";
-import { IngredientMongoose } from "../infra/database/schemas/ingredientSchema";
+import { IngredientMongoose } from "../infra/database/schemas/componentSchema";
 
 export class ProductCostUpdateService {
   constructor(private productsRepository: IProductsRepository) {}

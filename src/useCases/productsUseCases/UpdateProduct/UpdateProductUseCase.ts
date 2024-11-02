@@ -1,7 +1,7 @@
 import { IProductsRepository } from "../../../repositories/IProductsRepository";
 import { IProductDTO } from "../../../dtos/ProductDTO";
 import { Product } from "../../../entities/Product";
-import { IngredientMongoose as Ingredient } from "../../../infra/database/schemas/ingredientSchema";
+import { IngredientMongoose as Ingredient } from "../../../infra/database/schemas/componentSchema";
 import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
 import { HttpException } from "../../../types/HttpException";
 import { convertToProduct, productSchema } from "../../../utils/productUtils";

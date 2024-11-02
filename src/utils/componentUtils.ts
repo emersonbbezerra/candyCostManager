@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Ingredient } from "../entities/Ingredient";
+import { Ingredient } from "../entities/Component";
 import { capitalize } from "./stringUtils";
 
 export const ingredientSchema = z.object({

@@ -1,7 +1,7 @@
-import { IIngredientDTO } from "../../../dtos/IngredientDTO";
+import { IIngredientDTO } from "../../../dtos/ComponentDTO";
 import { HttpException } from "../../../types/HttpException";
-import { IIngredientsRepository } from "../../../repositories/IIngredientsRepository";
-import { Ingredient } from "../../../entities/Ingredient";
+import { IIngredientsRepository } from "../../../repositories/IComponentsRepository";
+import { Ingredient } from "../../../entities/Component";
 import { ingredientSchema } from "../../../utils/ingredientUtils";
 
 export class CreateIngredientUseCase {

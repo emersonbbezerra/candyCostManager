@@ -1,24 +1,23 @@
 import { Request, Response } from "express";
-import { DeleteIngredientUseCase } from "./DeleteIngredientUseCase";
+import { CreateIngredientUseCase } from "./CreateComponentUseCase";
+import { IIngredientDTO } from "../../../dtos/ComponentDTO";
 import { HttpException } from "../../../types/HttpException";
 
-export class DeleteIngredientController {
-  constructor(private deleteIngredientUseCase: DeleteIngredientUseCase) {}
+export class CreateIngredientController {
+  constructor(private createIngredientUseCase: CreateIngredientUseCase) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params;
+    const data: IIngredientDTO = request.body;
 
     try {
-      await this.deleteIngredientUseCase.execute(id);
-      return response.status(200).send({ message: "Ingredient deleted" });
+      await this.createIngredientUseCase.execute(data);
+      return response.status(201).send("Ingredient created");
     } catch (error: any) {
       if (error instanceof HttpException) {
         return response.status(error.status).send({ message: error.message });
-      }
-      if (error.errors) {
+      } else if (error.errors) {
         return response.status(400).send({ message: error.errors[0].message });
       }
-      console.error(error);
       return response.status(500).send({ message: "Unexpected error" });
     }
   }
