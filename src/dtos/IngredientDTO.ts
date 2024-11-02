@@ -8,9 +8,3 @@ export interface IIngredientDTO {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface IIngredientInProductDTO {
-  ingredientId: string;
-  ingredientName: string;
-  quantity: number;
-}

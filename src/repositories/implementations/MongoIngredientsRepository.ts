@@ -31,6 +31,11 @@ export class MongoIngredientsRepository implements IIngredientsRepository {
     await mongooseIngredient.save();
   }
 
+  async findById(id: string): Promise<Ingredient | null> {
+    const ingredientDoc = await IngredientMongoose.findById(id).lean().exec();
+    return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
+  }
+
   async findAll(): Promise<Ingredient[]> {
     const ingredientDocs = await IngredientMongoose.find().lean().exec();
     return ingredientDocs.map((doc) => convertToIngredient(doc));
@@ -53,10 +58,5 @@ export class MongoIngredientsRepository implements IIngredientsRepository {
   async delete(id: string): Promise<boolean> {
     const result = await IngredientMongoose.deleteOne({ _id: id });
     return result.deletedCount > 0;
-  }
-
-  async findById(id: string): Promise<Ingredient | null> {
-    const ingredientDoc = await IngredientMongoose.findById(id).lean().exec();
-    return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
   }
 }

@@ -1,25 +1,5 @@
 import { uuidv7 } from "uuidv7";
-
-export interface IProduct {
-  id?: string;
-  name: string;
-  description: string;
-  category: string;
-  ingredients: {
-    ingredientId: string;
-    ingredientName?: string | null;
-    quantity: number;
-  }[];
-  productionCost?: number;
-  yield?: number;
-  unitOfMeasure?: string;
-  productionCostRatio?: number;
-  salePrice?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  isIngredient?: boolean;
-  usedInProducts?: string[];
-}
+import { IProduct } from "../interfaces/IProduct";
 
 export class Product implements IProduct {
   public readonly id?: string;
@@ -39,38 +19,11 @@ export class Product implements IProduct {
   public createdAt?: Date;
   public updatedAt?: Date;
   public isIngredient?: boolean;
-  public usedInProducts?: string[];
 
   constructor(props: IProduct) {
     Object.assign(this, props);
     if (!this.id) {
       this.id = uuidv7();
-    }
-  }
-
-  public calculateProductionCost(
-    ingredientPrices: Map<string, number>
-  ): number {
-    let cost = 0;
-    for (const { ingredientId, quantity } of this.ingredients) {
-      const price = ingredientPrices.get(ingredientId);
-      if (price !== undefined) {
-        cost += price * quantity;
-      }
-    }
-    this.productionCost = cost;
-    this.updateProductionCostRatio();
-    return cost;
-  }
-
-  public updateProductionCost(ingredientPrices: Map<string, number>): void {
-    this.calculateProductionCost(ingredientPrices);
-    this.updatedAt = new Date();
-  }
-
-  private updateProductionCostRatio(): void {
-    if (this.productionCost && this.yield) {
-      this.productionCostRatio = this.productionCost / this.yield;
     }
   }
 }
