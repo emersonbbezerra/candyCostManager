@@ -3,7 +3,7 @@
 [EXPRESS__BADGE]: https://img.shields.io/badge/express-005CFE?style=for-the-badge&logo=express
 [MONGO_BADGE]: https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white
 
-<h1 align="center" style="font-weight: bold;">CandyCost 💻</h1>
+<h1 align="center" style="font-weight: bold;">CandyCostManager 💻</h1>
 
 ![nodejs][NODEJS__BADGE]
 ![typescript][TYPESCRIPT__BADGE]
@@ -975,14 +975,14 @@ Be part of this project and appear here in the hall of fame!
 
 <h2 id="contribute">📫 Contribute</h2>
 
-Thank you for considering contributing to CandyCost! To contribute, please follow these steps:
+Thank you for considering contributing to CandyCostManager! To contribute, please follow these steps:
 
 1. **Fork the repository**: Click on the 'Fork' button at the top right of this page to create a copy of the repository in your GitHub account.
 
 2. **Clone the repository**: Clone your forked repository to your local machine using:
 
    ```bash
-   git clone https://github.com/your-username/candycosts.git
+   git clone https://github.com/emersonbbezerra/candyCostManager.git
    ```
 
 3. **Create a new branch**: Create a new branch for your feature or bugfix using:
@@ -1015,4 +1015,4 @@ Thank you for considering contributing to CandyCost! To contribute, please follo
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/emersonbbezerra/candycosts?tab=MIT-1-ov-file#readme) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/emersonbbezerra/candyCostManager?tab=MIT-1-ov-file#readme) file for details.
