@@ -60,7 +60,7 @@ export const ingredientSchema = z.object({
       required_error: "A categoria é obrigatória.",
       invalid_type_error: "A categoria deve ser uma string.",
     })
-    .min(1, { message: "A categoria é obrigatória." })
+    .min(3, { message: "A categoria deve ter pelo menos 3 caracteres." })
     .max(50, { message: "A categoria deve ter no máximo 50 caracteres." })
     .trim()
     .transform(capitalize),
