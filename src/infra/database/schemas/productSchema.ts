@@ -6,12 +6,12 @@ export const productSchema = new mongoose.Schema({
   category: String,
   ingredients: [
     {
-      ingredient: {
+      ingredientId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Ingredient",
       },
-      quantity: Number,
       ingredientName: { type: String, required: false, default: null },
+      quantity: Number,
     },
   ],
   productionCost: Number,

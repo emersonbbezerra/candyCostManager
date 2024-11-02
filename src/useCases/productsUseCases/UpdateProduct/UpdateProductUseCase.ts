@@ -5,12 +5,12 @@ import { IngredientMongoose as Ingredient } from "../../../infra/database/schema
 import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
 import { HttpException } from "../../../types/HttpException";
 import { convertToProduct, productSchema } from "../../../utils/productUtils";
+import { ProductUpdateManager } from "./ProductUpdateManager";
 
 interface IIngredientInput {
-  ingredientId?: string;
-  ingredient?: string;
-  quantity: number;
+  ingredientId: string;
   ingredientName?: string | null;
+  quantity: number;
 }
 
 export class UpdateProductUseCase {
@@ -33,7 +33,7 @@ export class UpdateProductUseCase {
   }
 
   private async calculateIngredientCost(
-    ingredientId: string | undefined,
+    ingredientId: string,
     quantity: number
   ): Promise<number> {
     if (!ingredientId) {
@@ -62,20 +62,14 @@ export class UpdateProductUseCase {
   }
 
   private async calculateTotalProductionCost(
-    ingredients: any[]
+    ingredients: IIngredientInput[]
   ): Promise<number> {
     let totalCost = 0;
     for (const item of ingredients) {
-      const ingredientId =
-        (item as IIngredientInput).ingredientId ||
-        (item as IIngredientInput).ingredient;
-      const quantity = (item as IIngredientInput).quantity;
-
-      if (!ingredientId) {
-        throw new Error("Ingredient ID is missing");
-      }
-
-      const cost = await this.calculateIngredientCost(ingredientId, quantity);
+      const cost = await this.calculateIngredientCost(
+        item.ingredientId,
+        item.quantity
+      );
       totalCost += cost;
     }
     return totalCost;
@@ -92,12 +86,21 @@ export class UpdateProductUseCase {
 
     const parsedData = productSchema.partial().parse(data);
 
-    if (parsedData.name) {
-      const productWithSameName = await this.productsRepository.findByName(
-        parsedData.name
-      );
-      if (productWithSameName && productWithSameName.id !== id) {
-        throw new HttpException(409, "Product with this name already exists");
+    if (parsedData.name || parsedData.category) {
+      const nameToCheck = parsedData.name || existingProduct.name;
+      const categoryToCheck = parsedData.category || existingProduct.category;
+
+      const duplicateProduct =
+        await this.productsRepository.findByNameAndCategory(
+          nameToCheck,
+          categoryToCheck
+        );
+
+      if (duplicateProduct && duplicateProduct.id !== id) {
+        throw new HttpException(
+          409,
+          "A product with this name and category already exists"
+        );
       }
     }
 
@@ -121,19 +124,17 @@ export class UpdateProductUseCase {
     if (updateData.ingredients) {
       const ingredientsWithCorrectFormat = await Promise.all(
         updateData.ingredients.map(async (item: IIngredientInput) => {
-          const ingredientId = item.ingredientId || item.ingredient;
-          if (!ingredientId) {
-            throw new Error("Ingredient ID is missing");
-          }
-          const ingredientName = await this.getIngredientName(ingredientId);
+          const ingredientName = await this.getIngredientName(
+            item.ingredientId
+          );
           return {
-            ingredient: ingredientId,
-            quantity: item.quantity,
+            ingredientId: item.ingredientId,
             ingredientName,
+            quantity: item.quantity,
           };
         })
       );
-      updateData.ingredients = ingredientsWithCorrectFormat as any;
+      updateData.ingredients = ingredientsWithCorrectFormat;
     }
 
     const productToUpdate = convertToProduct({
@@ -151,34 +152,14 @@ export class UpdateProductUseCase {
     }
 
     // Se o produto atualizado é um ingrediente, atualizar produtos que o utilizam
-    if (updatedProduct.isIngredient) {
-      const productsUsingThis = await ProductMongoose.find({
-        "ingredients.ingredient": id,
-      })
-        .lean()
-        .exec();
-
-      for (const product of productsUsingThis) {
-        // Recalcular custo total do produto que usa este ingrediente
-        const newProductionCost = await this.calculateTotalProductionCost(
-          product.ingredients
-        );
-
-        // Atualizar produto com novo custo
-        await ProductMongoose.findByIdAndUpdate(
-          product._id,
-          {
-            $set: {
-              productionCost: newProductionCost,
-              productionCostRatio: product.yield
-                ? newProductionCost / product.yield
-                : undefined,
-              updatedAt: new Date(),
-            },
-          },
-          { new: true }
-        );
-      }
+    if (updatedProduct.isIngredient && updatedProduct.productionCostRatio) {
+      const productUpdateManager = new ProductUpdateManager(
+        this.productsRepository
+      );
+      await productUpdateManager.updateDependentProducts(
+        id,
+        updatedProduct.productionCostRatio
+      );
     }
 
     return this.productsRepository.findById(id);

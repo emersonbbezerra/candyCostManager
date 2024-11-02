@@ -1,7 +1,11 @@
 import { Product } from "../entities/Product";
 
 export interface IProductsRepository {
-  findByName(name: string): Promise<Product | null>;
+  findByNameAndCategory(
+    name: string,
+    category: string
+  ): Promise<Product | null>;
+  findByPartialName(name: string): Promise<Product[]>;
   save(product: Product): Promise<Product>;
   findById(id: string): Promise<Product | null>;
   findAll(): Promise<Product[]>;

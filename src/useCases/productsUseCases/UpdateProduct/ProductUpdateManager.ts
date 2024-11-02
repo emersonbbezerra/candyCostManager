@@ -35,9 +35,7 @@ export class ProductUpdateManager {
 
       // Identificar produtos que usam o produto atualizado como ingrediente
       const dependentProducts = allProducts.filter((product) =>
-        product.ingredients.some(
-          (ing) => ing.ingredient.toString() === updatedProductId
-        )
+        product.ingredients.some((ing) => ing.ingredientId === updatedProductId)
       );
 
       // Atualizar cada produto dependente
@@ -50,13 +48,13 @@ export class ProductUpdateManager {
           for (const ingredient of product.ingredients) {
             const quantity = ingredient.quantity;
 
-            if (ingredient.ingredient.toString() === updatedProductId) {
+            if (ingredient.ingredientId === updatedProductId) {
               // Usar o novo productionCostRatio para o ingrediente atualizado
               newProductionCost += productionCostRatio * quantity;
             } else {
               // Manter o custo existente para outros ingredientes
               const ingredientProduct = allProducts.find(
-                (p) => p.id === ingredient.ingredient.toString()
+                (p) => p.id === ingredient.ingredientId
               );
               if (ingredientProduct?.productionCostRatio) {
                 newProductionCost +=

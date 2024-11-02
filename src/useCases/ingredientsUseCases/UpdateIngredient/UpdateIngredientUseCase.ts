@@ -14,7 +14,33 @@ export class UpdateIngredientUseCase {
     id: string,
     data: Partial<Ingredient>
   ): Promise<Ingredient | null> {
+    const existingIngredient = await this.ingredientsRepository.findById(id);
+    if (!existingIngredient) {
+      throw new HttpException(404, "Ingredient not found");
+    }
+
     const parsedData = ingredientSchema.partial().parse(data);
+
+    if (parsedData.name || parsedData.manufacturer) {
+      const nameToCheck = parsedData.name || existingIngredient.name;
+      const manufacturerToCheck =
+        parsedData.manufacturer || existingIngredient.manufacturer;
+
+      // Procura por um ingrediente com o mesmo nome e fabricante
+      const duplicateIngredient =
+        await this.ingredientsRepository.findByNameAndManufacturer(
+          nameToCheck,
+          manufacturerToCheck
+        );
+
+      // Verifica se encontrou um ingrediente diferente do atual com os mesmos dados
+      if (duplicateIngredient && duplicateIngredient.id !== id) {
+        throw new HttpException(
+          409,
+          "An ingredient with this name and manufacturer already exists"
+        );
+      }
+    }
 
     const updatedData = {
       ...parsedData,
@@ -28,10 +54,10 @@ export class UpdateIngredientUseCase {
     );
 
     if (!updatedIngredient) {
-      throw new HttpException(404, "Ingredient not found");
+      throw new HttpException(404, "Failed to update ingredient");
     }
 
-    // Atualizar os custos dos produtos que usam este ingrediente
+    // Atualiza os custos dos produtos que usam este ingrediente
     if (updatedIngredient.price !== undefined) {
       await this.productCostUpdateService.updateCosts(
         id,

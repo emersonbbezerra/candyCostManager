@@ -10,18 +10,23 @@ export class CreateIngredientUseCase {
   async execute(data: IIngredientDTO): Promise<void> {
     const parsedData = ingredientSchema.parse(data);
 
-    const existingIngredient = await this.ingredientsRepository.findByName(
-      parsedData.name
-    );
+    const existingIngredient =
+      await this.ingredientsRepository.findByNameAndManufacturer(
+        parsedData.name,
+        parsedData.manufacturer
+      );
     if (existingIngredient) {
-      throw new HttpException(409, "Ingredient already exists");
+      throw new HttpException(
+        409,
+        "Ingredient with this name and manufacturer already exists"
+      );
     }
 
     const ingredient = new Ingredient({
       ...parsedData,
       createdAt: parsedData.createdAt?.toISOString(),
       updatedAt: parsedData.updatedAt?.toISOString(),
-      packageQuantity: parsedData.packageQuantity, // Incluir o campo `packageQuantity`
+      packageQuantity: parsedData.packageQuantity,
     });
 
     await this.ingredientsRepository.save(ingredient);

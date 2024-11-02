@@ -4,8 +4,14 @@ import { IIngredientsRepository } from "../IIngredientsRepository";
 import { convertToIngredient } from "../../utils/ingredientUtils";
 
 export class MongoIngredientsRepository implements IIngredientsRepository {
-  async findByName(name: string): Promise<Ingredient | null> {
-    const ingredientDoc = await IngredientMongoose.findOne({ name })
+  async findByNameAndManufacturer(
+    name: string,
+    manufacturer: string
+  ): Promise<Ingredient | null> {
+    const ingredientDoc = await IngredientMongoose.findOne({
+      name,
+      manufacturer,
+    })
       .lean()
       .exec();
     return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
@@ -23,6 +29,11 @@ export class MongoIngredientsRepository implements IIngredientsRepository {
   async save(ingredient: Ingredient): Promise<void> {
     const mongooseIngredient = new IngredientMongoose(ingredient);
     await mongooseIngredient.save();
+  }
+
+  async findById(id: string): Promise<Ingredient | null> {
+    const ingredientDoc = await IngredientMongoose.findById(id).lean().exec();
+    return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
   }
 
   async findAll(): Promise<Ingredient[]> {
@@ -47,10 +58,5 @@ export class MongoIngredientsRepository implements IIngredientsRepository {
   async delete(id: string): Promise<boolean> {
     const result = await IngredientMongoose.deleteOne({ _id: id });
     return result.deletedCount > 0;
-  }
-
-  async findById(id: string): Promise<Ingredient | null> {
-    const ingredientDoc = await IngredientMongoose.findById(id).lean().exec();
-    return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
   }
 }

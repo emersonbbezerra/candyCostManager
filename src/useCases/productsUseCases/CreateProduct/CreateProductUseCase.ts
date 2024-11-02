@@ -11,12 +11,16 @@ export class CreateProductUseCase {
 
   async execute(data: IProductDTO): Promise<void> {
     const parsedData = productSchema.parse(data);
-    const existingProduct = await this.productsRepository.findByName(
-      parsedData.name
+    const existingProduct = await this.productsRepository.findByNameAndCategory(
+      parsedData.name,
+      parsedData.category
     );
 
     if (existingProduct) {
-      throw new HttpException(409, "Product already exists");
+      throw new HttpException(
+        409,
+        "Product with this name and category already exists"
+      );
     }
 
     let productionCost = 0;
@@ -39,17 +43,17 @@ export class CreateProductUseCase {
         const pricePerUnit = ingredient.price / ingredient.packageQuantity;
         productionCost += pricePerUnit * item.quantity;
         ingredientIdsWithQuantities.push({
-          ingredient: ingredient._id.toString(),
-          quantity: item.quantity,
+          ingredientId: ingredient._id.toString(),
           ingredientName: ingredient.name || null,
+          quantity: item.quantity,
         });
       } else if (productIngredient && productIngredient.isIngredient) {
         const costRatio = productIngredient.productionCostRatio ?? 0;
         productionCost += costRatio * item.quantity;
         ingredientIdsWithQuantities.push({
-          ingredient: productIngredient._id.toString(),
-          quantity: item.quantity,
+          ingredientId: productIngredient._id.toString(),
           ingredientName: productIngredient.name || null,
+          quantity: item.quantity,
         });
       } else {
         throw new Error(`Ingrediente não encontrado: ${item.ingredientId}`);

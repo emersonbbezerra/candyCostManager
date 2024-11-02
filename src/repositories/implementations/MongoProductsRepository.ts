@@ -5,9 +5,23 @@ import { convertToProduct } from "../../utils/productUtils";
 import mongoose from "mongoose";
 
 export class MongoProductsRepository implements IProductsRepository {
-  async findByName(name: string): Promise<Product | null> {
-    const productDoc = await ProductMongoose.findOne({ name }).lean().exec();
+  async findByNameAndCategory(
+    name: string,
+    category: string
+  ): Promise<Product | null> {
+    const productDoc = await ProductMongoose.findOne({ name, category })
+      .lean()
+      .exec();
     return productDoc ? convertToProduct(productDoc) : null;
+  }
+
+  async findByPartialName(name: string): Promise<Product[]> {
+    const products = await ProductMongoose.find({
+      name: { $regex: name, $options: "i" },
+    })
+      .lean()
+      .exec();
+    return products.map(convertToProduct);
   }
 
   async save(product: Product): Promise<Product> {
