@@ -1,62 +1,62 @@
-import { Ingredient } from "../../entities/Component";
-import { IngredientMongoose } from "../../infra/database/schemas/componentSchema";
-import { IIngredientsRepository } from "../IComponentsRepository";
-import { convertToIngredient } from "../../utils/ingredientUtils";
+import { Component } from "../../entities/Component";
+import { ComponentMongoose } from "../../infra/database/schemas/componentSchema";
+import { IComponentsRepository } from "../IComponentsRepository";
+import { convertToComponent } from "../../utils/componentUtils";
 
-export class MongoIngredientsRepository implements IIngredientsRepository {
+export class MongoComponentsRepository implements IComponentsRepository {
   async findByNameAndManufacturer(
     name: string,
     manufacturer: string
-  ): Promise<Ingredient | null> {
-    const ingredientDoc = await IngredientMongoose.findOne({
+  ): Promise<Component | null> {
+    const componentDoc = await ComponentMongoose.findOne({
       name,
       manufacturer,
     })
       .lean()
       .exec();
-    return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
+    return componentDoc ? convertToComponent(componentDoc) : null;
   }
 
-  async findByPartialName(name: string): Promise<Ingredient[]> {
-    const ingredients = await IngredientMongoose.find({
+  async findByPartialName(name: string): Promise<Component[]> {
+    const components = await ComponentMongoose.find({
       name: { $regex: name, $options: "i" },
     })
       .lean()
       .exec();
-    return ingredients.map(convertToIngredient);
+    return components.map(convertToComponent);
   }
 
-  async save(ingredient: Ingredient): Promise<void> {
-    const mongooseIngredient = new IngredientMongoose(ingredient);
-    await mongooseIngredient.save();
+  async save(component: Component): Promise<void> {
+    const mongooseComponent = new ComponentMongoose(component);
+    await mongooseComponent.save();
   }
 
-  async findById(id: string): Promise<Ingredient | null> {
-    const ingredientDoc = await IngredientMongoose.findById(id).lean().exec();
-    return ingredientDoc ? convertToIngredient(ingredientDoc) : null;
+  async findById(id: string): Promise<Component | null> {
+    const componentDoc = await ComponentMongoose.findById(id).lean().exec();
+    return componentDoc ? convertToComponent(componentDoc) : null;
   }
 
-  async findAll(): Promise<Ingredient[]> {
-    const ingredientDocs = await IngredientMongoose.find().lean().exec();
-    return ingredientDocs.map((doc) => convertToIngredient(doc));
+  async findAll(): Promise<Component[]> {
+    const componentDocs = await ComponentMongoose.find().lean().exec();
+    return componentDocs.map((doc) => convertToComponent(doc));
   }
 
   async update(
     id: string,
-    ingredient: Partial<Ingredient>
-  ): Promise<Ingredient | null> {
-    const updatedIngredient = await IngredientMongoose.findByIdAndUpdate(
+    component: Partial<Component>
+  ): Promise<Component | null> {
+    const updatedComponent = await ComponentMongoose.findByIdAndUpdate(
       id,
-      ingredient,
+      component,
       { new: true }
     )
       .lean()
       .exec();
-    return updatedIngredient ? convertToIngredient(updatedIngredient) : null;
+    return updatedComponent ? convertToComponent(updatedComponent) : null;
   }
 
   async delete(id: string): Promise<boolean> {
-    const result = await IngredientMongoose.deleteOne({ _id: id });
+    const result = await ComponentMongoose.deleteOne({ _id: id });
     return result.deletedCount > 0;
   }
 }

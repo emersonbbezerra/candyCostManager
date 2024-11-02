@@ -34,12 +34,12 @@ export const productSchema = z.object({
     .trim()
     .transform(capitalize),
 
-  ingredients: z
+  components: z
     .array(
       z.object({
-        ingredientId: z.string({
-          required_error: "O ID do ingrediente é obrigatório.",
-          invalid_type_error: "O ID do ingrediente deve ser uma string.",
+        componentId: z.string({
+          required_error: "O ID do componente é obrigatório.",
+          invalid_type_error: "O ID do componente deve ser uma string.",
         }),
         quantity: z
           .number({
@@ -50,20 +50,20 @@ export const productSchema = z.object({
           .max(999999.99, {
             message: "A quantidade não pode exceder 999.999,99.",
           }),
-        ingredientName: z
+        componentName: z
           .string({
-            invalid_type_error: "O nome do ingrediente deve ser uma string.",
+            invalid_type_error: "O nome do componente deve ser uma string.",
           })
           .nullable()
           .optional(),
       }),
       {
-        required_error: "É necessário adicionar pelo menos um ingrediente.",
-        invalid_type_error: "Formato de ingredientes inválido.",
+        required_error: "É necessário adicionar pelo menos um componente.",
+        invalid_type_error: "Formato de componentes inválido.",
       }
     )
-    .min(1, { message: "É necessário adicionar pelo menos um ingrediente." })
-    .max(50, { message: "O produto não pode ter mais de 50 ingredientes." }),
+    .min(1, { message: "É necessário adicionar pelo menos um componente." })
+    .max(50, { message: "O produto não pode ter mais de 50 componentes." }),
 
   productionCost: z
     .number({
@@ -120,9 +120,9 @@ export const productSchema = z.object({
     })
     .optional(),
 
-  isIngredient: z
+  isComponent: z
     .boolean({
-      invalid_type_error: "O campo isIngredient deve ser um booleano.",
+      invalid_type_error: "O campo isComponent deve ser um booleano.",
     })
     .optional(),
 
@@ -145,9 +145,9 @@ export function convertToProduct(productDoc: any): Product {
     name: productDoc.name,
     description: productDoc.description,
     category: productDoc.category,
-    ingredients: productDoc.ingredients.map((ing: any) => ({
-      ingredientId: ing.ingredientId.toString(),
-      ingredientName: ing.ingredientName,
+    components: productDoc.components.map((ing: any) => ({
+      componentId: ing.componentId.toString(),
+      componentName: ing.componentName,
       quantity: ing.quantity,
     })),
     productionCost: productDoc.productionCost,
@@ -155,7 +155,7 @@ export function convertToProduct(productDoc: any): Product {
     unitOfMeasure: productDoc.unitOfMeasure,
     productionCostRatio: productDoc.productionCostRatio,
     salePrice: productDoc.salePrice,
-    isIngredient: productDoc.isIngredient,
+    isComponent: productDoc.isComponent,
     createdAt:
       productDoc.createdAt instanceof Date
         ? productDoc.createdAt

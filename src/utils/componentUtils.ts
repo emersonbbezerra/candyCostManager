@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { Ingredient } from "../entities/Component";
+import { Component } from "../entities/Component";
 import { capitalize } from "./stringUtils";
 
-export const ingredientSchema = z.object({
+export const componentSchema = z.object({
   name: z
     .string({
       required_error: "O nome é obrigatório.",
@@ -80,22 +80,22 @@ export const ingredientSchema = z.object({
     .nullable(),
 });
 
-export const convertToIngredient = (ingredientDoc: any): Ingredient => {
-  const ingredient = new Ingredient(
+export const convertToComponent = (componentDoc: any): Component => {
+  const component = new Component(
     {
-      name: ingredientDoc.name!,
-      manufacturer: ingredientDoc.manufacturer!,
-      price: ingredientDoc.price!,
-      packageQuantity: ingredientDoc.packageQuantity!,
-      unitOfMeasure: ingredientDoc.unitOfMeasure!,
-      category: ingredientDoc.category!,
-      createdAt: ingredientDoc.createdAt?.toISOString(),
-      updatedAt: ingredientDoc.updatedAt?.toISOString(),
+      name: componentDoc.name!,
+      manufacturer: componentDoc.manufacturer!,
+      price: componentDoc.price!,
+      packageQuantity: componentDoc.packageQuantity!,
+      unitOfMeasure: componentDoc.unitOfMeasure!,
+      category: componentDoc.category!,
+      createdAt: componentDoc.createdAt?.toISOString(),
+      updatedAt: componentDoc.updatedAt?.toISOString(),
     },
-    ingredientDoc._id.toString()
+    componentDoc._id.toString()
   );
   return {
-    ...ingredient,
-    id: ingredientDoc._id.toString(),
+    ...component,
+    id: componentDoc._id.toString(),
   };
 };

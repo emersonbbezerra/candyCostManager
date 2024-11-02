@@ -1,73 +1,71 @@
 import { IProductsRepository } from "../../../repositories/IProductsRepository";
 import { IProductDTO } from "../../../dtos/ProductDTO";
 import { Product } from "../../../entities/Product";
-import { IngredientMongoose as Ingredient } from "../../../infra/database/schemas/componentSchema";
+import { ComponentMongoose as Component } from "../../../infra/database/schemas/componentSchema";
 import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
 import { HttpException } from "../../../types/HttpException";
 import { convertToProduct, productSchema } from "../../../utils/productUtils";
 import { ProductUpdateManager } from "./ProductUpdateManager";
 
-interface IIngredientInput {
-  ingredientId: string;
-  ingredientName?: string | null;
+interface IComponentInput {
+  componentId: string;
+  componentName?: string | null;
   quantity: number;
 }
 
 export class UpdateProductUseCase {
   constructor(private productsRepository: IProductsRepository) {}
 
-  private async getIngredientName(
-    ingredientId: string
-  ): Promise<string | null> {
-    // Primeiro verifica se é um produto-ingrediente
-    const productIngredient = await ProductMongoose.findById(ingredientId)
+  private async getComponentName(componentId: string): Promise<string | null> {
+    // Primeiro verifica se é um produto-componente
+    const productComponent = await ProductMongoose.findById(componentId)
       .lean()
       .exec();
-    if (productIngredient) {
-      return productIngredient.name || null;
+    if (productComponent) {
+      return productComponent.name || null;
     }
 
-    // Se não for, busca como ingrediente normal
-    const ingredient = await Ingredient.findById(ingredientId).lean().exec();
-    return ingredient?.name || null;
+    // Se não for, busca como componente normal
+    const component = await Component.findById(componentId).lean().exec();
+    return component?.name || null;
   }
 
-  private async calculateIngredientCost(
-    ingredientId: string,
+  private async calculateComponentCost(
+    componentId: string,
     quantity: number
   ): Promise<number> {
-    if (!ingredientId) {
-      throw new Error("Ingredient ID is required");
+    if (!componentId) {
+      throw new Error("Component ID is required");
     }
 
-    // Primeiro verifica se é um produto-ingrediente
-    const productIngredient = await ProductMongoose.findById(ingredientId)
+    // Primeiro verifica se é um produto-componente
+    const productComponent = await ProductMongoose.findById(componentId)
       .lean()
       .exec();
-    if (productIngredient?.isIngredient) {
-      return (productIngredient.productionCostRatio || 0) * quantity;
+    if (productComponent?.isComponent) {
+      return (productComponent.productionCostRatio || 0) * quantity;
     }
 
-    // Se não for, busca como ingrediente normal
-    const ingredient = await Ingredient.findById(ingredientId).lean().exec();
-    if (!ingredient) {
-      throw new Error(`Ingredient not found: ${ingredientId}`);
+    // Se não for, busca como componente normal
+    const component = await Component.findById(componentId).lean().exec();
+    if (!component) {
+      throw new Error(`Component not found: ${componentId}`);
     }
 
-    if (ingredient.price == null || ingredient.packageQuantity == null) {
-      throw new Error(`Invalid ingredient: ${ingredientId}`);
+    if (component.price == null || component.packageQuantity == null) {
+      throw new Error(`Invalid component: ${componentId}`);
     }
 
-    return (ingredient.price / ingredient.packageQuantity) * quantity;
+    return (component.price / component.packageQuantity) * quantity;
   }
 
   private async calculateTotalProductionCost(
-    ingredients: IIngredientInput[]
+    components: IComponentInput[]
   ): Promise<number> {
     let totalCost = 0;
-    for (const item of ingredients) {
-      const cost = await this.calculateIngredientCost(
-        item.ingredientId,
+    for (const item of components) {
+      const cost = await this.calculateComponentCost(
+        item.componentId,
         item.quantity
       );
       totalCost += cost;
@@ -105,10 +103,9 @@ export class UpdateProductUseCase {
     }
 
     // Calcular custo de produção
-    const ingredientsToUse =
-      parsedData.ingredients || existingProduct.ingredients;
+    const componentsToUse = parsedData.components || existingProduct.components;
     const productionCost = await this.calculateTotalProductionCost(
-      ingredientsToUse
+      componentsToUse
     );
     parsedData.productionCost = productionCost;
 
@@ -121,20 +118,18 @@ export class UpdateProductUseCase {
     parsedData.updatedAt = new Date();
     const { createdAt, ...updateData } = parsedData;
 
-    if (updateData.ingredients) {
-      const ingredientsWithCorrectFormat = await Promise.all(
-        updateData.ingredients.map(async (item: IIngredientInput) => {
-          const ingredientName = await this.getIngredientName(
-            item.ingredientId
-          );
+    if (updateData.components) {
+      const componentsWithCorrectFormat = await Promise.all(
+        updateData.components.map(async (item: IComponentInput) => {
+          const componentName = await this.getComponentName(item.componentId);
           return {
-            ingredientId: item.ingredientId,
-            ingredientName,
+            componentId: item.componentId,
+            componentName,
             quantity: item.quantity,
           };
         })
       );
-      updateData.ingredients = ingredientsWithCorrectFormat;
+      updateData.components = componentsWithCorrectFormat;
     }
 
     const productToUpdate = convertToProduct({
@@ -151,8 +146,8 @@ export class UpdateProductUseCase {
       throw new HttpException(404, "Failed to update product");
     }
 
-    // Se o produto atualizado é um ingrediente, atualizar produtos que o utilizam
-    if (updatedProduct.isIngredient && updatedProduct.productionCostRatio) {
+    // Se o produto atualizado é um componente, atualizar produtos que o utilizam
+    if (updatedProduct.isComponent && updatedProduct.productionCostRatio) {
       const productUpdateManager = new ProductUpdateManager(
         this.productsRepository
       );

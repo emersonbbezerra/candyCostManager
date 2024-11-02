@@ -1,5 +1,5 @@
-export interface IIngredientInProduct {
-  ingredientId: string;
-  ingredientName?: string | null;
+export interface IComponentInProduct {
+  componentId: string;
+  componentName?: string | null;
   quantity: number;
 }

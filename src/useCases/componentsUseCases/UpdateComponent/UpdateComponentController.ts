@@ -1,20 +1,20 @@
 import { Request, Response } from "express";
-import { UpdateIngredientUseCase } from "./UpdateComponentUseCase";
-import { Ingredient } from "../../../entities/Component";
+import { UpdateComponentUseCase } from "./UpdateComponentUseCase";
+import { Component } from "../../../entities/Component";
 import { HttpException } from "../../../types/HttpException";
 
-export class UpdateIngredientController {
-  constructor(private updateIngredientUseCase: UpdateIngredientUseCase) {}
+export class UpdateComponentController {
+  constructor(private updateComponentUseCase: UpdateComponentUseCase) {}
 
   async handle(request: Request, response: Response): Promise<Response | null> {
     const { id } = request.params;
-    const data: Partial<Ingredient> = request.body;
+    const data: Partial<Component> = request.body;
 
     try {
-      const ingredient = await this.updateIngredientUseCase.execute(id, data);
+      const component = await this.updateComponentUseCase.execute(id, data);
       return response
         .status(200)
-        .json({ message: "Ingredient updated", ingredient });
+        .json({ message: "Component updated", component });
     } catch (error: any) {
       if (error instanceof HttpException) {
         return response.status(error.status).send({ message: error.message });

@@ -35,16 +35,16 @@ export class MongoProductsRepository implements IProductsRepository {
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
       {
         $lookup: {
-          from: "ingredients",
-          localField: "ingredients.ingredient",
+          from: "components",
+          localField: "components.component",
           foreignField: "_id",
-          as: "ingredientDetails",
+          as: "componentDetails",
         },
       },
       {
         $lookup: {
           from: "products",
-          localField: "ingredients.ingredient",
+          localField: "components.component",
           foreignField: "_id",
           as: "productDetails",
         },
@@ -55,7 +55,7 @@ export class MongoProductsRepository implements IProductsRepository {
           name: 1,
           description: 1,
           category: 1,
-          ingredients: 1,
+          components: 1,
           productionCost: 1,
           yield: 1,
           unitOfMeasure: 1,
@@ -63,7 +63,7 @@ export class MongoProductsRepository implements IProductsRepository {
           salePrice: 1,
           createdAt: 1,
           updatedAt: 1,
-          isIngredient: 1,
+          isComponent: 1,
           usedInProducts: 1,
         },
       },
@@ -76,16 +76,16 @@ export class MongoProductsRepository implements IProductsRepository {
     const productDocs = await ProductMongoose.aggregate([
       {
         $lookup: {
-          from: "ingredients",
-          localField: "ingredients.ingredient",
+          from: "components",
+          localField: "components.component",
           foreignField: "_id",
-          as: "ingredientDetails",
+          as: "componentDetails",
         },
       },
       {
         $lookup: {
           from: "products",
-          localField: "ingredients.ingredient",
+          localField: "components.component",
           foreignField: "_id",
           as: "productDetails",
         },
@@ -96,7 +96,7 @@ export class MongoProductsRepository implements IProductsRepository {
           name: 1,
           description: 1,
           category: 1,
-          ingredients: 1,
+          components: 1,
           productionCost: 1,
           yield: 1,
           unitOfMeasure: 1,
@@ -104,7 +104,7 @@ export class MongoProductsRepository implements IProductsRepository {
           salePrice: 1,
           createdAt: 1,
           updatedAt: 1,
-          isIngredient: 1,
+          isComponent: 1,
           usedInProducts: 1,
         },
       },

@@ -1,33 +1,33 @@
 import { IProductsRepository } from "../repositories/IProductsRepository";
 import { Product } from "../entities/Product";
-import { IngredientMongoose } from "../infra/database/schemas/componentSchema";
+import { ComponentMongoose } from "../infra/database/schemas/componentSchema";
 
 export class ProductCostUpdateService {
   constructor(private productsRepository: IProductsRepository) {}
 
   async updateCosts(
-    updatedIngredientId: string,
+    updatedComponentId: string,
     newPrice: number
   ): Promise<void> {
     const allProducts = await this.productsRepository.findAll();
-    const ingredientPrices = new Map<string, number>();
+    const componentPrices = new Map<string, number>();
 
-    // Buscar todos os ingredientes e seus preços
-    const allIngredients = await IngredientMongoose.find().lean().exec();
-    for (const ingredient of allIngredients) {
-      if (ingredient.price && ingredient.packageQuantity) {
+    // Buscar todos os componentes e seus preços
+    const allComponents = await ComponentMongoose.find().lean().exec();
+    for (const component of allComponents) {
+      if (component.price && component.packageQuantity) {
         const pricePerUnit =
-          ingredient._id.toString() === updatedIngredientId
-            ? newPrice / ingredient.packageQuantity
-            : ingredient.price / ingredient.packageQuantity;
-        ingredientPrices.set(ingredient._id.toString(), pricePerUnit);
+          component._id.toString() === updatedComponentId
+            ? newPrice / component.packageQuantity
+            : component.price / component.packageQuantity;
+        componentPrices.set(component._id.toString(), pricePerUnit);
       }
     }
 
-    // Adicionar produtos que são ingredientes ao mapa de preços
+    // Adicionar produtos que são componentes ao mapa de preços
     for (const product of allProducts) {
-      if (product.isIngredient) {
-        ingredientPrices.set(product.id!, product.productionCostRatio || 0);
+      if (product.isComponent) {
+        componentPrices.set(product.id!, product.productionCostRatio || 0);
       }
     }
 
@@ -35,11 +35,11 @@ export class ProductCostUpdateService {
     const updateProductRecursively = async (product: Product) => {
       let totalCost = 0;
 
-      // Calcular custo total considerando todos os ingredientes
-      for (const ingredient of product.ingredients) {
-        const ingredientPrice = ingredientPrices.get(ingredient.ingredientId);
-        if (ingredientPrice !== undefined) {
-          totalCost += ingredientPrice * ingredient.quantity;
+      // Calcular custo total considerando todos os componentes
+      for (const component of product.components) {
+        const componentPrice = componentPrices.get(component.componentId);
+        if (componentPrice !== undefined) {
+          totalCost += componentPrice * component.quantity;
         }
       }
 
@@ -57,17 +57,17 @@ export class ProductCostUpdateService {
 
       await this.productsRepository.update(updatedProduct.id, updatedProduct);
 
-      // Atualizar o preço no mapa se for um ingrediente
-      if (updatedProduct.isIngredient) {
-        ingredientPrices.set(
+      // Atualizar o preço no mapa se for um componente
+      if (updatedProduct.isComponent) {
+        componentPrices.set(
           updatedProduct.id,
           updatedProduct.productionCostRatio || 0
         );
       }
 
-      // Atualizar produtos que usam este como ingrediente
+      // Atualizar produtos que usam este como componente
       const productsUsingThis = allProducts.filter((p) =>
-        p.ingredients.some((i) => i.ingredientId === updatedProduct.id)
+        p.components.some((i) => i.componentId === updatedProduct.id)
       );
 
       for (const productUsingThis of productsUsingThis) {
@@ -76,11 +76,11 @@ export class ProductCostUpdateService {
     };
 
     // Iniciar a atualização em cascata
-    const productsUsingUpdatedIngredient = allProducts.filter((p) =>
-      p.ingredients.some((i) => i.ingredientId === updatedIngredientId)
+    const productsUsingUpdatedComponent = allProducts.filter((p) =>
+      p.components.some((i) => i.componentId === updatedComponentId)
     );
 
-    for (const product of productsUsingUpdatedIngredient) {
+    for (const product of productsUsingUpdatedComponent) {
       await updateProductRecursively(product);
     }
   }
