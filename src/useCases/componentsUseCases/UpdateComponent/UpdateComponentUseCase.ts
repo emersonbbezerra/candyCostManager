@@ -1,6 +1,6 @@
 import { IComponentsRepository } from "../../../repositories/IComponentsRepository";
 import { Component } from "../../../entities/Component";
-import { HttpException } from "../../../types/HttpException";
+import { HttpException } from "../../../utils/HttpException";
 import { componentSchema } from "../../../utils/componentUtils";
 import { ProductCostUpdateService } from "../../../services/ProductCostUpdateService";
 
@@ -54,7 +54,7 @@ export class UpdateComponentUseCase {
     );
 
     if (!updatedComponent) {
-      throw new HttpException(404, "Failed to update component");
+      throw new HttpException(500, "Failed to update component");
     }
 
     // Atualiza os custos dos produtos que usam este componente

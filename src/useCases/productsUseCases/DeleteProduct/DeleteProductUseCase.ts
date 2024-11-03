@@ -1,5 +1,5 @@
 import { IProductsRepository } from "../../../repositories/IProductsRepository";
-import { HttpException } from "../../../types/HttpException";
+import { HttpException } from "../../../utils/HttpException";
 
 export class DeleteProductUseCase {
   constructor(private productsRepository: IProductsRepository) {}

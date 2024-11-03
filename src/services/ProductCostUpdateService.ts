@@ -1,6 +1,7 @@
 import { IProductsRepository } from "../repositories/IProductsRepository";
 import { Product } from "../entities/Product";
 import { ComponentMongoose } from "../infra/database/schemas/componentSchema";
+import { HttpException } from "../utils/HttpException";
 
 export class ProductCostUpdateService {
   constructor(private productsRepository: IProductsRepository) {}
@@ -53,7 +54,7 @@ export class ProductCostUpdateService {
         updatedAt: new Date(),
       });
 
-      if (!updatedProduct.id) throw new Error("Unexpected error");
+      if (!updatedProduct.id) throw new HttpException(500, "Unexpected error");
 
       await this.productsRepository.update(updatedProduct.id, updatedProduct);
 

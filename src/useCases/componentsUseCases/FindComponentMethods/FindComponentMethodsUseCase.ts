@@ -1,6 +1,6 @@
 import { IComponentsRepository } from "../../../repositories/IComponentsRepository";
 import { Component } from "../../../entities/Component";
-import { HttpException } from "../../../types/HttpException";
+import { HttpException } from "../../../utils/HttpException";
 
 export class FindComponentMethodsUseCase {
   constructor(private componentsRepository: IComponentsRepository) {}

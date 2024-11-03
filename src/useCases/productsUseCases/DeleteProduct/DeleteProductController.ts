@@ -1,23 +1,16 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { DeleteProductUseCase } from "./DeleteProductUseCase";
-import { HttpException } from "../../../types/HttpException";
 
 export class DeleteProductController {
   constructor(private deleteProductUseCase: DeleteProductUseCase) {}
 
-  async handle(req: Request, res: Response): Promise<Response> {
-    const { id } = req.params;
-
+  async handle(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const { id } = req.params;
       await this.deleteProductUseCase.execute(id);
-      return res.status(200).send({ message: "Product deleted successfully" });
-    } catch (error: any) {
-      if (error instanceof HttpException) {
-        return res.status(error.status).send({ message: error.message });
-      }
-      return res
-        .status(500)
-        .send({ message: "Unexpected error", error: error.message });
+      res.status(200).json({ message: "Product deleted successfully" });
+    } catch (error) {
+      next(error);
     }
   }
 }
