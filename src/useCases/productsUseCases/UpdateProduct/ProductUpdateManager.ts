@@ -17,7 +17,6 @@ export class ProductUpdateManager {
   private updateProductUseCase: UpdateProductUseCase;
 
   constructor(private productsRepository: IProductsRepository) {
-    // Instanciando UpdateProductUseCase com o repositório
     this.updateProductUseCase = new UpdateProductUseCase(productsRepository);
   }
 
@@ -31,75 +30,102 @@ export class ProductUpdateManager {
     };
 
     try {
-      // Buscar todos os produtos
       const allProducts = await this.productsRepository.findAll();
-
-      // Identificar produtos que usam o produto atualizado como componente
       const dependentProducts = allProducts.filter((product) =>
         product.components.some((ing) => ing.componentId === updatedProductId)
       );
 
-      // Atualizar cada produto dependente
       for (const product of dependentProducts) {
-        try {
-          // Recalcular custo de produção
-          let newProductionCost = 0;
-
-          // Calcular o novo custo de produção baseado em todos os componentes
-          for (const component of product.components) {
-            const quantity = component.quantity;
-
-            if (component.componentId === updatedProductId) {
-              // Usar o novo productionCostRatio para o componente atualizado
-              newProductionCost += productionCostRatio * quantity;
-            } else {
-              // Manter o custo existente para outros componentes
-              const componentProduct = allProducts.find(
-                (p) => p.id === component.componentId
-              );
-              if (componentProduct?.productionCostRatio) {
-                newProductionCost +=
-                  componentProduct.productionCostRatio * quantity;
-              }
-            }
-          }
-
-          // Calcular o novo productionCostRatio baseado no yield do produto
-          const calculatedProductionCostRatio = product.yield
-            ? newProductionCost / product.yield
-            : newProductionCost;
-
-          // Atualizar o produto com os novos valores calculados
-          const updatedProduct = await this.updateProductUseCase.execute(
-            product.id!,
-            {
-              productionCost: newProductionCost,
-              productionCostRatio: calculatedProductionCostRatio,
-            }
-          );
-
-          if (updatedProduct) {
-            result.success.push(updatedProduct);
-            // Recursivamente atualizar produtos que dependem deste
-            await this.updateDependentProducts(
-              product.id!,
-              calculatedProductionCostRatio
-            );
-          }
-        } catch (error: any) {
-          result.errors.push({
-            productId: product.id!,
-            error: error.message || "Unknown error",
-          });
-        }
+        await this.updateSingleProduct(
+          product,
+          updatedProductId,
+          productionCostRatio,
+          allProducts,
+          result
+        );
       }
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       throw new HttpException(
         500,
-        `Failed to update dependent products: ${error.message}`
+        `Failed to update dependent products: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
       );
     }
 
     return result;
+  }
+
+  private async updateSingleProduct(
+    product: Product,
+    updatedProductId: string,
+    productionCostRatio: number,
+    allProducts: Product[],
+    result: UpdateResult
+  ): Promise<void> {
+    try {
+      const newProductionCost = this.calculateNewProductionCost(
+        product,
+        updatedProductId,
+        productionCostRatio,
+        allProducts
+      );
+      const calculatedProductionCostRatio = this.calculateProductionCostRatio(
+        product,
+        newProductionCost
+      );
+
+      const updatedProduct = await this.updateProductUseCase.execute(
+        product.id!,
+        {
+          productionCost: newProductionCost,
+          productionCostRatio: calculatedProductionCostRatio,
+        }
+      );
+
+      if (updatedProduct) {
+        result.success.push(updatedProduct);
+        await this.updateDependentProducts(
+          product.id!,
+          calculatedProductionCostRatio
+        );
+      }
+    } catch (error) {
+      result.errors.push({
+        productId: product.id!,
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+  }
+
+  private calculateNewProductionCost(
+    product: Product,
+    updatedProductId: string,
+    productionCostRatio: number,
+    allProducts: Product[]
+  ): number {
+    return product.components.reduce((cost, component) => {
+      if (component.componentId === updatedProductId) {
+        return cost + productionCostRatio * component.quantity;
+      }
+      const componentProduct = allProducts.find(
+        (p) => p.id === component.componentId
+      );
+      return (
+        cost + (componentProduct?.productionCostRatio || 0) * component.quantity
+      );
+    }, 0);
+  }
+
+  private calculateProductionCostRatio(
+    product: Product,
+    newProductionCost: number
+  ): number {
+    return product.yield
+      ? newProductionCost / product.yield
+      : newProductionCost;
   }
 }
