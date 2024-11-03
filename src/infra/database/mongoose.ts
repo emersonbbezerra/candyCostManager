@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { HttpException } from "../../types/HttpException";
+import { HttpException } from "../../utils/HttpException";
 
 export async function connect() {
   try {

@@ -1,5 +1,5 @@
 import { IComponentsRepository } from "../../../repositories/IComponentsRepository";
-import { HttpException } from "../../../types/HttpException";
+import { HttpException } from "../../../utils/HttpException";
 
 export class DeleteComponentUseCase {
   constructor(private componentsRepository: IComponentsRepository) {}

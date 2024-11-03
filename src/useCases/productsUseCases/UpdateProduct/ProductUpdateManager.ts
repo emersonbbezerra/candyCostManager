@@ -1,6 +1,7 @@
 import { IProductsRepository } from "../../../repositories/IProductsRepository";
 import { Product } from "../../../entities/Product";
 import { UpdateProductUseCase } from "./UpdateProductUseCase";
+import { HttpException } from "../../../utils/HttpException";
 
 interface UpdateError {
   productId: string;
@@ -93,7 +94,10 @@ export class ProductUpdateManager {
         }
       }
     } catch (error: any) {
-      throw new Error(`Failed to update dependent products: ${error.message}`);
+      throw new HttpException(
+        500,
+        `Failed to update dependent products: ${error.message}`
+      );
     }
 
     return result;

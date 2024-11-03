@@ -3,7 +3,7 @@ import { IProductDTO } from "../../../dtos/ProductDTO";
 import { Product } from "../../../entities/Product";
 import { ComponentMongoose as Component } from "../../../infra/database/schemas/componentSchema";
 import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
-import { HttpException } from "../../../types/HttpException";
+import { HttpException } from "../../../utils/HttpException";
 import { productSchema } from "../../../utils/productUtils";
 
 export class CreateProductUseCase {
@@ -36,7 +36,10 @@ export class CreateProductUseCase {
 
       if (component) {
         if (component.price == null || component.packageQuantity == null) {
-          throw new Error(`Componente inválido: ${item.componentId}`);
+          throw new HttpException(
+            422,
+            `Invalid component: ${item.componentId}`
+          );
         }
         const pricePerUnit = component.price / component.packageQuantity;
         productionCost += pricePerUnit * item.quantity;
@@ -54,7 +57,10 @@ export class CreateProductUseCase {
           quantity: item.quantity,
         });
       } else {
-        throw new Error(`Componente não encontrado: ${item.componentId}`);
+        throw new HttpException(
+          404,
+          `Component not found: ${item.componentId}`
+        );
       }
     }
 

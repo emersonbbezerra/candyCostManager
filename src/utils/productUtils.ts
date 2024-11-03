@@ -77,24 +77,24 @@ export const productSchema = z.object({
 
   yield: z
     .number({
+      required_error: "O rendimento é obrigatório.",
       invalid_type_error: "O rendimento deve ser um número.",
     })
     .positive({ message: "O rendimento deve ser maior que zero." })
     .max(999999.99, {
       message: "O rendimento não pode exceder 999.999,99.",
-    })
-    .optional(),
+    }),
 
   unitOfMeasure: z
     .string({
+      required_error: "A unidade de medida é obrigatória.",
       invalid_type_error: "A unidade de medida deve ser uma string.",
     })
     .min(1, { message: "A unidade de medida não pode estar vazia." })
     .max(50, {
       message: "A unidade de medida deve ter no máximo 50 caracteres.",
     })
-    .trim()
-    .optional(),
+    .trim(),
 
   productionCostRatio: z
     .number({

@@ -1,5 +1,5 @@
 import { IComponentDTO } from "../../../dtos/ComponentDTO";
-import { HttpException } from "../../../types/HttpException";
+import { HttpException } from "../../../utils/HttpException";
 import { IComponentsRepository } from "../../../repositories/IComponentsRepository";
 import { Component } from "../../../entities/Component";
 import { componentSchema } from "../../../utils/componentUtils";

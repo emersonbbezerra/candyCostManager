@@ -3,7 +3,7 @@ import { IProductDTO } from "../../../dtos/ProductDTO";
 import { Product } from "../../../entities/Product";
 import { ComponentMongoose as Component } from "../../../infra/database/schemas/componentSchema";
 import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
-import { HttpException } from "../../../types/HttpException";
+import { HttpException } from "../../../utils/HttpException";
 import { convertToProduct, productSchema } from "../../../utils/productUtils";
 import { ProductUpdateManager } from "./ProductUpdateManager";
 
@@ -35,7 +35,7 @@ export class UpdateProductUseCase {
     quantity: number
   ): Promise<number> {
     if (!componentId) {
-      throw new Error("Component ID is required");
+      throw new HttpException(422, "Component ID is required");
     }
 
     // Primeiro verifica se é um produto-componente
@@ -49,11 +49,11 @@ export class UpdateProductUseCase {
     // Se não for, busca como componente normal
     const component = await Component.findById(componentId).lean().exec();
     if (!component) {
-      throw new Error(`Component not found: ${componentId}`);
+      throw new HttpException(404, `Component not found: ${componentId}`);
     }
 
     if (component.price == null || component.packageQuantity == null) {
-      throw new Error(`Invalid component: ${componentId}`);
+      throw new HttpException(422, `Invalid component: ${componentId}`);
     }
 
     return (component.price / component.packageQuantity) * quantity;

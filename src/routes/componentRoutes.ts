@@ -6,28 +6,28 @@ import { findComponentMethodsController } from "../useCases/componentsUseCases/F
 
 const componentsRoutes = Router();
 
-componentsRoutes.post("/components", (req, res) => {
-  createComponentController.handle(req, res);
+componentsRoutes.post("/components", (req, res, next) => {
+  createComponentController.handle(req, res, next);
 });
 
-componentsRoutes.get("/components/search", (req, res) => {
-  findComponentMethodsController.findByPartialName(req, res);
+componentsRoutes.get("/components/search", (req, res, next) => {
+  findComponentMethodsController.findByPartialName(req, res, next);
 });
 
-componentsRoutes.get("/components/:id", (req, res) => {
-  findComponentMethodsController.findById(req, res);
+componentsRoutes.get("/components/:id", (req, res, next) => {
+  findComponentMethodsController.findById(req, res, next);
 });
 
-componentsRoutes.get("/components", (req, res) => {
-  findComponentMethodsController.findAll(req, res);
+componentsRoutes.get("/components", (req, res, next) => {
+  findComponentMethodsController.findAll(req, res, next);
 });
 
-componentsRoutes.put("/components/:id", (req, res) => {
-  updateComponentController.handle(req, res);
+componentsRoutes.put("/components/:id", (req, res, next) => {
+  updateComponentController.handle(req, res, next);
 });
 
-componentsRoutes.delete("/components/:id", (req, res) => {
-  deleteComponentController.handle(req, res);
+componentsRoutes.delete("/components/:id", (req, res, next) => {
+  deleteComponentController.handle(req, res, next);
 });
 
 export { componentsRoutes };

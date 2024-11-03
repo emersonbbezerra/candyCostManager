@@ -61,10 +61,9 @@ export class MongoProductsRepository implements IProductsRepository {
           unitOfMeasure: 1,
           productionCostRatio: 1,
           salePrice: 1,
+          isComponent: 1,
           createdAt: 1,
           updatedAt: 1,
-          isComponent: 1,
-          usedInProducts: 1,
         },
       },
     ]).exec();
@@ -102,10 +101,9 @@ export class MongoProductsRepository implements IProductsRepository {
           unitOfMeasure: 1,
           productionCostRatio: 1,
           salePrice: 1,
+          isComponent: 1,
           createdAt: 1,
           updatedAt: 1,
-          isComponent: 1,
-          usedInProducts: 1,
         },
       },
     ]).exec();

@@ -1,6 +1,6 @@
 import { IProductsRepository } from "../../../repositories/IProductsRepository";
 import { Product } from "../../../entities/Product";
-import { HttpException } from "../../../types/HttpException";
+import { HttpException } from "../../../utils/HttpException";
 
 export class FindProductMethodsUseCase {
   constructor(private productsRepository: IProductsRepository) {}
