@@ -1,14 +1,19 @@
-[NODEJS__BADGE]: https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white
-[TYPESCRIPT__BADGE]: https://img.shields.io/badge/typescript-D4FAFF?style=for-the-badge&logo=typescript
-[EXPRESS__BADGE]: https://img.shields.io/badge/express-005CFE?style=for-the-badge&logo=express
-[MONGO_BADGE]: https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white
-
 <h1 align="center" style="font-weight: bold;">CandyCostManager 💻</h1>
 
-![nodejs][NODEJS__BADGE]
-![typescript][TYPESCRIPT__BADGE]
-![express][EXPRESS__BADGE]
-![mongo][MONGO_BADGE]
+<p align="center">
+  <a href="https://nodejs.org/en/">
+    <img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js Badge">
+  </a>
+  <a href="https://www.typescriptlang.org/">
+    <img src="https://img.shields.io/badge/typescript-D4FAFF?style=for-the-badge&logo=typescript" alt="TypeScript Badge">
+  </a>
+  <a href="https://expressjs.com/">
+    <img src="https://img.shields.io/badge/express-005CFE?style=for-the-badge&logo=express" alt="Express Badge">
+  </a>
+  <a href="https://www.mongodb.com/">
+    <img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Badge">
+  </a>
+</p>
 
 <p align="center">
  <a href="#started">Getting Started</a> • 
