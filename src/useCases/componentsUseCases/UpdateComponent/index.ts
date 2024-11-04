@@ -2,11 +2,11 @@ import { MongoComponentsRepository } from "../../../repositories/implementations
 import { MongoProductsRepository } from "../../../repositories/implementations/MongoProductsRepository";
 import { UpdateComponentUseCase } from "./UpdateComponentUseCase";
 import { UpdateComponentController } from "./UpdateComponentController";
-import { ProductCostUpdateService } from "../../../services/ProductCostUpdateService";
+import { ComponentCostUpdateService } from "../../../services/component/ComponentCostUpdateService";
 
 const mongoComponentsRepository = new MongoComponentsRepository();
 const mongoProductsRepository = new MongoProductsRepository();
-const productCostUpdateService = new ProductCostUpdateService(
+const productCostUpdateService = new ComponentCostUpdateService(
   mongoProductsRepository
 );
 
