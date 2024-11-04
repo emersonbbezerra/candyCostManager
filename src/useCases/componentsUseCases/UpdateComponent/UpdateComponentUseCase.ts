@@ -2,12 +2,12 @@ import { IComponentsRepository } from "../../../repositories/IComponentsReposito
 import { Component } from "../../../entities/Component";
 import { HttpException } from "../../../utils/HttpException";
 import { componentSchema } from "../../../utils/componentUtils";
-import { ProductCostUpdateService } from "../../../services/ProductCostUpdateService";
+import { ComponentCostUpdateService } from "../../../services/component/ComponentCostUpdateService";
 
 export class UpdateComponentUseCase {
   constructor(
     private componentsRepository: IComponentsRepository,
-    private productCostUpdateService: ProductCostUpdateService
+    private productCostUpdateService: ComponentCostUpdateService
   ) {}
 
   async execute(
