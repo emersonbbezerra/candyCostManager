@@ -1,4 +1,7 @@
-import { IProductsRepository } from "../../../repositories/IProductsRepository";
+import {
+  IProductsRepository,
+  FindAllProductsResult,
+} from "../../../repositories/IProductsRepository";
 import { Product } from "../../../entities/Product";
 import { UpdateProductUseCase } from "./UpdateProductUseCase";
 import { HttpException } from "../../../utils/HttpException";
@@ -30,9 +33,11 @@ export class ProductUpdateManager {
     };
 
     try {
-      const allProducts = await this.productsRepository.findAll();
-      const dependentProducts = allProducts.filter((product) =>
-        product.components.some((ing) => ing.componentId === updatedProductId)
+      const { products: allProducts } = await this.productsRepository.findAll();
+      const dependentProducts = allProducts.filter((product: Product) =>
+        product.components.some(
+          (component) => component.componentId === updatedProductId
+        )
       );
 
       for (const product of dependentProducts) {

@@ -3,7 +3,12 @@ import { HttpException } from "../utils/HttpException";
 import mongoose from "mongoose";
 import { ZodError } from "zod";
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
+export const errorHandlerMiddleware: ErrorRequestHandler = (
+  err,
+  req,
+  res,
+  _next
+) => {
   console.error("[Error]", {
     name: err.name,
     message: err.message,
