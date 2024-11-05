@@ -9,32 +9,24 @@ export class FindProductMethodsController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void> {
+  ): Promise<Response | void> {
     try {
-      const categoryParam = req.query.category as string | undefined;
-      const category = categoryParam ? capitalize(categoryParam) : undefined;
-
-      const page = Math.max(1, Number(req.query.page) || 1);
-      const perPage = Math.min(
-        100,
-        Math.max(1, Number(req.query.perPage) || 10)
-      );
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const category = req.query.category as string;
 
       const result = await this.findProductMethodsUseCase.findAll({
-        category,
         page,
-        perPage,
+        limit,
+        category,
       });
 
-      res.status(200).json({
-        data: result.products,
+      return res.status(200).json({
+        products: result.products,
         pagination: {
           total: result.total,
-          page,
-          perPage,
-          totalPages: Math.ceil(result.total / perPage),
-          hasNext: page * perPage < result.total,
-          hasPrev: page > 1,
+          totalPages: result.totalPages,
+          currentPage: result.currentPage,
         },
       });
     } catch (error) {

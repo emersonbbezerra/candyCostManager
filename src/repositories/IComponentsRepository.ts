@@ -1,5 +1,18 @@
 import { Component } from "../entities/Component";
 
+export interface FindAllComponentsOptions {
+  page?: number;
+  limit?: number;
+  category?: string;
+}
+
+export interface FindAllComponentsResult {
+  components: Component[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+}
+
 export interface IComponentsRepository {
   findByNameAndManufacturer(
     name: string,
@@ -8,14 +21,7 @@ export interface IComponentsRepository {
   findByPartialName(name: string): Promise<Component[]>;
   save(component: Component): Promise<void>;
   findById(id: string): Promise<Component | null>;
-  findAll(params: {
-    category?: string;
-    page: number;
-    perPage: number;
-  }): Promise<{
-    components: Component[];
-    total: number;
-  }>;
+  findAll(options?: FindAllComponentsOptions): Promise<FindAllComponentsResult>;
   update(id: string, component: Partial<Component>): Promise<Component | null>;
   delete(id: string): Promise<boolean>;
 }

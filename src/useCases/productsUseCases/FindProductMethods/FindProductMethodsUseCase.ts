@@ -1,19 +1,22 @@
-import { IProductsRepository } from "../../../repositories/IProductsRepository";
+import {
+  FindAllProductsOptions,
+  FindAllProductsResult,
+  IProductsRepository,
+} from "../../../repositories/IProductsRepository";
 import { Product } from "../../../entities/Product";
 import { HttpException } from "../../../utils/HttpException";
 
 export class FindProductMethodsUseCase {
   constructor(private productsRepository: IProductsRepository) {}
 
-  async findAll(params: {
-    category?: string;
-    page: number;
-    perPage: number;
-  }): Promise<{
-    products: Product[];
-    total: number;
-  }> {
-    return this.productsRepository.findAll(params);
+  async findAll(
+    params: FindAllProductsOptions = {}
+  ): Promise<FindAllProductsResult> {
+    return this.productsRepository.findAll({
+      page: params.page,
+      limit: params.limit,
+      category: params.category,
+    });
   }
 
   async findById(id: string): Promise<Product | null> {

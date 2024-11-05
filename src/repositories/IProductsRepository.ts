@@ -1,5 +1,18 @@
 import { Product } from "../entities/Product";
 
+export interface FindAllProductsOptions {
+  page?: number;
+  limit?: number;
+  category?: string;
+}
+
+export interface FindAllProductsResult {
+  products: Product[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+}
+
 export interface IProductsRepository {
   findByNameAndCategory(
     name: string,
@@ -8,14 +21,7 @@ export interface IProductsRepository {
   findByPartialName(name: string): Promise<Product[]>;
   save(product: Product): Promise<Product>;
   findById(id: string): Promise<Product | null>;
-  findAll(params: {
-    category?: string;
-    page: number;
-    perPage: number;
-  }): Promise<{
-    products: Product[];
-    total: number;
-  }>;
+  findAll(options?: FindAllProductsOptions): Promise<FindAllProductsResult>;
   update(id: string, product: Product): Promise<Partial<Product> | null>;
   delete(id: string): Promise<boolean>;
 }

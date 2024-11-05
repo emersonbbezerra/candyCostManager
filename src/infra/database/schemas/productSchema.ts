@@ -24,4 +24,6 @@ export const productSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
+productSchema.index({ category: 1, name: 1 });
+
 export const ProductMongoose = mongoose.model("Product", productSchema);

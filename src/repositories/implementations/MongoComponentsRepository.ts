@@ -1,6 +1,10 @@
 import { Component } from "../../entities/Component";
 import { ComponentMongoose } from "../../infra/database/schemas/componentSchema";
-import { IComponentsRepository } from "../IComponentsRepository";
+import {
+  FindAllComponentsOptions,
+  FindAllComponentsResult,
+  IComponentsRepository,
+} from "../IComponentsRepository";
 import { convertToComponent } from "../../utils/componentUtils";
 
 export class MongoComponentsRepository implements IComponentsRepository {
@@ -36,31 +40,34 @@ export class MongoComponentsRepository implements IComponentsRepository {
     return componentDoc ? convertToComponent(componentDoc) : null;
   }
 
-  async findAll(params: {
-    category?: string;
-    page: number;
-    perPage: number;
-  }): Promise<{
-    components: Component[];
-    total: number;
-  }> {
-    let query = {};
-    if (params.category) {
-      query = { category: params.category };
-    }
+  async findAll(
+    options: FindAllComponentsOptions = {}
+  ): Promise<FindAllComponentsResult> {
+    const page = options.page || 1;
+    const limit = options.limit || 10;
+    const skip = (page - 1) * limit;
 
-    const skip = (params.page - 1) * params.perPage;
-    const [components, total] = await Promise.all([
-      ComponentMongoose.find(query)
+    // Construir o filtro
+    const filter: any = {};
+    if (options.category) {
+      filter.category = options.category;
+    }
+    const [components, totalCount] = await Promise.all([
+      ComponentMongoose.find(filter)
+        .sort({ name: 1 })
         .skip(skip)
-        .limit(params.perPage)
-        .lean()
+        .limit(limit)
         .exec(),
-      ComponentMongoose.countDocuments(query),
+      ComponentMongoose.countDocuments(filter),
     ]);
+
+    const totalPages = Math.ceil(totalCount / limit);
+
     return {
-      components: components.map((doc) => convertToComponent(doc)),
-      total,
+      components: components.map(convertToComponent),
+      total: totalCount,
+      totalPages,
+      currentPage: page,
     };
   }
 
