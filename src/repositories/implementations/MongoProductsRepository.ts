@@ -1,6 +1,10 @@
 import { Product } from "../../entities/Product";
 import { ProductMongoose } from "../../infra/database/schemas/productSchema";
-import { IProductsRepository } from "../IProductsRepository";
+import {
+  FindAllProductsOptions,
+  FindAllProductsResult,
+  IProductsRepository,
+} from "../IProductsRepository";
 import { convertToProduct } from "../../utils/productUtils";
 import mongoose from "mongoose";
 
@@ -71,18 +75,23 @@ export class MongoProductsRepository implements IProductsRepository {
     return productDocs.length > 0 ? convertToProduct(productDocs[0]) : null;
   }
 
-  async findAll(params: {
-    category?: string;
-    page: number;
-    perPage: number;
-  }): Promise<{ products: Product[]; total: number }> {
-    try {
-      const matchStage = params.category
-        ? { $match: { category: params.category } }
-        : { $match: {} };
+  async findAll(
+    options: FindAllProductsOptions = {}
+  ): Promise<FindAllProductsResult> {
+    const page = options.page || 1;
+    const limit = options.limit || 10;
+    const skip = (page - 1) * limit;
 
-      const pipeline = [
-        matchStage,
+    // Construir o filtro
+    const filter: any = {};
+    if (options.category) {
+      filter.category = options.category;
+    }
+
+    // Fazer a agregação
+    const [products, totalCount] = await Promise.all([
+      ProductMongoose.aggregate([
+        { $match: filter },
         {
           $lookup: {
             from: "components",
@@ -99,6 +108,9 @@ export class MongoProductsRepository implements IProductsRepository {
             as: "productDetails",
           },
         },
+        { $sort: { name: 1 } },
+        { $skip: skip },
+        { $limit: limit },
         {
           $project: {
             id: { $toString: "$_id" },
@@ -116,32 +128,18 @@ export class MongoProductsRepository implements IProductsRepository {
             updatedAt: 1,
           },
         },
+      ]).exec(),
+      ProductMongoose.countDocuments(filter),
+    ]);
 
-        { $skip: (params.page - 1) * params.perPage },
-        { $limit: params.perPage },
-      ];
+    const totalPages = Math.ceil(totalCount / limit);
 
-      const countPipeline = [
-        matchStage,
-        {
-          $count: "total",
-        },
-      ];
-
-      const [products, countResult] = await Promise.all([
-        ProductMongoose.aggregate(pipeline).exec(),
-        ProductMongoose.aggregate(countPipeline).exec(),
-      ]);
-
-      const total = countResult[0]?.total || 0;
-
-      return {
-        products: products.map(convertToProduct),
-        total,
-      };
-    } catch (error) {
-      throw new Error(`Failed to fetch products: ${error}`);
-    }
+    return {
+      products: products.map(convertToProduct),
+      total: totalCount,
+      totalPages,
+      currentPage: page,
+    };
   }
 
   async update(id: string, product: Product): Promise<Partial<Product> | null> {

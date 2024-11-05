@@ -1,19 +1,22 @@
-import { IComponentsRepository } from "../../../repositories/IComponentsRepository";
+import {
+  FindAllComponentsOptions,
+  FindAllComponentsResult,
+  IComponentsRepository,
+} from "../../../repositories/IComponentsRepository";
 import { Component } from "../../../entities/Component";
 import { HttpException } from "../../../utils/HttpException";
 
 export class FindComponentMethodsUseCase {
   constructor(private componentsRepository: IComponentsRepository) {}
 
-  async findAll(params: {
-    category?: string;
-    page: number;
-    perPage: number;
-  }): Promise<{
-    components: Component[];
-    total: number;
-  }> {
-    return await this.componentsRepository.findAll(params);
+  async findAll(
+    params: FindAllComponentsOptions = {}
+  ): Promise<FindAllComponentsResult> {
+    return await this.componentsRepository.findAll({
+      page: params.page,
+      limit: params.limit,
+      category: params.category,
+    });
   }
 
   async findById(id: string): Promise<Component | null> {

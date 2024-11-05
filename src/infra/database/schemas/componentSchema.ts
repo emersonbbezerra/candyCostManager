@@ -11,4 +11,6 @@ export const componentSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
+componentSchema.index({ category: 1, name: 1 });
+
 export const ComponentMongoose = mongoose.model("components", componentSchema);
