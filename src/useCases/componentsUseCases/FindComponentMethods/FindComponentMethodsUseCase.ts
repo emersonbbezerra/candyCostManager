@@ -5,8 +5,15 @@ import { HttpException } from "../../../utils/HttpException";
 export class FindComponentMethodsUseCase {
   constructor(private componentsRepository: IComponentsRepository) {}
 
-  async findAll(): Promise<Component[]> {
-    return await this.componentsRepository.findAll();
+  async findAll(params: {
+    category?: string;
+    page: number;
+    perPage: number;
+  }): Promise<{
+    components: Component[];
+    total: number;
+  }> {
+    return await this.componentsRepository.findAll(params);
   }
 
   async findById(id: string): Promise<Component | null> {

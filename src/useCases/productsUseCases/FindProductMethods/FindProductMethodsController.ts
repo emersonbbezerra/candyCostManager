@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { FindProductMethodsUseCase } from "./FindProductMethodsUseCase";
+import { capitalize } from "../../../utils/stringUtils";
 
 export class FindProductMethodsController {
   constructor(private findProductMethodsUseCase: FindProductMethodsUseCase) {}
@@ -10,8 +11,32 @@ export class FindProductMethodsController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const products = await this.findProductMethodsUseCase.findAll();
-      res.status(200).json(products);
+      const categoryParam = req.query.category as string | undefined;
+      const category = categoryParam ? capitalize(categoryParam) : undefined;
+
+      const page = Math.max(1, Number(req.query.page) || 1);
+      const perPage = Math.min(
+        100,
+        Math.max(1, Number(req.query.perPage) || 10)
+      );
+
+      const result = await this.findProductMethodsUseCase.findAll({
+        category,
+        page,
+        perPage,
+      });
+
+      res.status(200).json({
+        data: result.products,
+        pagination: {
+          total: result.total,
+          page,
+          perPage,
+          totalPages: Math.ceil(result.total / perPage),
+          hasNext: page * perPage < result.total,
+          hasPrev: page > 1,
+        },
+      });
     } catch (error) {
       next(error);
     }

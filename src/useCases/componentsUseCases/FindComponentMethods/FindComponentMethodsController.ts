@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { FindComponentMethodsUseCase } from "./FindComponentMethodsUseCase";
+import { capitalize } from "../../../utils/stringUtils";
 
 export class FindComponentMethodsController {
   constructor(
@@ -12,8 +13,27 @@ export class FindComponentMethodsController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const components = await this.findComponentMethodsUseCase.findAll();
-      res.status(200).json(components);
+      const categoryParam = req.query.category as string | undefined;
+      const category = categoryParam ? capitalize(categoryParam) : undefined;
+      const page = Number(req.query.page) || 1;
+      const perPage = Number(req.query.perPage) || 10;
+
+      const result = await this.findComponentMethodsUseCase.findAll({
+        category,
+        page,
+        perPage,
+      });
+      res.status(200).json({
+        data: result.components,
+        pagination: {
+          total: result.total,
+          page,
+          perPage,
+          totalPages: Math.ceil(result.total / perPage),
+          hasNext: page * perPage < result.total,
+          hasPrev: page > 1,
+        },
+      });
     } catch (error) {
       next(error);
     }

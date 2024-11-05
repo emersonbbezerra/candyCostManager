@@ -71,44 +71,77 @@ export class MongoProductsRepository implements IProductsRepository {
     return productDocs.length > 0 ? convertToProduct(productDocs[0]) : null;
   }
 
-  async findAll(): Promise<Product[]> {
-    const productDocs = await ProductMongoose.aggregate([
-      {
-        $lookup: {
-          from: "components",
-          localField: "components.component",
-          foreignField: "_id",
-          as: "componentDetails",
-        },
-      },
-      {
-        $lookup: {
-          from: "products",
-          localField: "components.component",
-          foreignField: "_id",
-          as: "productDetails",
-        },
-      },
-      {
-        $project: {
-          id: { $toString: "$_id" },
-          name: 1,
-          description: 1,
-          category: 1,
-          components: 1,
-          productionCost: 1,
-          yield: 1,
-          unitOfMeasure: 1,
-          productionCostRatio: 1,
-          salePrice: 1,
-          isComponent: 1,
-          createdAt: 1,
-          updatedAt: 1,
-        },
-      },
-    ]).exec();
+  async findAll(params: {
+    category?: string;
+    page: number;
+    perPage: number;
+  }): Promise<{ products: Product[]; total: number }> {
+    try {
+      const matchStage = params.category
+        ? { $match: { category: params.category } }
+        : { $match: {} };
 
-    return productDocs.map(convertToProduct);
+      const pipeline = [
+        matchStage,
+        {
+          $lookup: {
+            from: "components",
+            localField: "components.component",
+            foreignField: "_id",
+            as: "componentDetails",
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "components.component",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+        {
+          $project: {
+            id: { $toString: "$_id" },
+            name: 1,
+            description: 1,
+            category: 1,
+            components: 1,
+            productionCost: 1,
+            yield: 1,
+            unitOfMeasure: 1,
+            productionCostRatio: 1,
+            salePrice: 1,
+            isComponent: 1,
+            createdAt: 1,
+            updatedAt: 1,
+          },
+        },
+
+        { $skip: (params.page - 1) * params.perPage },
+        { $limit: params.perPage },
+      ];
+
+      const countPipeline = [
+        matchStage,
+        {
+          $count: "total",
+        },
+      ];
+
+      const [products, countResult] = await Promise.all([
+        ProductMongoose.aggregate(pipeline).exec(),
+        ProductMongoose.aggregate(countPipeline).exec(),
+      ]);
+
+      const total = countResult[0]?.total || 0;
+
+      return {
+        products: products.map(convertToProduct),
+        total,
+      };
+    } catch (error) {
+      throw new Error(`Failed to fetch products: ${error}`);
+    }
   }
 
   async update(id: string, product: Product): Promise<Partial<Product> | null> {

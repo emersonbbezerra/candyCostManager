@@ -8,7 +8,14 @@ export interface IProductsRepository {
   findByPartialName(name: string): Promise<Product[]>;
   save(product: Product): Promise<Product>;
   findById(id: string): Promise<Product | null>;
-  findAll(): Promise<Product[]>;
+  findAll(params: {
+    category?: string;
+    page: number;
+    perPage: number;
+  }): Promise<{
+    products: Product[];
+    total: number;
+  }>;
   update(id: string, product: Product): Promise<Partial<Product> | null>;
   delete(id: string): Promise<boolean>;
 }

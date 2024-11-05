@@ -36,9 +36,32 @@ export class MongoComponentsRepository implements IComponentsRepository {
     return componentDoc ? convertToComponent(componentDoc) : null;
   }
 
-  async findAll(): Promise<Component[]> {
-    const componentDocs = await ComponentMongoose.find().lean().exec();
-    return componentDocs.map((doc) => convertToComponent(doc));
+  async findAll(params: {
+    category?: string;
+    page: number;
+    perPage: number;
+  }): Promise<{
+    components: Component[];
+    total: number;
+  }> {
+    let query = {};
+    if (params.category) {
+      query = { category: params.category };
+    }
+
+    const skip = (params.page - 1) * params.perPage;
+    const [components, total] = await Promise.all([
+      ComponentMongoose.find(query)
+        .skip(skip)
+        .limit(params.perPage)
+        .lean()
+        .exec(),
+      ComponentMongoose.countDocuments(query),
+    ]);
+    return {
+      components: components.map((doc) => convertToComponent(doc)),
+      total,
+    };
   }
 
   async update(
