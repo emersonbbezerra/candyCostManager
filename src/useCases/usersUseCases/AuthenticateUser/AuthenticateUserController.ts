@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
-import { HttpException } from "../../../utils/HttpException";
 
 export class AuthenticateUserController {
   constructor(private authenticateUserUseCase: AuthenticateUserUseCase) {}

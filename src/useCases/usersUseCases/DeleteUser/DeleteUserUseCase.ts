@@ -3,14 +3,14 @@ import { HttpException } from "../../../utils/HttpException";
 import bcrypt from "bcryptjs";
 
 interface DeleteUserRequest {
-  password: string;
+  currentPassword: string;
 }
 
 export class DeleteUserUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   async execute(id: string, data: DeleteUserRequest): Promise<void> {
-    if (!data.password) {
+    if (!data.currentPassword) {
       throw new HttpException(400, "Password is required to delete account");
     }
 
@@ -21,7 +21,10 @@ export class DeleteUserUseCase {
     }
 
     // Verifica se a senha fornecida está correta
-    const isPasswordValid = await bcrypt.compare(data.password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      data.currentPassword,
+      user.password
+    );
     if (!isPasswordValid) {
       throw new HttpException(401, "Invalid password");
     }

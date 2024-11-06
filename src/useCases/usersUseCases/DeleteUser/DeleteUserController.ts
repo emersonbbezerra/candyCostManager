@@ -10,10 +10,10 @@ export class DeleteUserController {
     next: NextFunction
   ): Promise<Response | void> {
     const { id } = req.params;
-    const { password } = req.body;
+    const { currentPassword } = req.body;
 
     try {
-      await this.deleteUserUseCase.execute(id, { password });
+      await this.deleteUserUseCase.execute(id, { currentPassword });
       return res.status(200).send({ message: "User deleted successfully" });
     } catch (error) {
       next(error);

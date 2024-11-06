@@ -75,7 +75,213 @@ The api will start on port 3000.
 
 <h2 id="routes">📍 API Endpoints</h2>
 
-This api covers two route branches: `/components` and `/products`
+This api covers two route branches: `/users`, `/components` and `/products`
+
+<h3 id="users_routes">Users Routes</h3>
+
+​
+| route | description
+|----------------------|-----------------------------------------------------
+| <kbd>POST /users</kbd> | register an user in the database [post details](#post-user)
+| <kbd>POST /users/login</kbd> | authenticate user [response details](#post-user-login)
+| <kbd>PUT /users/:id</kbd> | update the user by id [put details](#put-user)
+| <kbd>DELETE /users/:id</kbd> | delete the user by id [response details](#delete-user)
+
+<h3 id="post-user">POST /users</h3>
+
+**REQUEST**
+
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+**RESPONSE**
+
+```json
+201 Created
+```
+
+```json
+{
+  "message": "User created successfully"
+}
+```
+
+If there is already an user registered with the same email in the database, the API will return the error:
+
+```json
+409 Conflict
+```
+
+```json
+{
+  "status": 409,
+  "message": "User already exists"
+}
+```
+
+<h3 id="post-user-login">POST /users/login</h3>
+
+**REQUEST**
+
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+**RESPONSE**
+
+```json
+200 Ok
+```
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
+  "user": {
+    "email": "john@example.com"
+  }
+}
+```
+
+If the password is incorrect, the API will return the error:
+
+**RESPONSE**
+
+```json
+401 Unauthorized
+```
+
+```json
+{
+  "status": 401,
+  "message": "Invalid credentials"
+}
+```
+
+<h3 id="put-user">PUT /users/672a8f8c4e30e35cfc0f2245</h3>
+
+**REQUEST**
+
+You can update the following data in an user: email and password. It's possible to update just one piece of data at a time or all of the data for an user.
+
+```json
+{
+  "email": "johnsmith@example.com",
+  "currentPassword": "password123"
+}
+```
+
+Or
+
+```json
+{
+  "currentPassword": "password123",
+  "newPassword": "password321"
+}
+```
+
+**RESPONSE**
+
+```
+200 Ok
+```
+
+```json
+{
+  "email": "johnsmith@example.com",
+  "password": "$2a$10$/faw1dxN4oWip9cccvmjXOQmoXxPpNxmpEtiL4DrHJT5dRMkxbVey",
+  "createdAt": "2024-11-06T02:23:17.986Z",
+  "updatedAt": "2024-11-06T02:29:33.677Z"
+}
+```
+
+If the user is not found, the API will return the error:
+
+**RESPONSE**
+
+```
+404 Not Found
+```
+
+```json
+{
+  "status": 404,
+  "message": "User not found"
+}
+```
+
+The password "currentPassword" is mandatory in the request body and if the password is not correct, the API will return the error:
+
+**RESPONSE**
+
+```
+401 Unauthorized
+```
+
+```json
+{
+  "status": 401,
+  "message": "Current password is incorrect"
+}
+```
+
+<h3 id="delete-user">DELETE /users/672a8f8c4e30e35cfc0f2245</h3>
+
+**REQUEST**
+
+```json
+{
+  "currentPassword": "password321"
+}
+```
+
+**RESPONSE**
+
+```
+200 Ok
+```
+
+```json
+{
+  "message": "User deleted successfully"
+}
+```
+
+If the user with the specified ID is not found, the API will return the error:
+
+**RESPONSE**
+
+```
+404 Not Found
+```
+
+```json
+{
+  "status": 404,
+  "message": "User not found"
+}
+```
+
+The password "currentPassword" is mandatory in the request body and if the password is not correct, the API will return the error:
+
+**RESPONSE**
+
+```
+400 Bad Request
+```
+
+```json
+{
+  "status": 400,
+  "message": "Password is required to delete account"
+}
+```
 
 <h3 id="ingredients_routes">Ingredients Routes</h3>
 
