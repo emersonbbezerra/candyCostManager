@@ -1,4 +1,7 @@
-import { IProductsRepository } from "../../repositories/IProductsRepository";
+import {
+  FindAllProductsResult,
+  IProductsRepository,
+} from "../../repositories/IProductsRepository";
 import { Product } from "../../entities/Product";
 import { ComponentMongoose } from "../../infra/database/schemas/componentSchema";
 import { HttpException } from "../../utils/HttpException";
@@ -10,7 +13,9 @@ export class ComponentCostUpdateService {
     updatedComponentId: string,
     newPrice: number
   ): Promise<void> {
-    const allProducts = await this.productsRepository.findAll();
+    const result: FindAllProductsResult =
+      await this.productsRepository.findAll();
+    const allProducts = result.products;
     const componentPrices = new Map<string, number>();
 
     // Buscar todos os componentes e seus preços
@@ -67,7 +72,7 @@ export class ComponentCostUpdateService {
       }
 
       // Atualizar produtos que usam este como componente
-      const productsUsingThis = allProducts.filter((p) =>
+      const productsUsingThis = allProducts.filter((p: Product) =>
         p.components.some((i) => i.componentId === updatedProduct.id)
       );
 
@@ -77,7 +82,7 @@ export class ComponentCostUpdateService {
     };
 
     // Iniciar a atualização em cascata
-    const productsUsingUpdatedComponent = allProducts.filter((p) =>
+    const productsUsingUpdatedComponent = allProducts.filter((p: Product) =>
       p.components.some((i) => i.componentId === updatedComponentId)
     );
 
