@@ -9,6 +9,7 @@ const app = express();
 const corsOptions = {
   origin: process.env.URL_API,
   methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 200,
 };
 
