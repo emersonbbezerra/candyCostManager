@@ -13,8 +13,8 @@ const corsOptions = {
 };
 
 app.use(express.json());
-app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
 app.use(userRoutes);
 app.use(componentsRoutes);
 app.use(productsRouter);
