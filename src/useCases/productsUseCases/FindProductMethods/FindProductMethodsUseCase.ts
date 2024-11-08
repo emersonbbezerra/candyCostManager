@@ -1,10 +1,10 @@
+import { Product } from '../../../entities/Product';
 import {
   FindAllProductsOptions,
   FindAllProductsResult,
   IProductsRepository,
-} from "../../../repositories/IProductsRepository";
-import { Product } from "../../../entities/Product";
-import { HttpException } from "../../../utils/HttpException";
+} from '../../../repositories/IProductsRepository';
+import { HttpException } from '../../../utils/HttpException';
 
 export class FindProductMethodsUseCase {
   constructor(private productsRepository: IProductsRepository) {}
@@ -22,16 +22,12 @@ export class FindProductMethodsUseCase {
   async findById(id: string): Promise<Product | null> {
     const result = await this.productsRepository.findById(id);
     if (!result) {
-      throw new HttpException(404, "Product not found");
+      throw new HttpException(404, 'Product not found');
     }
     return result;
   }
 
   async findByPartialName(name: string): Promise<Product[]> {
-    try {
-      return await this.productsRepository.findByPartialName(name);
-    } catch (error) {
-      throw error;
-    }
+    return await this.productsRepository.findByPartialName(name);
   }
 }

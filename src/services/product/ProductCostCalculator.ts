@@ -1,6 +1,6 @@
-import { ComponentMongoose as Component } from "../../infra/database/schemas/componentSchema";
-import { ProductMongoose } from "../../infra/database/schemas/productSchema";
-import { HttpException } from "../../utils/HttpException";
+import { ComponentMongoose as Component } from '../../infra/database/schemas/componentSchema';
+import { ProductMongoose } from '../../infra/database/schemas/productSchema';
+import { HttpException } from '../../utils/HttpException';
 
 export class ProductCostCalculator {
   async calculateComponentCost(
@@ -8,7 +8,7 @@ export class ProductCostCalculator {
     quantity: number
   ): Promise<number> {
     if (!componentId) {
-      throw new HttpException(422, "Component ID is required");
+      throw new HttpException(422, 'Component ID is required');
     }
 
     // Primeiro verifica se é um produto-componente

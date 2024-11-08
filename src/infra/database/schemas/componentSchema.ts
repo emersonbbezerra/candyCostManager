@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const componentSchema = new mongoose.Schema({
   name: String,
@@ -13,4 +13,4 @@ export const componentSchema = new mongoose.Schema({
 
 componentSchema.index({ category: 1, name: 1 });
 
-export const ComponentMongoose = mongoose.model("components", componentSchema);
+export const ComponentMongoose = mongoose.model('components', componentSchema);

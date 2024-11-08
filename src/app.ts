@@ -1,17 +1,17 @@
-import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-import { componentsRoutes } from "./routes/componentRoutes";
-import { productsRouter } from "./routes/productRoutes";
-import { userRoutes } from "./routes/userRoutes";
-import { errorHandlerMiddleware } from "./middlewares/errorHandlerMiddleware";
+import dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
+import { componentsRoutes } from './routes/componentRoutes';
+import { productsRouter } from './routes/productRoutes';
+import { userRoutes } from './routes/userRoutes';
+import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware';
 
 dotenv.config();
 const app = express();
 const corsOptions = {
   origin: process.env.URL_FRONTEND,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
   preflightContinue: false,
   optionsSuccessStatus: 204,

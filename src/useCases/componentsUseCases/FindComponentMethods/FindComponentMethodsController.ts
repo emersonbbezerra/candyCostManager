@@ -1,6 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { FindComponentMethodsUseCase } from "./FindComponentMethodsUseCase";
-import { capitalize } from "../../../utils/stringUtils";
+import { NextFunction, Request, Response } from 'express';
+import { FindComponentMethodsUseCase } from './FindComponentMethodsUseCase';
 
 export class FindComponentMethodsController {
   constructor(

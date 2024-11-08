@@ -1,6 +1,6 @@
-import { MongoProductsRepository } from "../../../repositories/implementations/MongoProductsRepository";
-import { CreateProductUseCase } from "./CreateProductUseCase";
-import { CreateProductController } from "./CreateProductController";
+import { MongoProductsRepository } from '../../../repositories/implementations/MongoProductsRepository';
+import { CreateProductUseCase } from './CreateProductUseCase';
+import { CreateProductController } from './CreateProductController';
 
 const productsRepository = new MongoProductsRepository();
 const createProductUseCase = new CreateProductUseCase(productsRepository);

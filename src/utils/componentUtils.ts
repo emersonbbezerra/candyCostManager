@@ -84,6 +84,7 @@ export const componentSchema = z.object({
     .nullable(),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const convertToComponent = (componentDoc: any): Component => {
   const component = new Component(
     {

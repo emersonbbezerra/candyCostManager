@@ -1,11 +1,11 @@
-import { Component } from "../../entities/Component";
-import { ComponentMongoose } from "../../infra/database/schemas/componentSchema";
+import { Component } from '../../entities/Component';
+import { ComponentMongoose } from '../../infra/database/schemas/componentSchema';
+import { convertToComponent } from '../../utils/componentUtils';
 import {
   FindAllComponentsOptions,
   FindAllComponentsResult,
   IComponentsRepository,
-} from "../IComponentsRepository";
-import { convertToComponent } from "../../utils/componentUtils";
+} from '../IComponentsRepository';
 
 export class MongoComponentsRepository implements IComponentsRepository {
   async findByNameAndManufacturer(
@@ -23,7 +23,7 @@ export class MongoComponentsRepository implements IComponentsRepository {
 
   async findByPartialName(name: string): Promise<Component[]> {
     const components = await ComponentMongoose.find({
-      name: { $regex: name, $options: "i" },
+      name: { $regex: name, $options: 'i' },
     })
       .lean()
       .exec();
@@ -48,6 +48,7 @@ export class MongoComponentsRepository implements IComponentsRepository {
     const skip = (page - 1) * limit;
 
     // Construir o filtro
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const filter: any = {};
     if (options.category) {
       filter.category = options.category;

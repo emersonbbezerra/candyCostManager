@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import { DeleteUserUseCase } from "./DeleteUserUseCase";
+import { NextFunction, Request, Response } from 'express';
+import { DeleteUserUseCase } from './DeleteUserUseCase';
 
 export class DeleteUserController {
   constructor(private deleteUserUseCase: DeleteUserUseCase) {}
@@ -14,7 +14,7 @@ export class DeleteUserController {
 
     try {
       await this.deleteUserUseCase.execute(id, { currentPassword });
-      return res.status(200).send({ message: "User deleted successfully" });
+      return res.status(200).send({ message: 'User deleted successfully' });
     } catch (error) {
       next(error);
     }

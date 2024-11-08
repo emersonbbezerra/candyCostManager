@@ -1,6 +1,6 @@
-import { MongoUsersRepository } from "../../../repositories/implementations/MongoUsersRepository";
-import { FindUserMethodsUseCase } from "./FindUserMethodsUseCase";
-import { FindUserMethodsController } from "./FindUserMethodsController";
+import { MongoUsersRepository } from '../../../repositories/implementations/MongoUsersRepository';
+import { FindUserMethodsUseCase } from './FindUserMethodsUseCase';
+import { FindUserMethodsController } from './FindUserMethodsController';
 
 const usersRepository = new MongoUsersRepository();
 const findUserMethodsUseCase = new FindUserMethodsUseCase(usersRepository);

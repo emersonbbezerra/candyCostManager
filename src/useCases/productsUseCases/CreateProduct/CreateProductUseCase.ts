@@ -1,10 +1,10 @@
-import { IProductsRepository } from "../../../repositories/IProductsRepository";
-import { IProductDTO } from "../../../dtos/ProductDTO";
-import { Product } from "../../../entities/Product";
-import { ComponentMongoose as Component } from "../../../infra/database/schemas/componentSchema";
-import { ProductMongoose } from "../../../infra/database/schemas/productSchema";
-import { HttpException } from "../../../utils/HttpException";
-import { productSchema } from "../../../utils/productUtils";
+import { IProductsRepository } from '../../../repositories/IProductsRepository';
+import { IProductDTO } from '../../../dtos/ProductDTO';
+import { Product } from '../../../entities/Product';
+import { ComponentMongoose as Component } from '../../../infra/database/schemas/componentSchema';
+import { ProductMongoose } from '../../../infra/database/schemas/productSchema';
+import { HttpException } from '../../../utils/HttpException';
+import { productSchema } from '../../../utils/productUtils';
 
 export class CreateProductUseCase {
   constructor(private productsRepository: IProductsRepository) {}
@@ -19,14 +19,14 @@ export class CreateProductUseCase {
     if (existingProduct) {
       throw new HttpException(
         409,
-        "Product with this name and category already exists"
+        'Product with this name and category already exists'
       );
     }
 
     let productionCost = 0;
     const componentIdsWithQuantities = [];
 
-    for (let item of parsedData.components) {
+    for (const item of parsedData.components) {
       const component = await Component.findById(item.componentId)
         .lean()
         .exec();

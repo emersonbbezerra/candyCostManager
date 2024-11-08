@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import { UpdateUserUseCase } from "./UpdateUserUseCase";
+import { NextFunction, Request, Response } from 'express';
+import { UpdateUserUseCase } from './UpdateUserUseCase';
 
 export class UpdateUserController {
   constructor(private updateUserUseCase: UpdateUserUseCase) {}

@@ -1,8 +1,8 @@
 import pluginJs from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin'; // Corrigido para o plugin correto
-import { eslintConfigPrettier } from 'eslint-config-prettier'; // Para desativar regras conflitantes com o Prettier
-import pluginReact from 'eslint-plugin-react';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier'; // Importa o plugin prettier
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -14,14 +14,11 @@ export default [
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  eslintConfigPrettier, // Desativa regras que podem entrar em conflito com o Prettier
   {
-    // Regras do Prettier
-    plugins: ['prettier'],
-    extends: [
-      'plugin:prettier/recommended', // Usa a configuração recomendada do Prettier
-      ...eslintConfigPrettier, // Desativa regras que podem entrar em conflito com o Prettier
-    ],
+    plugins: {
+      prettier: prettierPlugin, // Configuração do plugin prettier no formato plano
+    },
     rules: {
       'prettier/prettier': 'error', // Ativa o Prettier como um erro de linting
     },

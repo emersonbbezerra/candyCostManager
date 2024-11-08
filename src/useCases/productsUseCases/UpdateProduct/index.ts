@@ -1,9 +1,9 @@
 // src/useCases/productsUseCases/UpdateProduct/index.ts
 
-import { MongoProductsRepository } from "../../../repositories/implementations/MongoProductsRepository";
-import { UpdateProductUseCase } from "./UpdateProductUseCase";
-import { UpdateProductController } from "./UpdateProductController";
-import { ProductUpdateManager } from "./ProductUpdateManager";
+import { MongoProductsRepository } from '../../../repositories/implementations/MongoProductsRepository';
+import { UpdateProductUseCase } from './UpdateProductUseCase';
+import { UpdateProductController } from './UpdateProductController';
+import { ProductUpdateManager } from './ProductUpdateManager';
 
 // Criar instância do repositório
 const productsRepository = new MongoProductsRepository();

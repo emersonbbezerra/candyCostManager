@@ -1,15 +1,16 @@
-import { ErrorRequestHandler } from "express";
-import { HttpException } from "../utils/HttpException";
-import mongoose from "mongoose";
-import { ZodError } from "zod";
+import { ErrorRequestHandler } from 'express';
+import mongoose from 'mongoose';
+import { ZodError } from 'zod';
+import { HttpException } from '../utils/HttpException';
 
 export const errorHandlerMiddleware: ErrorRequestHandler = (
   err,
   req,
   res,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next
 ) => {
-  console.error("[Error]", {
+  console.error('[Error]', {
     name: err.name,
     message: err.message,
     path: req.path,
@@ -25,13 +26,13 @@ export const errorHandlerMiddleware: ErrorRequestHandler = (
   else if (err instanceof mongoose.Error.ValidationError) {
     res.status(400).json({
       status: 400,
-      message: "Validation Error",
+      message: 'Validation Error',
       details: Object.values(err.errors).map((error) => error.message),
     });
   } else if (err instanceof mongoose.Error.CastError) {
     res.status(400).json({
       status: 400,
-      message: "Invalid ID format",
+      message: 'Invalid ID format',
       details: err.message,
     });
   }
@@ -39,7 +40,7 @@ export const errorHandlerMiddleware: ErrorRequestHandler = (
   else if (err instanceof ZodError) {
     res.status(400).json({
       status: 400,
-      message: "Validation Error",
+      message: 'Validation Error',
       details: err.errors,
     });
   }
@@ -47,8 +48,8 @@ export const errorHandlerMiddleware: ErrorRequestHandler = (
   else {
     res.status(500).json({
       status: 500,
-      message: "Internal Server Error",
-      details: process.env.NODE_ENV === "development" ? err.message : undefined,
+      message: 'Internal Server Error',
+      details: process.env.NODE_ENV === 'development' ? err.message : undefined,
     });
   }
 };

@@ -1,6 +1,6 @@
-import { MongoComponentsRepository } from "../../../repositories/implementations/MongoComponentsRepository";
-import { CreateComponentController } from "./CreateComponentController";
-import { CreateComponentUseCase } from "./CreateComponentUseCase";
+import { MongoComponentsRepository } from '../../../repositories/implementations/MongoComponentsRepository';
+import { CreateComponentController } from './CreateComponentController';
+import { CreateComponentUseCase } from './CreateComponentUseCase';
 
 const mongoComponentsRepository = new MongoComponentsRepository();
 

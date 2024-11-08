@@ -1,6 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { FindProductMethodsUseCase } from "./FindProductMethodsUseCase";
-import { capitalize } from "../../../utils/stringUtils";
+import { NextFunction, Request, Response } from 'express';
+import { FindProductMethodsUseCase } from './FindProductMethodsUseCase';
 
 export class FindProductMethodsController {
   constructor(private findProductMethodsUseCase: FindProductMethodsUseCase) {}
@@ -43,7 +42,7 @@ export class FindProductMethodsController {
       const { id } = req.params;
       const product = await this.findProductMethodsUseCase.findById(id);
       if (!product) {
-        res.status(404).json({ message: "Product not found" });
+        res.status(404).json({ message: 'Product not found' });
       }
       res.status(200).json(product);
     } catch (error) {

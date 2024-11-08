@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { DeleteProductUseCase } from "./DeleteProductUseCase";
+import { Request, Response, NextFunction } from 'express';
+import { DeleteProductUseCase } from './DeleteProductUseCase';
 
 export class DeleteProductController {
   constructor(private deleteProductUseCase: DeleteProductUseCase) {}
@@ -8,7 +8,7 @@ export class DeleteProductController {
     try {
       const { id } = req.params;
       await this.deleteProductUseCase.execute(id);
-      res.status(200).json({ message: "Product deleted successfully" });
+      res.status(200).json({ message: 'Product deleted successfully' });
     } catch (error) {
       next(error);
     }

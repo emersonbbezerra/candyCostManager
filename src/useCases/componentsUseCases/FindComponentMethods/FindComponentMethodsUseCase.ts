@@ -1,10 +1,10 @@
+import { Component } from '../../../entities/Component';
 import {
   FindAllComponentsOptions,
   FindAllComponentsResult,
   IComponentsRepository,
-} from "../../../repositories/IComponentsRepository";
-import { Component } from "../../../entities/Component";
-import { HttpException } from "../../../utils/HttpException";
+} from '../../../repositories/IComponentsRepository';
+import { HttpException } from '../../../utils/HttpException';
 
 export class FindComponentMethodsUseCase {
   constructor(private componentsRepository: IComponentsRepository) {}
@@ -22,16 +22,12 @@ export class FindComponentMethodsUseCase {
   async findById(id: string): Promise<Component | null> {
     const result = await this.componentsRepository.findById(id);
     if (!result) {
-      throw new HttpException(404, "Component not found");
+      throw new HttpException(404, 'Component not found');
     }
     return result;
   }
 
   async findByPartialName(name: string): Promise<Component[]> {
-    try {
-      return await this.componentsRepository.findByPartialName(name);
-    } catch (error) {
-      throw error;
-    }
+    return await this.componentsRepository.findByPartialName(name);
   }
 }

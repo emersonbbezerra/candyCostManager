@@ -1,4 +1,4 @@
-import { IComponentInProduct } from "./IComponent";
+import { IComponentInProduct } from './IComponent';
 
 export interface IProduct {
   id?: string;

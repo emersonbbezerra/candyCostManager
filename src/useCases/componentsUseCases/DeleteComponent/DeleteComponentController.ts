@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { DeleteComponentUseCase } from "./DeleteComponentUseCase";
+import { Request, Response, NextFunction } from 'express';
+import { DeleteComponentUseCase } from './DeleteComponentUseCase';
 
 export class DeleteComponentController {
   constructor(private deleteComponentUseCase: DeleteComponentUseCase) {}
@@ -8,7 +8,7 @@ export class DeleteComponentController {
     try {
       const { id } = req.params;
       await this.deleteComponentUseCase.execute(id);
-      res.status(200).json({ message: "Component deleted" });
+      res.status(200).json({ message: 'Component deleted' });
     } catch (error) {
       next(error);
     }

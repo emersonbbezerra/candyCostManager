@@ -1,5 +1,5 @@
-import { ComponentMongoose as Component } from "../../infra/database/schemas/componentSchema";
-import { ProductMongoose } from "../../infra/database/schemas/productSchema";
+import { ComponentMongoose as Component } from '../../infra/database/schemas/componentSchema';
+import { ProductMongoose } from '../../infra/database/schemas/productSchema';
 
 export class ComponentManager {
   async getComponentName(componentId: string): Promise<string | null> {
@@ -18,6 +18,7 @@ export class ComponentManager {
 
   async formatComponents(
     components: { componentId: string; quantity: number }[]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any[]> {
     return Promise.all(
       components.map(async (item) => {

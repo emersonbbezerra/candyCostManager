@@ -1,6 +1,6 @@
-import { MongoComponentsRepository } from "../../../repositories/implementations/MongoComponentsRepository";
-import { FindComponentMethodsUseCase } from "./FindComponentMethodsUseCase";
-import { FindComponentMethodsController } from "./FindComponentMethodsController";
+import { MongoComponentsRepository } from '../../../repositories/implementations/MongoComponentsRepository';
+import { FindComponentMethodsUseCase } from './FindComponentMethodsUseCase';
+import { FindComponentMethodsController } from './FindComponentMethodsController';
 
 const mongoComponentsRepository = new MongoComponentsRepository();
 

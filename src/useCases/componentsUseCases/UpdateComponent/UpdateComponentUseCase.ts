@@ -1,8 +1,8 @@
-import { IComponentsRepository } from "../../../repositories/IComponentsRepository";
-import { Component } from "../../../entities/Component";
-import { HttpException } from "../../../utils/HttpException";
-import { componentSchema } from "../../../utils/componentUtils";
-import { ComponentCostUpdateService } from "../../../services/component/ComponentCostUpdateService";
+import { IComponentsRepository } from '../../../repositories/IComponentsRepository';
+import { Component } from '../../../entities/Component';
+import { HttpException } from '../../../utils/HttpException';
+import { componentSchema } from '../../../utils/componentUtils';
+import { ComponentCostUpdateService } from '../../../services/component/ComponentCostUpdateService';
 
 export class UpdateComponentUseCase {
   constructor(
@@ -16,7 +16,7 @@ export class UpdateComponentUseCase {
   ): Promise<Component | null> {
     const existingComponent = await this.componentsRepository.findById(id);
     if (!existingComponent) {
-      throw new HttpException(404, "Component not found");
+      throw new HttpException(404, 'Component not found');
     }
 
     const parsedData = componentSchema.partial().parse(data);
@@ -37,7 +37,7 @@ export class UpdateComponentUseCase {
       if (duplicateComponent && duplicateComponent.id !== id) {
         throw new HttpException(
           409,
-          "An component with this name and manufacturer already exists"
+          'An component with this name and manufacturer already exists'
         );
       }
     }
@@ -54,7 +54,7 @@ export class UpdateComponentUseCase {
     );
 
     if (!updatedComponent) {
-      throw new HttpException(500, "Failed to update component");
+      throw new HttpException(500, 'Failed to update component');
     }
 
     // Atualiza os custos dos produtos que usam este componente

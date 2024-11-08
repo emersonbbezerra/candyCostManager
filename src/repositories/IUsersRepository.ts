@@ -1,4 +1,4 @@
-import { User } from "../entities/User";
+import { User } from '../entities/User';
 
 export interface IUsersRepository {
   findById(id: string): Promise<User | null>;

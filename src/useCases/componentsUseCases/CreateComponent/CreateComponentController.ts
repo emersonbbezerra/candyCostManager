@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { CreateComponentUseCase } from "./CreateComponentUseCase";
-import { IComponentDTO } from "../../../dtos/ComponentDTO";
+import { Request, Response, NextFunction } from 'express';
+import { CreateComponentUseCase } from './CreateComponentUseCase';
+import { IComponentDTO } from '../../../dtos/ComponentDTO';
 
 export class CreateComponentController {
   constructor(private createComponentUseCase: CreateComponentUseCase) {}
@@ -9,7 +9,7 @@ export class CreateComponentController {
     try {
       const data: IComponentDTO = req.body;
       await this.createComponentUseCase.execute(data);
-      res.status(201).json({ message: "Component created" });
+      res.status(201).json({ message: 'Component created' });
     } catch (error) {
       next(error);
     }

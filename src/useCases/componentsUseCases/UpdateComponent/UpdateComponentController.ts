@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { UpdateComponentUseCase } from "./UpdateComponentUseCase";
-import { Component } from "../../../entities/Component";
+import { Request, Response, NextFunction } from 'express';
+import { UpdateComponentUseCase } from './UpdateComponentUseCase';
+import { Component } from '../../../entities/Component';
 
 export class UpdateComponentController {
   constructor(private updateComponentUseCase: UpdateComponentUseCase) {}
@@ -10,7 +10,7 @@ export class UpdateComponentController {
       const { id } = req.params;
       const data: Partial<Component> = req.body;
       const component = await this.updateComponentUseCase.execute(id, data);
-      res.status(200).json({ message: "Component updated", component });
+      res.status(200).json({ message: 'Component updated', component });
     } catch (error) {
       next(error);
     }

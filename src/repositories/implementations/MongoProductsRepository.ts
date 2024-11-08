@@ -1,12 +1,12 @@
-import { Product } from "../../entities/Product";
-import { ProductMongoose } from "../../infra/database/schemas/productSchema";
+import mongoose from 'mongoose';
+import { Product } from '../../entities/Product';
+import { ProductMongoose } from '../../infra/database/schemas/productSchema';
+import { convertToProduct } from '../../utils/productUtils';
 import {
   FindAllProductsOptions,
   FindAllProductsResult,
   IProductsRepository,
-} from "../IProductsRepository";
-import { convertToProduct } from "../../utils/productUtils";
-import mongoose from "mongoose";
+} from '../IProductsRepository';
 
 export class MongoProductsRepository implements IProductsRepository {
   async findByNameAndCategory(
@@ -21,7 +21,7 @@ export class MongoProductsRepository implements IProductsRepository {
 
   async findByPartialName(name: string): Promise<Product[]> {
     const products = await ProductMongoose.find({
-      name: { $regex: name, $options: "i" },
+      name: { $regex: name, $options: 'i' },
     })
       .lean()
       .exec();
@@ -39,23 +39,23 @@ export class MongoProductsRepository implements IProductsRepository {
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
       {
         $lookup: {
-          from: "components",
-          localField: "components.component",
-          foreignField: "_id",
-          as: "componentDetails",
+          from: 'components',
+          localField: 'components.component',
+          foreignField: '_id',
+          as: 'componentDetails',
         },
       },
       {
         $lookup: {
-          from: "products",
-          localField: "components.component",
-          foreignField: "_id",
-          as: "productDetails",
+          from: 'products',
+          localField: 'components.component',
+          foreignField: '_id',
+          as: 'productDetails',
         },
       },
       {
         $project: {
-          id: { $toString: "$_id" },
+          id: { $toString: '$_id' },
           name: 1,
           description: 1,
           category: 1,
@@ -83,6 +83,7 @@ export class MongoProductsRepository implements IProductsRepository {
     const skip = (page - 1) * limit;
 
     // Construir o filtro
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const filter: any = {};
     if (options.category) {
       filter.category = options.category;
@@ -94,18 +95,18 @@ export class MongoProductsRepository implements IProductsRepository {
         { $match: filter },
         {
           $lookup: {
-            from: "components",
-            localField: "components.component",
-            foreignField: "_id",
-            as: "componentDetails",
+            from: 'components',
+            localField: 'components.component',
+            foreignField: '_id',
+            as: 'componentDetails',
           },
         },
         {
           $lookup: {
-            from: "products",
-            localField: "components.component",
-            foreignField: "_id",
-            as: "productDetails",
+            from: 'products',
+            localField: 'components.component',
+            foreignField: '_id',
+            as: 'productDetails',
           },
         },
         { $sort: { name: 1 } },
@@ -113,7 +114,7 @@ export class MongoProductsRepository implements IProductsRepository {
         { $limit: limit },
         {
           $project: {
-            id: { $toString: "$_id" },
+            id: { $toString: '$_id' },
             name: 1,
             description: 1,
             category: 1,

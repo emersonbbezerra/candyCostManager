@@ -1,10 +1,7 @@
-import {
-  IProductsRepository,
-  FindAllProductsResult,
-} from "../../../repositories/IProductsRepository";
-import { Product } from "../../../entities/Product";
-import { UpdateProductUseCase } from "./UpdateProductUseCase";
-import { HttpException } from "../../../utils/HttpException";
+import { Product } from '../../../entities/Product';
+import { IProductsRepository } from '../../../repositories/IProductsRepository';
+import { HttpException } from '../../../utils/HttpException';
+import { UpdateProductUseCase } from './UpdateProductUseCase';
 
 interface UpdateError {
   productId: string;
@@ -56,7 +53,7 @@ export class ProductUpdateManager {
       throw new HttpException(
         500,
         `Failed to update dependent products: ${
-          error instanceof Error ? error.message : "Unknown error"
+          error instanceof Error ? error.message : 'Unknown error'
         }`
       );
     }
@@ -101,7 +98,7 @@ export class ProductUpdateManager {
     } catch (error) {
       result.errors.push({
         productId: product.id!,
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }

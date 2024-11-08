@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import { FindUserMethodsUseCase } from "./FindUserMethodsUseCase";
+import { NextFunction, Request, Response } from 'express';
+import { FindUserMethodsUseCase } from './FindUserMethodsUseCase';
 
 export class FindUserMethodsController {
   constructor(private findUserMethodsUseCase: FindUserMethodsUseCase) {}

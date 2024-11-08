@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
+import { Request, Response, NextFunction } from 'express';
+import { AuthenticateUserUseCase } from './AuthenticateUserUseCase';
 
 export class AuthenticateUserController {
   constructor(private authenticateUserUseCase: AuthenticateUserUseCase) {}
@@ -14,7 +14,7 @@ export class AuthenticateUserController {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ message: "Email and password are required" });
+        .json({ message: 'Email and password are required' });
     }
 
     try {

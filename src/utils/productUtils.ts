@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod';
 import { Product } from '../entities/Product';
 import { IProduct } from '../interfaces/IProduct';

@@ -22,13 +22,14 @@ export const userSchema = z.object({
     .min(8, { message: 'A senha deve ter pelo menos 8 caracteres.' })
     .max(100, { message: 'A senha não pode ter mais de 100 caracteres.' })
     .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/,
       'A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.'
     ),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const convertToUser = (userDoc: any): User => {
   const user = new User(
     {

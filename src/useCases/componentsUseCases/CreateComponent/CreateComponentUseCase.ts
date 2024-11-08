@@ -1,8 +1,8 @@
-import { IComponentDTO } from "../../../dtos/ComponentDTO";
-import { HttpException } from "../../../utils/HttpException";
-import { IComponentsRepository } from "../../../repositories/IComponentsRepository";
-import { Component } from "../../../entities/Component";
-import { componentSchema } from "../../../utils/componentUtils";
+import { IComponentDTO } from '../../../dtos/ComponentDTO';
+import { HttpException } from '../../../utils/HttpException';
+import { IComponentsRepository } from '../../../repositories/IComponentsRepository';
+import { Component } from '../../../entities/Component';
+import { componentSchema } from '../../../utils/componentUtils';
 
 export class CreateComponentUseCase {
   constructor(private componentsRepository: IComponentsRepository) {}
@@ -18,7 +18,7 @@ export class CreateComponentUseCase {
     if (existingComponent) {
       throw new HttpException(
         409,
-        "Component with this name and manufacturer already exists"
+        'Component with this name and manufacturer already exists'
       );
     }
 

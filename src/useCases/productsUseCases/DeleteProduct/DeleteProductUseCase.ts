@@ -1,5 +1,5 @@
-import { IProductsRepository } from "../../../repositories/IProductsRepository";
-import { HttpException } from "../../../utils/HttpException";
+import { IProductsRepository } from '../../../repositories/IProductsRepository';
+import { HttpException } from '../../../utils/HttpException';
 
 export class DeleteProductUseCase {
   constructor(private productsRepository: IProductsRepository) {}
@@ -7,7 +7,7 @@ export class DeleteProductUseCase {
   async execute(id: string): Promise<void> {
     const deleted = await this.productsRepository.delete(id);
     if (!deleted) {
-      throw new HttpException(404, "Product not found");
+      throw new HttpException(404, 'Product not found');
     }
   }
 }

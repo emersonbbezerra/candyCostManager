@@ -1,11 +1,11 @@
-import { IProductsRepository } from "../../../repositories/IProductsRepository";
-import { IProductDTO } from "../../../dtos/ProductDTO";
-import { Product } from "../../../entities/Product";
-import { HttpException } from "../../../utils/HttpException";
-import { convertToProduct, productSchema } from "../../../utils/productUtils";
-import { ProductUpdateManager } from "./ProductUpdateManager";
-import { ProductCostCalculator } from "../../../services/product/ProductCostCalculator";
-import { ComponentManager } from "../../../services/component/ComponentManager";
+import { IProductDTO } from '../../../dtos/ProductDTO';
+import { Product } from '../../../entities/Product';
+import { IProductsRepository } from '../../../repositories/IProductsRepository';
+import { ComponentManager } from '../../../services/component/ComponentManager';
+import { ProductCostCalculator } from '../../../services/product/ProductCostCalculator';
+import { HttpException } from '../../../utils/HttpException';
+import { convertToProduct, productSchema } from '../../../utils/productUtils';
+import { ProductUpdateManager } from './ProductUpdateManager';
 
 export class UpdateProductUseCase {
   private productCostCalculator: ProductCostCalculator;
@@ -22,7 +22,7 @@ export class UpdateProductUseCase {
   ): Promise<Product | null> {
     const existingProduct = await this.productsRepository.findById(id);
     if (!existingProduct) {
-      throw new HttpException(404, "Product not found");
+      throw new HttpException(404, 'Product not found');
     }
 
     const parsedData = productSchema.partial().parse(data);
@@ -40,7 +40,7 @@ export class UpdateProductUseCase {
       if (duplicateProduct && duplicateProduct.id !== id) {
         throw new HttpException(
           409,
-          "A product with this name and category already exists"
+          'A product with this name and category already exists'
         );
       }
     }
@@ -64,7 +64,7 @@ export class UpdateProductUseCase {
     }
 
     parsedData.updatedAt = new Date();
-    const { createdAt, ...updateData } = parsedData;
+    const { ...updateData } = parsedData;
 
     if (updateData.components) {
       updateData.components = await this.componentManager.formatComponents(
@@ -83,7 +83,7 @@ export class UpdateProductUseCase {
     );
 
     if (!updatedProduct) {
-      throw new HttpException(404, "Failed to update product");
+      throw new HttpException(404, 'Failed to update product');
     }
 
     // Se o produto atualizado é um componente, atualizar produtos que o utilizam

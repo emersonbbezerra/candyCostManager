@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const productSchema = new mongoose.Schema({
   name: String,
@@ -8,7 +8,7 @@ export const productSchema = new mongoose.Schema({
     {
       componentId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Component",
+        ref: 'Component',
       },
       componentName: { type: String, required: false, default: null },
       quantity: Number,
@@ -26,4 +26,4 @@ export const productSchema = new mongoose.Schema({
 
 productSchema.index({ category: 1, name: 1 });
 
-export const ProductMongoose = mongoose.model("Product", productSchema);
+export const ProductMongoose = mongoose.model('Product', productSchema);

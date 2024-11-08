@@ -1,6 +1,6 @@
-import { MongoUsersRepository } from "../../../repositories/implementations/MongoUsersRepository";
-import { CreateUserUseCase } from "./CreateUserUseCase";
-import { CreateUserController } from "./CreateUserController";
+import { MongoUsersRepository } from '../../../repositories/implementations/MongoUsersRepository';
+import { CreateUserUseCase } from './CreateUserUseCase';
+import { CreateUserController } from './CreateUserController';
 
 const usersRepository = new MongoUsersRepository();
 const createUserUseCase = new CreateUserUseCase(usersRepository);

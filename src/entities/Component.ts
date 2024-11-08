@@ -1,4 +1,4 @@
-import { uuidv7 } from "uuidv7";
+import { uuidv7 } from 'uuidv7';
 
 export class Component {
   public readonly id!: string;
@@ -12,7 +12,7 @@ export class Component {
   public createdAt?: string;
   public updatedAt?: string;
 
-  constructor(props: Omit<Component, "id">, id?: string) {
+  constructor(props: Omit<Component, 'id'>, id?: string) {
     Object.assign(this, props);
 
     if (!id) {

@@ -1,5 +1,5 @@
-import { uuidv7 } from "uuidv7";
-import { IProduct } from "../interfaces/IProduct";
+import { uuidv7 } from 'uuidv7';
+import { IProduct } from '../interfaces/IProduct';
 
 export class Product implements IProduct {
   public readonly id?: string;
