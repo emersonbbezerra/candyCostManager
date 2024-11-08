@@ -1,13 +1,14 @@
-import { IUsersRepository } from "../../../repositories/IUsersRepository";
-import { User } from "../../../entities/User";
-import { HttpException } from "../../../utils/HttpException";
 import bcrypt from "bcryptjs";
+import { User } from "../../../entities/User";
+import { IUsersRepository } from "../../../repositories/IUsersRepository";
+import { HttpException } from "../../../utils/HttpException";
 import { userSchema } from "../../../utils/userUtils";
 
 interface UpdateUserRequest {
+  name?: string;
+  email?: string;
   currentPassword?: string;
   newPassword?: string;
-  email?: string;
 }
 
 export class UpdateUserUseCase {

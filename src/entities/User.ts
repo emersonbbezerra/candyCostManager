@@ -1,7 +1,9 @@
 import { uuidv7 } from "uuidv7";
+import { IUser } from "../interfaces/IUser";
 
-export class User {
+export class User implements IUser  {
   public readonly id!: string;
+  public name!: string;
   public email!: string;
   public password!: string;
   public createdAt?: Date;

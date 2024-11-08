@@ -1,7 +1,7 @@
-import { IUsersRepository } from "../IUsersRepository";
 import { User } from "../../entities/User";
 import { UserMongoose } from "../../infra/database/schemas/userSchema";
 import { convertToUser } from "../../utils/userUtils";
+import { IUsersRepository } from "../IUsersRepository";
 
 export class MongoUsersRepository implements IUsersRepository {
   async findById(id: string): Promise<User | null> {
@@ -14,9 +14,10 @@ export class MongoUsersRepository implements IUsersRepository {
     return userDoc ? convertToUser(userDoc) : null;
   }
 
-  async save(user: User): Promise<void> {
+  async save(user: User): Promise<User> {
     const userDoc = new UserMongoose(user);
-    await userDoc.save();
+    const createdUser = await userDoc.save();
+    return convertToUser(createdUser.toObject());
   }
 
   async update(id: string, user: Partial<User>): Promise<User | null> {
