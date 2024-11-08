@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import { componentsRoutes } from "./routes/componentRoutes";
@@ -5,12 +6,15 @@ import { productsRouter } from "./routes/productRoutes";
 import { userRoutes } from "./routes/userRoutes";
 import { errorHandlerMiddleware } from "./middlewares/errorHandlerMiddleware";
 
+dotenv.config();
 const app = express();
 const corsOptions = {
-  origin: process.env.URL_API,
+  origin: process.env.URL_FRONTEND,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  optionsSuccessStatus: 200,
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 };
 
 app.use(express.json());
