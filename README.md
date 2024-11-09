@@ -75,7 +75,7 @@ The api will start on port 3000.
 
 <h2 id="routes">📍 API Endpoints</h2>
 
-This api covers two route branches: `/users`, `/components` and `/products`
+This api covers three route branches: `/users`, `/components` and `/products`
 
 <h3 id="users_routes">Users Routes</h3>
 
@@ -283,7 +283,7 @@ The password "currentPassword" is mandatory in the request body and if the passw
 }
 ```
 
-<h3 id="ingredients_routes">Ingredients Routes</h3>
+<h3 id="component_routes">Component Routes</h3>
 
 ​
 | route | description  
@@ -693,7 +693,7 @@ If the component with the specified ID is not found, the API will return the err
   "yield": 1000,
   "unitOfMeasure": "Gramas",
   "salePrice": 35.0,
-  "isIngredient": false
+  "isComponent": false
 }
 ```
 
@@ -763,7 +763,7 @@ Example: /products/search?name=br
     "salePrice": 25,
     "createdAt": "2024-11-02T01:00:56.989Z",
     "updatedAt": "2024-11-02T01:52:24.090Z",
-    "isIngredient": true
+    "isComponent": true
   },
   {
     "id": "672579f704c707ff89461254",
@@ -819,7 +819,7 @@ Example: /products/search?name=br
     "salePrice": 50,
     "createdAt": "2024-11-02T01:01:43.263Z",
     "updatedAt": "2024-11-02T01:52:24.188Z",
-    "isIngredient": false
+    "isComponent": false
   }
 ]
 ```
@@ -863,7 +863,7 @@ Example: /products/search?name=br
     "salePrice": 25,
     "createdAt": "2024-11-02T01:00:56.989Z",
     "updatedAt": "2024-11-02T01:52:24.090Z",
-    "isIngredient": true
+    "isComponent": true
   },
   {
     "id": "672579da04c707ff8946123a",
@@ -909,7 +909,7 @@ Example: /products/search?name=br
     "salePrice": 35,
     "createdAt": "2024-11-02T01:01:14.999Z",
     "updatedAt": "2024-11-02T01:01:14.999Z",
-    "isIngredient": false
+    "isComponent": false
   },
   {
     "id": "672579f704c707ff89461254",
@@ -965,7 +965,7 @@ Example: /products/search?name=br
     "salePrice": 50,
     "createdAt": "2024-11-02T01:01:43.263Z",
     "updatedAt": "2024-11-02T01:52:24.188Z",
-    "isIngredient": false
+    "isComponent": false
   }
 ]
 ```
@@ -1008,7 +1008,7 @@ Example: /products/search?name=br
   "salePrice": 25,
   "createdAt": "2024-11-02T01:00:56.989Z",
   "updatedAt": "2024-11-02T01:52:24.090Z",
-  "isIngredient": true
+  "isComponent": true
 }
 ```
 
@@ -1028,7 +1028,7 @@ If the product with the specified ID is not found, the API will return the error
 
 **REQUEST**
 
-You can update the following data in an product: `name`, `description`, `category`, `components`, `yield`, `unitOfMeasure`, `salePrice`, and `isIngredient`.
+You can update the following data in an product: `name`, `description`, `category`, `components`, `yield`, `unitOfMeasure`, `salePrice`, and `isComponent`.
 It's possible to update just one piece of data at a time or all of the data for an product.
 
 ```json
@@ -1096,7 +1096,7 @@ Or
     "salePrice": 25,
     "createdAt": "2024-11-02T01:00:56.989Z",
     "updatedAt": "2024-11-02T02:08:29.657Z",
-    "isIngredient": true
+    "isComponent": true
   }
 }
 ```
