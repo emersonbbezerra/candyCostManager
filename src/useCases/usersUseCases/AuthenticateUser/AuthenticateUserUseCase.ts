@@ -1,12 +1,13 @@
-import { IUsersRepository } from '../../../repositories/IUsersRepository';
-import { HttpException } from '../../../utils/HttpException';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { IUsersRepository } from '../../../repositories/IUsersRepository';
+import { HttpException } from '../../../utils/HttpException';
 
 interface IAuthenticateUserResponse {
   token: string;
   user: {
     id: string;
+    name: string;
     email: string;
   };
 }
@@ -42,6 +43,7 @@ export class AuthenticateUserUseCase {
       token,
       user: {
         id: user.id,
+        name: user.name,
         email: user.email,
       },
     };
