@@ -15,15 +15,18 @@ export const userSchema = z.object({
     .transform(capitalize),
   email: z
     .string()
-    .email({ message: 'O email deve ser um email válido.' })
+    .email({ message: 'Email inválido.' })
     .min(1, { message: 'O email é obrigatório.' }),
   password: z
     .string()
-    .min(8, { message: 'A senha deve ter pelo menos 8 caracteres.' })
+    .min(8, {
+      message:
+        'A senha deve ter pelo menos 8 caracteres, com uma maiúscula, uma minúscula, um número e um símbolo.',
+    })
     .max(100, { message: 'A senha não pode ter mais de 100 caracteres.' })
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/,
-      'A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.'
+      'A senha deve ter pelo menos 8 caracteres, com uma maiúscula, uma minúscula, um número e um símbolo.'
     ),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
