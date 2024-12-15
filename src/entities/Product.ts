@@ -8,8 +8,9 @@ export class Product implements IProduct {
   public category!: string;
   public components!: {
     componentId: string;
-    componentName?: string | null;
+    componentName: string;
     quantity: number;
+    unitOfMeasure?: string;
   }[];
   public productionCost?: number;
   public yield?: number;

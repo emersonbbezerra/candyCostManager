@@ -6,6 +6,7 @@ export interface IProductDTO {
     componentId: string;
     componentName?: string | null;
     quantity: number;
+    unitOfMeasure?: string;
   }[];
   productionCost?: number;
   yield?: number;

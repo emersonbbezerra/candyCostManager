@@ -153,6 +153,7 @@ export function convertToProduct(productDoc: any): Product {
       componentId: ing.componentId.toString(),
       componentName: ing.componentName,
       quantity: ing.quantity,
+      unitOfMeasure: ing.unitOfMeasure,
     })),
     productionCost: productDoc.productionCost,
     yield: productDoc.yield,

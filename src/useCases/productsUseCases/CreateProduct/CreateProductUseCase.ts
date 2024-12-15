@@ -1,8 +1,9 @@
-import { IProductsRepository } from '../../../repositories/IProductsRepository';
 import { IProductDTO } from '../../../dtos/ProductDTO';
 import { Product } from '../../../entities/Product';
 import { ComponentMongoose as Component } from '../../../infra/database/schemas/componentSchema';
 import { ProductMongoose } from '../../../infra/database/schemas/productSchema';
+import { IComponentInProduct } from '../../../interfaces/IComponent';
+import { IProductsRepository } from '../../../repositories/IProductsRepository';
 import { HttpException } from '../../../utils/HttpException';
 import { productSchema } from '../../../utils/productUtils';
 
@@ -24,7 +25,7 @@ export class CreateProductUseCase {
     }
 
     let productionCost = 0;
-    const componentIdsWithQuantities = [];
+    const componentIdsWithQuantities: IComponentInProduct[] = [];
 
     for (const item of parsedData.components) {
       const component = await Component.findById(item.componentId)
@@ -45,16 +46,18 @@ export class CreateProductUseCase {
         productionCost += pricePerUnit * item.quantity;
         componentIdsWithQuantities.push({
           componentId: component._id.toString(),
-          componentName: component.name || null,
+          componentName: component.name || undefined,
           quantity: item.quantity,
+          unitOfMeasure: component.unitOfMeasure || undefined,
         });
       } else if (productComponent && productComponent.isComponent) {
         const costRatio = productComponent.productionCostRatio ?? 0;
         productionCost += costRatio * item.quantity;
         componentIdsWithQuantities.push({
           componentId: productComponent._id.toString(),
-          componentName: productComponent.name || null,
+          componentName: productComponent.name || undefined,
           quantity: item.quantity,
+          unitOfMeasure: productComponent.unitOfMeasure || undefined,
         });
       } else {
         throw new HttpException(
