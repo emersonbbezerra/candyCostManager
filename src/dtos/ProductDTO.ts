@@ -14,6 +14,6 @@ export interface IProductDTO {
   productionCostRatio?: number;
   salePrice: number;
   isComponent?: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date; // Alterado de string para Date
+  updatedAt: Date; // Alterado de string para Date
 }
