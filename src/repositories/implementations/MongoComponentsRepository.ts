@@ -44,7 +44,7 @@ export class MongoComponentsRepository implements IComponentsRepository {
     options: FindAllComponentsOptions = {}
   ): Promise<FindAllComponentsResult> {
     const page = options.page || 1;
-    const limit = options.limit || 10;
+    const limit = options.limit || 50;
     const skip = (page - 1) * limit;
 
     // Construir o filtro

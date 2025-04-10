@@ -13,7 +13,7 @@ export class FindComponentMethodsController {
   ): Promise<Response | void> {
     try {
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const limit = parseInt(req.query.limit as string) || 50;
       const category = req.query.category as string;
 
       const result = await this.findComponentMethodsUseCase.findAll({
