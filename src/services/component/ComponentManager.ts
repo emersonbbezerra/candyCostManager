@@ -1,5 +1,5 @@
-import { ComponentMongoose as Component } from '../../infra/database/schemas/componentSchema';
-import { ProductMongoose } from '../../infra/database/schemas/productSchema';
+import { ComponentMongoose as Component } from '../../infra/database/mongoose/schemas/componentSchema';
+import { ProductMongoose } from '../../infra/database/mongoose/schemas/productSchema';
 
 export class ComponentManager {
   async getComponentName(componentId: string): Promise<string | null> {

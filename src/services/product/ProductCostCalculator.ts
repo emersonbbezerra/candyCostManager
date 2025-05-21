@@ -1,5 +1,5 @@
-import { ComponentMongoose as Component } from '../../infra/database/schemas/componentSchema';
-import { ProductMongoose } from '../../infra/database/schemas/productSchema';
+import { ComponentMongoose as Component } from '../../infra/database/mongoose/schemas/componentSchema';
+import { ProductMongoose } from '../../infra/database/mongoose/schemas/productSchema';
 import { HttpException } from '../../utils/HttpException';
 
 export class ProductCostCalculator {

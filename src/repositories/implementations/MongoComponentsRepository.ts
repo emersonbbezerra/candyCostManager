@@ -1,5 +1,5 @@
 import { Component } from '../../entities/Component';
-import { ComponentMongoose } from '../../infra/database/schemas/componentSchema';
+import { ComponentMongoose } from '../../infra/database/mongoose/schemas/componentSchema';
 import { convertToComponent } from '../../utils/componentUtils';
 import {
   FindAllComponentsOptions,

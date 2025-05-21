@@ -1,7 +1,7 @@
 import { IProductDTO } from '../../../dtos/ProductDTO';
 import { Product } from '../../../entities/Product';
-import { ComponentMongoose as Component } from '../../../infra/database/schemas/componentSchema';
-import { ProductMongoose } from '../../../infra/database/schemas/productSchema';
+import { ComponentMongoose as Component } from '../../../infra/database/mongoose/schemas/componentSchema';
+import { ProductMongoose } from '../../../infra/database/mongoose/schemas/productSchema';
 import { IComponentInProduct } from '../../../interfaces/IComponent';
 import { IProductsRepository } from '../../../repositories/IProductsRepository';
 import { HttpException } from '../../../utils/HttpException';

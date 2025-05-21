@@ -1,9 +1,9 @@
+import { Product } from '../../entities/Product';
+import { ComponentMongoose } from '../../infra/database/mongoose/schemas/componentSchema';
 import {
   FindAllProductsResult,
   IProductsRepository,
 } from '../../repositories/IProductsRepository';
-import { Product } from '../../entities/Product';
-import { ComponentMongoose } from '../../infra/database/schemas/componentSchema';
 import { HttpException } from '../../utils/HttpException';
 
 export class ComponentCostUpdateService {
