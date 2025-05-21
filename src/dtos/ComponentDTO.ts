@@ -5,6 +5,6 @@ export interface IComponentDTO {
   packageQuantity: number;
   unitOfMeasure: string;
   category: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
