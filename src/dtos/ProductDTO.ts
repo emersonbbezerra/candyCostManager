@@ -4,9 +4,9 @@ export interface IProductDTO {
   category: string;
   components: {
     componentId: string;
-    componentName?: string | null;
+    componentName: string;
     quantity: number;
-    unitOfMeasure?: string;
+    unitOfMeasure: string;
   }[];
   productionCost?: number;
   yield?: number;

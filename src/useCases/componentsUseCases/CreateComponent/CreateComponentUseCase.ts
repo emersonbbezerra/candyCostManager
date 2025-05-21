@@ -1,8 +1,8 @@
 import { IComponentDTO } from '../../../dtos/ComponentDTO';
-import { HttpException } from '../../../utils/HttpException';
-import { IComponentsRepository } from '../../../repositories/IComponentsRepository';
 import { Component } from '../../../entities/Component';
+import { IComponentsRepository } from '../../../repositories/IComponentsRepository';
 import { componentSchema } from '../../../utils/componentUtils';
+import { HttpException } from '../../../utils/HttpException';
 
 export class CreateComponentUseCase {
   constructor(private componentsRepository: IComponentsRepository) {}
@@ -22,12 +22,18 @@ export class CreateComponentUseCase {
       );
     }
 
-    const component = new Component({
+    const componentData = {
       ...parsedData,
-      createdAt: parsedData.createdAt?.toISOString(),
-      updatedAt: parsedData.updatedAt?.toISOString(),
       packageQuantity: parsedData.packageQuantity,
-    });
+    };
+
+    const component = new Component(componentData);
+    if (parsedData.createdAt) {
+      component.createdAt = new Date(parsedData.createdAt);
+    }
+    if (parsedData.updatedAt) {
+      component.updatedAt = new Date(parsedData.updatedAt);
+    }
 
     await this.componentsRepository.save(component);
   }

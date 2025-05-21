@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod';
 import { Product } from '../entities/Product';
-import { IProduct } from '../interfaces/IProduct';
 import { capitalize, normalizeSpaces } from './stringUtils';
 
 export const productSchema = z.object({
@@ -144,7 +143,7 @@ export const productSchema = z.object({
 });
 
 export function convertToProduct(productDoc: any): Product {
-  const productData: IProduct = {
+  const productData = {
     id: productDoc.id || productDoc._id.toString(),
     name: productDoc.name,
     description: productDoc.description,
@@ -171,5 +170,5 @@ export function convertToProduct(productDoc: any): Product {
         : new Date(productDoc.updatedAt),
   };
 
-  return new Product(productData);
+  return new Product(productData, productData.id);
 }

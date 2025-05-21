@@ -1,8 +1,8 @@
-import { IComponentsRepository } from '../../../repositories/IComponentsRepository';
 import { Component } from '../../../entities/Component';
+import { IComponentsRepository } from '../../../repositories/IComponentsRepository';
+import { ComponentCostUpdateService } from '../../../services/component/ComponentCostUpdateService';
 import { HttpException } from '../../../utils/HttpException';
 import { componentSchema } from '../../../utils/componentUtils';
-import { ComponentCostUpdateService } from '../../../services/component/ComponentCostUpdateService';
 
 export class UpdateComponentUseCase {
   constructor(
@@ -44,8 +44,10 @@ export class UpdateComponentUseCase {
 
     const updatedData = {
       ...parsedData,
-      createdAt: parsedData.createdAt?.toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: parsedData.createdAt
+        ? new Date(parsedData.createdAt)
+        : undefined,
+      updatedAt: new Date(),
     };
 
     const updatedComponent = await this.componentsRepository.update(

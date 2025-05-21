@@ -1,4 +1,4 @@
-import { IComponentInProduct } from './IComponent';
+import { IComponentInProduct } from './IComponentInProduct';
 
 export interface IProduct {
   id?: string;
@@ -12,6 +12,4 @@ export interface IProduct {
   productionCostRatio?: number;
   salePrice?: number;
   isComponent?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
 }

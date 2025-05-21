@@ -94,13 +94,14 @@ export const convertToComponent = (componentDoc: any): Component => {
       packageQuantity: componentDoc.packageQuantity!,
       unitOfMeasure: componentDoc.unitOfMeasure!,
       category: componentDoc.category!,
-      createdAt: componentDoc.createdAt?.toISOString(),
-      updatedAt: componentDoc.updatedAt?.toISOString(),
     },
     componentDoc._id.toString()
   );
-  return {
-    ...component,
-    id: componentDoc._id.toString(),
-  };
+  if (componentDoc.createdAt) {
+    component.createdAt = new Date(componentDoc.createdAt);
+  }
+  if (componentDoc.updatedAt) {
+    component.updatedAt = new Date(componentDoc.updatedAt);
+  }
+  return component;
 };
