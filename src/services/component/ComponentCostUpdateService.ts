@@ -50,17 +50,14 @@ export class ComponentCostUpdateService {
       }
 
       // Atualizar o produto com o novo custo
-      // Criar um objeto com as propriedades válidas para Product
-      const productData = {
+      const updatedProduct = new Product({
         ...product,
         productionCost: totalCost,
         productionCostRatio: product.yield
           ? totalCost / product.yield
           : undefined,
-      };
-
-      const updatedProduct = new Product(productData);
-      updatedProduct.updatedAt = new Date();
+        updatedAt: new Date(),
+      });
 
       if (!updatedProduct.id) throw new HttpException(500, 'Unexpected error');
 

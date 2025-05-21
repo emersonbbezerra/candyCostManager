@@ -22,18 +22,12 @@ export class CreateComponentUseCase {
       );
     }
 
-    const componentData = {
+    const component = new Component({
       ...parsedData,
+      createdAt: new Date(),
+      updatedAt: new Date(),
       packageQuantity: parsedData.packageQuantity,
-    };
-
-    const component = new Component(componentData);
-    if (parsedData.createdAt) {
-      component.createdAt = new Date(parsedData.createdAt);
-    }
-    if (parsedData.updatedAt) {
-      component.updatedAt = new Date(parsedData.updatedAt);
-    }
+    });
 
     await this.componentsRepository.save(component);
   }

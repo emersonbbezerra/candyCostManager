@@ -6,4 +6,6 @@ export interface IComponent {
   packageQuantity: number;
   unitOfMeasure?: string;
   category: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

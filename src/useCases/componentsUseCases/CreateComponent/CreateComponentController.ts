@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { CreateComponentUseCase } from './CreateComponentUseCase';
+import { NextFunction, Request, Response } from 'express';
 import { IComponentDTO } from '../../../dtos/ComponentDTO';
+import { CreateComponentUseCase } from './CreateComponentUseCase';
 
 export class CreateComponentController {
   constructor(private createComponentUseCase: CreateComponentUseCase) {}

@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { UpdateComponentUseCase } from './UpdateComponentUseCase';
+import { NextFunction, Request, Response } from 'express';
 import { Component } from '../../../entities/Component';
+import { UpdateComponentUseCase } from './UpdateComponentUseCase';
 
 export class UpdateComponentController {
   constructor(private updateComponentUseCase: UpdateComponentUseCase) {}

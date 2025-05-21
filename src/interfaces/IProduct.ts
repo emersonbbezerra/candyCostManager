@@ -12,4 +12,6 @@ export interface IProduct {
   productionCostRatio?: number;
   salePrice?: number;
   isComponent?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
