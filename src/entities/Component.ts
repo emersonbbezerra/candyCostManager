@@ -1,22 +1,10 @@
-import { uuidv7 } from 'uuidv7';
+import { BaseEntity } from './BaseEntity';
 
-export class Component {
-  public readonly id!: string;
-
+export class Component extends BaseEntity {
   public name!: string;
   public manufacturer!: string;
   public price!: number;
   public packageQuantity!: number;
   public unitOfMeasure!: string;
   public category!: string;
-  public createdAt?: string;
-  public updatedAt?: string;
-
-  constructor(props: Omit<Component, 'id'>, id?: string) {
-    Object.assign(this, props);
-
-    if (!id) {
-      this.id = uuidv7();
-    }
-  }
 }

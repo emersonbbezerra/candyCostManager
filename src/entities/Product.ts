@@ -1,8 +1,7 @@
-import { uuidv7 } from 'uuidv7';
 import { IProduct } from '../interfaces/IProduct';
+import { BaseEntity } from './BaseEntity';
 
-export class Product implements IProduct {
-  public readonly id?: string;
+export class Product extends BaseEntity implements IProduct {
   public name!: string;
   public description!: string;
   public category!: string;
@@ -18,13 +17,4 @@ export class Product implements IProduct {
   public productionCostRatio?: number;
   public salePrice?: number;
   public isComponent?: boolean;
-  public createdAt?: Date;
-  public updatedAt?: Date;
-
-  constructor(props: IProduct) {
-    Object.assign(this, props);
-    if (!this.id) {
-      this.id = uuidv7();
-    }
-  }
 }
