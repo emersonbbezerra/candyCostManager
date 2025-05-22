@@ -12,7 +12,7 @@ export const productSchema = new mongoose.Schema({
       },
       componentName: { type: String, required: false, default: null },
       quantity: Number,
-      unitOfMeasure: String,
+      unitOfMeasure: { type: String, default: '' },
     },
   ],
   productionCost: Number,

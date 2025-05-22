@@ -144,10 +144,24 @@ export class MongoProductsRepository implements IProductsRepository {
   }
 
   async update(id: string, product: Product): Promise<Partial<Product> | null> {
-    const updateProduct = await ProductMongoose.findByIdAndUpdate(product.id, {
+    // Normaliza componentes para garantir o campo unitOfMeasure
+    const components = product.components.map((comp) => ({
+      ...comp,
+      unitOfMeasure: comp.unitOfMeasure ?? '', // <- Garante a presença!
+    }));
+
+    const updateObj = {
       ...product,
+      components,
       updatedAt: new Date(),
-    }).exec();
+    };
+
+    const updateProduct = await ProductMongoose.findByIdAndUpdate(
+      product.id,
+      updateObj,
+      { new: true }
+    ).exec();
+
     return convertToProduct(updateProduct);
   }
 

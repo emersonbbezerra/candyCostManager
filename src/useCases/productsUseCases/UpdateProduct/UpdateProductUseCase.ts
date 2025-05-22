@@ -67,6 +67,25 @@ export class UpdateProductUseCase {
     const { ...updateData } = parsedData;
 
     if (updateData.components) {
+      // Buscar componentes originais para preservar unitOfMeasure
+      const originalProduct = await this.productsRepository.findById(id);
+      if (!originalProduct) {
+        throw new HttpException(404, 'Original product not found');
+      }
+
+      updateData.components = updateData.components.map((comp: any) => {
+        const originalComp = originalProduct.components.find(
+          (c: any) => c.componentId === comp.componentId
+        );
+        return {
+          ...comp,
+          unitOfMeasure:
+            comp.unitOfMeasure && comp.unitOfMeasure.trim() !== ''
+              ? comp.unitOfMeasure
+              : originalComp?.unitOfMeasure ?? '',
+        };
+      });
+
       updateData.components = await this.componentManager.formatComponents(
         updateData.components
       );

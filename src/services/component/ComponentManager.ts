@@ -17,8 +17,11 @@ export class ComponentManager {
   }
 
   async formatComponents(
-    components: { componentId: string; quantity: number }[]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    components: {
+      componentId: string;
+      quantity: number;
+      unitOfMeasure?: string;
+    }[]
   ): Promise<any[]> {
     return Promise.all(
       components.map(async (item) => {
@@ -27,6 +30,7 @@ export class ComponentManager {
           componentId: item.componentId,
           componentName,
           quantity: item.quantity,
+          unitOfMeasure: item.unitOfMeasure,
         };
       })
     );
