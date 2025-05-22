@@ -1,22 +1,18 @@
-import { uuidv7 } from 'uuidv7';
+import { IComponent } from '../interfaces/IComponent';
+import { BaseEntity } from './BaseEntity';
 
-export class Component {
-  public readonly id!: string;
-
+export class Component extends BaseEntity implements IComponent {
   public name!: string;
   public manufacturer!: string;
   public price!: number;
   public packageQuantity!: number;
-  public unitOfMeasure!: string;
+  public unitOfMeasure?: string;
   public category!: string;
-  public createdAt?: string;
-  public updatedAt?: string;
 
-  constructor(props: Omit<Component, 'id'>, id?: string) {
-    Object.assign(this, props);
-
-    if (!id) {
-      this.id = uuidv7();
+  constructor(data?: Partial<IComponent>, id?: string) {
+    super(id);
+    if (data) {
+      Object.assign(this, data);
     }
   }
 }

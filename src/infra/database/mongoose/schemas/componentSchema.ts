@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 export const componentSchema = new mongoose.Schema({
-  name: String,
-  manufacturer: String,
-  price: { type: Number, require: true },
+  name: { type: String, required: true },
+  manufacturer: { type: String, required: true },
+  price: { type: Number, required: true },
   packageQuantity: { type: Number, required: true },
-  unitOfMeasure: String,
-  category: String,
+  unitOfMeasure: { type: String, required: true },
+  category: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

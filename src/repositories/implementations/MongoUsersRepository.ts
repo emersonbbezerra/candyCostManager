@@ -1,5 +1,5 @@
 import { User } from '../../entities/User';
-import { UserMongoose } from '../../infra/database/schemas/userSchema';
+import { UserMongoose } from '../../infra/database/mongoose/schemas/userSchema';
 import { convertToUser } from '../../utils/userUtils';
 import { IUsersRepository } from '../IUsersRepository';
 

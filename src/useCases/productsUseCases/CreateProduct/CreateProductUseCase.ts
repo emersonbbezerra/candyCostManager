@@ -1,8 +1,8 @@
 import { IProductDTO } from '../../../dtos/ProductDTO';
 import { Product } from '../../../entities/Product';
-import { ComponentMongoose as Component } from '../../../infra/database/schemas/componentSchema';
-import { ProductMongoose } from '../../../infra/database/schemas/productSchema';
-import { IComponentInProduct } from '../../../interfaces/IComponent';
+import { ComponentMongoose as Component } from '../../../infra/database/mongoose/schemas/componentSchema';
+import { ProductMongoose } from '../../../infra/database/mongoose/schemas/productSchema';
+import { IComponentInProduct } from '../../../interfaces/IComponentInProduct';
 import { IProductsRepository } from '../../../repositories/IProductsRepository';
 import { HttpException } from '../../../utils/HttpException';
 import { productSchema } from '../../../utils/productUtils';
@@ -46,18 +46,18 @@ export class CreateProductUseCase {
         productionCost += pricePerUnit * item.quantity;
         componentIdsWithQuantities.push({
           componentId: component._id.toString(),
-          componentName: component.name || undefined,
+          componentName: component.name ?? 'Unnamed Component',
           quantity: item.quantity,
-          unitOfMeasure: component.unitOfMeasure || undefined,
+          unitOfMeasure: component.unitOfMeasure,
         });
       } else if (productComponent && productComponent.isComponent) {
         const costRatio = productComponent.productionCostRatio ?? 0;
         productionCost += costRatio * item.quantity;
         componentIdsWithQuantities.push({
           componentId: productComponent._id.toString(),
-          componentName: productComponent.name || undefined,
+          componentName: productComponent.name ?? 'Unnamed Component',
           quantity: item.quantity,
-          unitOfMeasure: productComponent.unitOfMeasure || undefined,
+          unitOfMeasure: productComponent.unitOfMeasure,
         });
       } else {
         throw new HttpException(
@@ -72,7 +72,7 @@ export class CreateProductUseCase {
         ? productionCost / parsedData.yield
         : undefined;
 
-    const product = new Product({
+    const productData: Product = {
       name: parsedData.name,
       description: parsedData.description,
       category: parsedData.category,
@@ -83,10 +83,11 @@ export class CreateProductUseCase {
       productionCostRatio,
       components: componentIdsWithQuantities,
       isComponent: parsedData.isComponent,
+      id: '',
       createdAt: new Date(),
       updatedAt: new Date(),
-    });
+    };
 
-    await this.productsRepository.save(product);
+    await this.productsRepository.save(productData);
   }
 }

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { Product } from '../../entities/Product';
-import { ProductMongoose } from '../../infra/database/schemas/productSchema';
+import { ProductMongoose } from '../../infra/database/mongoose/schemas/productSchema';
 import { convertToProduct } from '../../utils/productUtils';
 import {
   FindAllProductsOptions,

@@ -94,8 +94,8 @@ export const convertToComponent = (componentDoc: any): Component => {
       packageQuantity: componentDoc.packageQuantity!,
       unitOfMeasure: componentDoc.unitOfMeasure!,
       category: componentDoc.category!,
-      createdAt: componentDoc.createdAt?.toISOString(),
-      updatedAt: componentDoc.updatedAt?.toISOString(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     componentDoc._id.toString()
   );

@@ -4,9 +4,9 @@ export interface IProductDTO {
   category: string;
   components: {
     componentId: string;
-    componentName?: string | null;
+    componentName: string;
     quantity: number;
-    unitOfMeasure?: string;
+    unitOfMeasure: string;
   }[];
   productionCost?: number;
   yield?: number;
@@ -14,6 +14,6 @@ export interface IProductDTO {
   productionCostRatio?: number;
   salePrice: number;
   isComponent?: boolean;
-  createdAt: Date; // Alterado de string para Date
-  updatedAt: Date; // Alterado de string para Date
+  createdAt: Date;
+  updatedAt: Date;
 }
